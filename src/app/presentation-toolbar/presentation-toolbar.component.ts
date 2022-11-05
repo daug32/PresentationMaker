@@ -9,4 +9,12 @@ export class PresentationToolbarComponent {
     @Input() title!: string;
 
     constructor() { }
+
+    public ToolUsing(): void {
+        console.log("ТЕН-ТАК-ЛЯ!!!")
+    }
 }
+
+
+
+

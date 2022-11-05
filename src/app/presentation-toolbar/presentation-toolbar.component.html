@@ -1,3 +1,60 @@
 <div class="presentation-maker-toolbar">
-    
+    <div class="title">
+        <p>{{title}}</p>
+
+    </div>
+    <!--File actions starts-->
+    <div class="toolbar-section section__actions">
+        <div class="section-tools">
+            <button class="tool" (click)="ToolUsing()">
+                <p>Open</p>
+                <img>
+            </button>
+            <button class="tool" (click)="ToolUsing()">
+                <p>Save</p>
+                <img>
+            </button>
+            <button class="tool" (click)="ToolUsing()">
+                <p>Undo</p>
+                <img>
+            </button>
+            <button class="tool" (click)="ToolUsing()">
+                <p>Redo</p>
+                <img>
+            </button>
+        </div>
+        <div class="section-title">
+            <p>FILE ACTIONS</p>
+        </div>
+    </div>    
+    <!--File actions close-->
+
+    <!--Attachments starts-->
+    <div class="toolbar-section section__attachments">
+        <div class="section-tools">
+            <button class="tool" (click)="ToolUsing()">
+                <p>T</p>
+            </button>
+
+            <button class="tool" (click)="ToolUsing()">
+                <img><!--Triangle-->
+            </button>
+
+            <button class="tool" (click)="ToolUsing()">
+                <img><!--Square-->
+            </button>
+
+            <button class="tool" (click)="ToolUsing()">
+                <img><!--Circle-->
+            </button>
+
+            <button class="tool" (click)="ToolUsing()">
+                <img> <!--Download image-->
+            </button>     
+        </div>
+        <div class="section-title">
+            <p>TOOLS</p>
+        </div>    
+    </div>
+    <!--Attachments close-->      
 </div>
