@@ -8,5 +8,7 @@ import { Slide } from 'src/models/presentation/Slide';
 })
 export class PresentationWorkspaceComponent {
     @Input() slide!: Slide;
-    constructor() { }
+
+    constructor() {
+    }
 }

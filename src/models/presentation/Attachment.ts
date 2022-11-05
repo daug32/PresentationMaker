@@ -5,11 +5,22 @@ export class Attachment {
     constructor(
         public id: number, 
 
-        public transform: Vector2, 
-        public rotation: number, 
-        public scale: Vector2,
+        public data: any, 
+        public attachmentType: AttachmentType,
 
-        public data: string, 
-        public attachmentType: AttachmentType
+        public position: Vector2 = new Vector2(0, 0), 
+        public scale: Vector2 = new Vector2(100, 100),
     ) {}
+
+    public static Image(path: string) {
+        return new Attachment(1, path, AttachmentType.Image);
+    }
+
+    public static Shape(vertices: Vector2[]) {
+        return new Attachment(1, vertices, AttachmentType.Shape);
+    }
+
+    public static Text(text: string) {
+        return new Attachment(1, text, AttachmentType.Text);
+    }
 }
