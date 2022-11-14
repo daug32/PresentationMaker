@@ -1,0 +1,46 @@
+.attachment {
+    width: 0;
+    height: 0;
+    cursor: pointer;
+
+    &__text {
+        border: 0;
+        text-align: start;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__settings {
+        width: 225px;
+
+        padding: 5px 10px;
+        background-color: white;
+
+        visibility: hidden;
+        position: absolute;
+
+        &-toggles {
+            margin-bottom: 5px;
+        }
+
+        &-item {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        &-label {
+            max-width: 40%;
+        }
+
+        &-input {
+            width: 100%;
+
+            &_labeled {
+                max-width: 40%;
+            }
+        }
+    }
+}

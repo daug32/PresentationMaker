@@ -1,5 +1,13 @@
 export class Vector2 {
     private values: number[] = [0, 0];
+
+    constructor(
+        x: number = 0, 
+        y: number = 0
+    ) {
+        this.x = x;
+        this.y = y;
+    }
     
     public get x(): number { 
         return this.values[0]; 

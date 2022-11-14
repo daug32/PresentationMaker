@@ -1,3 +1,5 @@
 <div class="presentation-workspace">
-    {{ slide.id }}
+    <attachment *ngFor="let attachment of slide.attachments"
+                [attachment]="attachment">
+    </attachment>
 </div>
