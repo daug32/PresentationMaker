@@ -6,55 +6,54 @@
     <!--File actions starts-->
     <div class="toolbar-section section__actions">
         <div class="section-tools">
-            <button class="tool" (click)="ToolUsing()">
-                <p>Open</p>
-                <img>
+            <button class="tool" (click)="fileOpenEvent">
+                <mat-icon>file_open</mat-icon>
             </button>
-            <button class="tool" (click)="ToolUsing()">
-                <p>Save</p>
-                <img>
+            <button class="tool" (click)="saveEvent">
+                <mat-icon>save</mat-icon>
             </button>
-            <button class="tool" (click)="ToolUsing()">
-                <p>Undo</p>
-                <img>
+            <button class="tool" (click)="undoEvent">
+                <mat-icon>undo</mat-icon>
             </button>
-            <button class="tool" (click)="ToolUsing()">
-                <p>Redo</p>
-                <img>
+            <button class="tool" (click)="redoEvent">
+                <mat-icon>redo</mat-icon>
             </button>
         </div>
         <div class="section-title">
             <p>FILE ACTIONS</p>
         </div>
-    </div>    
+    </div>
     <!--File actions close-->
 
     <!--Attachments starts-->
     <div class="toolbar-section section__attachments">
         <div class="section-tools">
-            <button class="tool" (click)="ToolUsing()">
+            <button class="tool" (click)="textEvent">
                 <p>T</p>
             </button>
 
-            <button class="tool" (click)="ToolUsing()">
-                <img><!--Triangle-->
+            <button class="tool" (click)="triangleEvent">
+                <!--Triangle-->
+                <mat-icon>change_history</mat-icon>
             </button>
 
-            <button class="tool" (click)="ToolUsing()">
-                <img><!--Square-->
+            <button class="tool" (click)="squareEvent">
+                <!--Square-->
+                <mat-icon>crop_square</mat-icon>
             </button>
 
-            <button class="tool" (click)="ToolUsing()">
-                <img><!--Circle-->
+            <button class="tool" (click)="circleEvent">
+                <!--Circle-->
+                <mat-icon>circle</mat-icon>
             </button>
 
-            <button class="tool" (click)="ToolUsing()">
-                <img> <!--Download image-->
-            </button>     
+            <button class="tool" (click)="ImageEvent">
+                <mat-icon>image</mat-icon>
+            </button>
         </div>
         <div class="section-title">
             <p>TOOLS</p>
-        </div>    
+        </div>
     </div>
-    <!--Attachments close-->      
+    <!--Attachments close-->
 </div>

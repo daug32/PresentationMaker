@@ -47,7 +47,7 @@ export class AppComponent {
 
         return [image, text, shape].map((el, index) => {
             el.scale = new Vector2(100, height);
-            el.position = new Vector2(0, height * index)
+            el.position = new Vector2(0, height * index);
             return el;
         });
     }

@@ -1,6 +1,19 @@
 <div class="presentation-maker">
 
-    <presentation-toolbar [title]="presentation.name"></presentation-toolbar>
+    <presentation-toolbar 
+        [title]="presentation.name"
+        
+        (saveEvent)=""
+        (fileOpenEvent)=""
+        (undoEvent)=""
+        (redoEvent)=""
+        (textEvent)=""
+        (ImageEvent)=""
+        (squareEvent)=""
+        (circleEvent)=""
+        (triangleEvent)=""
+        >
+    </presentation-toolbar>
 
     <div class="presentation-maker__content-container">
 
