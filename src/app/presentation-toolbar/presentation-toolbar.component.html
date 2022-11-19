@@ -1,15 +1,15 @@
 <div class="presentation-maker-toolbar">
     <div class="title">
-        <p>{{title}}</p>
+        <p>{{presentation.name}}</p>
 
     </div>
     <!--File actions starts-->
     <div class="toolbar-section section__actions">
         <div class="section-tools">
-            <button class="tool" (click)="fileOpenEvent">
+            <button class="tool" (click)="onOpen()">
                 <mat-icon>file_open</mat-icon>
             </button>
-            <button class="tool" (click)="saveEvent">
+            <button class="tool" (click)="onSave()">
                 <mat-icon>save</mat-icon>
             </button>
             <button class="tool" (click)="undoEvent">

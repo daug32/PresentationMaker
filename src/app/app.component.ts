@@ -23,6 +23,10 @@ export class AppComponent {
         console.log(slide);
     }
 
+    public onPresentationLoad(presentation: Presentation): void {
+        this.presentation = presentation;
+    }
+
     private testPresentation(): Presentation {
         let slides: Slide[] = [];
         for (let i = 0; i < 2; i++) {
