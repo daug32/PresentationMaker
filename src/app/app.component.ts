@@ -3,6 +3,7 @@ import { Vector2 } from 'src/models/other/Vector2';
 import { Attachment } from 'src/models/presentation/Attachment';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
+import { SelectedItem } from 'src/models/other/SelectedItem';
 
 @Component({
     selector: 'app-root',
@@ -12,10 +13,11 @@ import { Slide } from 'src/models/presentation/Slide';
 export class AppComponent {
     public presentation: Presentation;
     public currentSlide: Slide;
+    public selectedItems: SelectedItem[] = [];
 
     constructor() {
         this.presentation = this.testPresentation();
-        this.currentSlide = this.presentation.slides[0] ?? new Slide(0, []);
+        this.currentSlide = this.presentation.slides[0] ?? new Slide(0, [], 0);
     }
 
     public onSlideChange(slide: Slide): void {
@@ -27,10 +29,26 @@ export class AppComponent {
         this.presentation = presentation;
     }
 
+    public onContextMenu(slideId: number): void {
+        let index: number = this.selectedItems.findIndex(a => a.slideId == slideId);
+
+        if (index != -1) {
+            // снять пометку с миниатюры слайда
+            this.selectedItems.splice(index, 1);
+        } else {
+            // добавить пометку миниатюры слайда
+            this.selectedItems.push(
+                new SelectedItem(slideId, [])
+            );
+        }
+    }
+
+    
+
     private testPresentation(): Presentation {
         let slides: Slide[] = [];
         for (let i = 0; i < 2; i++) {
-            let slide = new Slide(i, this.testAttachments());
+            let slide = new Slide(i, this.testAttachments(), 1);
             slides.push(slide);
         }
 
