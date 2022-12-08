@@ -3,6 +3,7 @@ import { Vector2 } from 'src/models/other/Vector2';
 import { Attachment } from 'src/models/presentation/Attachment';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
+import { AttachmentService } from 'src/services/AttachmentService';
 import { SelectedItem } from 'src/models/other/SelectedItem';
 
 @Component({
@@ -13,9 +14,12 @@ import { SelectedItem } from 'src/models/other/SelectedItem';
 export class AppComponent {
     public presentation: Presentation;
     public currentSlide: Slide;
+    public attachmentToAdd?: Attachment;
     public selectedItems: SelectedItem[] = [];
 
-    constructor() {
+    private attachmentService: AttachmentService;
+
+    constructor() {        
         this.presentation = this.testPresentation();
         this.currentSlide = this.presentation.slides[0] ?? new Slide(0, [], 0);
     }
@@ -23,6 +27,32 @@ export class AppComponent {
     public onSlideChange(slide: Slide): void {
         this.currentSlide = slide;
         console.log(slide);
+    }
+
+    // System operations
+    public onUndo(): void { }
+
+    public onRedo(): void { }
+
+    // Atttachments
+    public onAddText(): void {
+        this.attachmentToAdd = 
+    }
+
+    public onAddImage(): void {
+        this.attachmentToAdd = Templates.Image;
+    }
+    
+    public onAddSquare(): void {
+        this.attachmentToAdd = Templates.Square;        
+    }
+    
+    public onAddCircle(): void {
+        this.attachmentToAdd = Templates.Circle;
+    }
+    
+    public onAddTriangle(): void {
+        this.attachmentToAdd = Templates.Triangle;
     }
 
     public onPresentationLoad(presentation: Presentation): void {

@@ -1,8 +1,18 @@
 <div class="presentation-maker">
 
     <presentation-toolbar 
+        
         [presentation]="presentation"
         (onPresentationLoad)="onPresentationLoad($event)">
+
+        (undoEvent)="onUndo()"
+        (redoEvent)="onRedo()"
+
+        (textEvent)="onAddText()"
+        (ImageEvent)="onAddImage()"
+        (squareEvent)="onAddSquare()"
+        (circleEvent)="onAddCircle()"
+        (triangleEvent)="onAddTriangle()">
     </presentation-toolbar>
 
     <div class="presentation-maker__content-container">
