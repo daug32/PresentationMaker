@@ -1,5 +1,4 @@
 import { Slide } from 'src/models/presentation/Slide';
-import { Presentation } from './models/presentation/Presentation';
 
 export function createSlide(id: number, orderPosition: number): Slide {
     return new Slide(id, [], orderPosition);
@@ -14,17 +13,11 @@ export function copySlide(id: number, slide: Slide): Slide {
     );
 }
 
-export function removeSlides(presentation: Presentation, sildesIds: number[]): Presentation {
-    let newPresentation = {
-        ...presentation,
-        slides: presentation.slides.filter(x => sildesIds.every(id => id != x.id))
-    };
+export function deleteAttachment(slide: Slide, attachmentId: number): Slide {
+    let newSlide: Slide = copySlide(slide.id, slide);
+    newSlide.attachments = slide.attachments.filter(a => a.id != attachmentId);
 
-    return newPresentation;
-}
-
-export function removeSlide(presentation: Presentation, slideId: number): Presentation {
-    return removeSlides(presentation, [slideId]);
+    return newSlide;
 }
 
 export function selectSlide(slide: Slide): void {

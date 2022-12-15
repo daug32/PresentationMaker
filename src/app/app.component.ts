@@ -25,11 +25,6 @@ export class AppComponent {
         this.currentSlide = this.presentation.slides[0] ?? new Slide(0, [], 0);
     }
 
-    public onSlideChange(slide: Slide): void {
-        this.currentSlide = slide;
-        console.log(slide);
-    }
-
     // System operations
     public onUndo(): void { }
 
@@ -60,21 +55,24 @@ export class AppComponent {
         this.presentation = presentation;
     }
 
-    public onContextMenu(slideId: number): void {
-        let index: number = this.selectedItems.findIndex(a => a.slideId == slideId);
-
-        if (index != -1) {
-            // снять пометку с миниатюры слайда
-            this.selectedItems.splice(index, 1);
-        } else {
-            // добавить пометку миниатюры слайда
-            this.selectedItems.push(
-                new SelectedItem(slideId, [])
-            );
-        }
+    public onSlideChange(slide: Slide): void {
+        this.currentSlide = slide;
+        console.log(slide);
     }
 
-    
+    public onContextMenu(slideId: number): void {
+        // let index: number = this.selectedItems.findIndex(x => x == slideId);
+
+        // if (index != -1) {
+        //     // снять пометку с миниатюры слайда
+        //     this.selectedItems.splice(index, 1);
+        // } else {
+        //     // добавить пометку миниатюры слайда
+        //     this.selectedItems.push(
+        //         new SelectedItem(slideId, [])
+        //     );
+        // }
+    }
 
     private testPresentation(): Presentation {
         let slides: Slide[] = [];

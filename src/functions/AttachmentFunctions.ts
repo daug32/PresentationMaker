@@ -1,7 +1,6 @@
 import { Vector2 } from "src/models/other/Vector2";
 import { Attachment, ImageAttachment, PrimitiveAttachment, TextAttachment } from "src/models/presentation/Attachment";
 import { AttachmentType } from "src/models/presentation/AttachmentType";
-import { Slide } from "src/models/presentation/Slide";
 
 export function createAttachment(id: number, attachmentType: AttachmentType): Attachment {
     switch (attachmentType) {
@@ -26,16 +25,6 @@ export function createAttachment(id: number, attachmentType: AttachmentType): At
 }
 
 // General attachment functions
-export function deleteAttachment(slide: Slide, attachmentId: number): Slide {
-    let copySlide: Slide = {
-        // id: SlideService._currentId++,
-        id: -1,
-        attachments: slide.attachments.filter(a => a.id != attachmentId)
-    };
-
-    return copySlide;
-}
-
 export function copyAttachment(newId: number, attachment: Attachment): Attachment {
     return {
         ...attachment,
