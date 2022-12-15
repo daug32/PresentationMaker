@@ -1,7 +1,7 @@
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
-import { Component, Input, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, AfterViewInit, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Attachment } from 'src/models/presentation/Attachment';
+import { Attachment, ImageAttachment, PrimitiveAttachment, TextAttachment } from 'src/models/presentation/Attachment';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { ShapeDrawerService } from 'src/services/ShapeDrawerService';
 
@@ -12,7 +12,9 @@ import { ShapeDrawerService } from 'src/services/ShapeDrawerService';
 })
 export class AttachmentComponent implements OnInit, AfterViewInit {
 	@Input() attachment!: Attachment;
-	@ViewChild('canvas') canvas!: ElementRef;
+	@Output() onInput = new EventEmitter<any>();
+
+	@ViewChild('canvas') canvas: ElementRef | null = null;
 
 	private isContextMenuVisisble: boolean = false;
 	@ViewChild('contextMenu') contextMenu!: ElementRef;
@@ -28,18 +30,53 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 
 	constructor() { }
 
-	public get isText() { return this.attachment.attachmentType == AttachmentType.Text; }
-	public get isShape() { return this.attachment.attachmentType == AttachmentType.Shape; }
-	public get isImage() { return this.attachment.attachmentType == AttachmentType.Image; }
+	public isText: boolean = false;
+	public isImage: boolean = false; 
+	public isPrimitive: boolean = false;
+
+	public get text(): string {
+		if (!this.isText) {
+			return "";
+		}
+
+		let textAttachment = this.attachment as TextAttachment;
+		return textAttachment.text;
+	}
+
+	public set text(value: string) {
+		if (!this.isText) {
+			return;
+		}
+
+		this.onInput.emit(value);
+	}
+
+	public get imageContent(): string | null {
+		if (!this.isImage) {
+			return "";
+		}
+
+		let imageAttachment = this.attachment as ImageAttachment;
+		return imageAttachment.image;
+	}
 
 	ngOnInit(): void {
+		let type: AttachmentType = this.attachment.attachmentType;
+
+		this.isText = type == AttachmentType.Text;
+		this.isImage = type == AttachmentType.Image;
+		this.isPrimitive = type == AttachmentType.Shape ||
+			type == AttachmentType.Circle || 
+			type == AttachmentType.Triangle ||
+			type == AttachmentType.Rectangle;
+
 		this.updateSettings();
 	}
 
 	ngAfterViewInit(): void {
-		if (this.isShape) {
-			let drawer = new ShapeDrawerService(this.canvas.nativeElement);
-			drawer.draw(this.attachment);
+		if (this.isPrimitive) {
+			let drawer = new ShapeDrawerService(this.canvas!.nativeElement);
+			drawer.draw(this.attachment as PrimitiveAttachment);
 		}
 	}
 

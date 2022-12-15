@@ -7,21 +7,21 @@
 
     <input *ngIf="isText" 
             class="attachment__text"
-            [style.width.px]="attachment.scale.x" 
-            [style.height.px]="attachment.scale.y"
-            [(ngModel)]="attachment.data" />
+            [style.width.px]="attachment.size.x" 
+            [style.height.px]="attachment.size.y"
+            [(ngModel)]="text" />
 
-    <img *ngIf="isImage" 
-         src="{{ attachment.data }}"
-         [style.width.px]="attachment.scale.x" 
-         [style.height.px]="attachment.scale.y" />
+    <img *ngIf="isImage"
+         src="data:image/gif;base64,{{ imageContent }}"
+         [style.width.px]="attachment.size.x" 
+         [style.height.px]="attachment.size.y" />
 
-    <canvas *ngIf="isShape"
+    <canvas *ngIf="isPrimitive"
             #canvas 
-            [style.width.px]="attachment.scale.x" 
-            [style.height.px]="attachment.scale.y"
-            width="{{ attachment.scale.x }}"
-            height="{{ attachment.scale.y }}">
+            [style.width.px]="attachment.size.x" 
+            [style.height.px]="attachment.size.y"
+            width="{{ attachment.size.x }}"
+            height="{{ attachment.size.y }}">
     </canvas>
 
     <form #contextMenu

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Vector2 } from 'src/models/other/Vector2';
-import { Attachment } from 'src/models/presentation/Attachment';
+import { Attachment, ImageAttachment, TextAttachment } from 'src/models/presentation/Attachment';
+import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
-import { AttachmentService } from 'src/services/AttachmentService';
+import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
 import { SelectedItem } from 'src/models/other/SelectedItem';
 
 @Component({
@@ -17,7 +18,7 @@ export class AppComponent {
     public attachmentToAdd?: Attachment;
     public selectedItems: SelectedItem[] = [];
 
-    private attachmentService: AttachmentService;
+    private _attachmentLastId: number = 0;
 
     constructor() {        
         this.presentation = this.testPresentation();
@@ -36,23 +37,23 @@ export class AppComponent {
 
     // Atttachments
     public onAddText(): void {
-        this.attachmentToAdd = 
+        this.attachmentToAdd = createAttachment(this._attachmentLastId++, AttachmentType.Text);
     }
 
     public onAddImage(): void {
-        this.attachmentToAdd = Templates.Image;
+        this.attachmentToAdd = createAttachment(this._attachmentLastId++, AttachmentType.Image);
     }
     
     public onAddSquare(): void {
-        this.attachmentToAdd = Templates.Square;        
+        this.attachmentToAdd = createAttachment(this._attachmentLastId++, AttachmentType.Rectangle);
     }
     
     public onAddCircle(): void {
-        this.attachmentToAdd = Templates.Circle;
+        this.attachmentToAdd = createAttachment(this._attachmentLastId++, AttachmentType.Circle);
     }
     
     public onAddTriangle(): void {
-        this.attachmentToAdd = Templates.Triangle;
+        this.attachmentToAdd = createAttachment(this._attachmentLastId++, AttachmentType.Triangle);
     }
 
     public onPresentationLoad(presentation: Presentation): void {
@@ -86,20 +87,19 @@ export class AppComponent {
     }
 
     private testAttachments(): Attachment[] {
-        let image = Attachment.Image('assets/images/test.jpg');
-        let text = Attachment.Text('Test attachment text');
-        let shape = Attachment.Shape([ 
-            new Vector2(0, 0), 
-            new Vector2(0, 0.4),
-            new Vector2(0.4, 0.4),
-            new Vector2(0.4, 0)
-        ]);
+        let image = createAttachment(this._attachmentLastId++, AttachmentType.Image);
+        image = setAttachmentImage(image as ImageAttachment, 'assets/images/test.jpg');
+
+        let text = createAttachment(this._attachmentLastId++, AttachmentType.Text);
+        text = setAttachmentText(text as TextAttachment, "Test attachmentText");
+        
+        let shape = createAttachment(this._attachmentLastId++, AttachmentType.Rectangle);
 
         let height: number = 100;
 
         return [image, text, shape].map((el, index) => {
-            el.scale = new Vector2(100, height);
-            el.position = new Vector2(0, height * index);
+            setAttachmentSize(el, new Vector2(100, height));
+            setAttachmentPosition(el, new Vector2(0, height * index));
             return el;
         });
     }
