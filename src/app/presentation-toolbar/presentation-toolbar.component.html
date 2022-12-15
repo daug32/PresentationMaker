@@ -1,21 +1,20 @@
 <div class="presentation-maker-toolbar">
     <div class="title">
         <p>{{presentation.name}}</p>
-
     </div>
     <!--File actions starts-->
     <div class="toolbar-section section__actions">
         <div class="section-tools">
-            <button class="tool" (click)="onOpen()">
+            <button class="tool" title="Open File" (click)="onOpen()">
                 <mat-icon>file_open</mat-icon>
             </button>
-            <button class="tool" (click)="onSave()">
+            <button class="tool" title="Save project" (click)="onSave()">
                 <mat-icon>save</mat-icon>
             </button>
-            <button class="tool" (click)="undoEvent">
+            <button class="tool" title="Undo" (click)="undoEvent">
                 <mat-icon>undo</mat-icon>
             </button>
-            <button class="tool" (click)="redoEvent">
+            <button class="tool" title="Redo" (click)="redoEvent">
                 <mat-icon>redo</mat-icon>
             </button>
         </div>
@@ -28,26 +27,26 @@
     <!--Attachments starts-->
     <div class="toolbar-section section__attachments">
         <div class="section-tools">
-            <button class="tool" (click)="textEvent">
+            <button class="tool" title="Text" (click)="textEvent">
                 <p>T</p>
             </button>
 
-            <button class="tool" (click)="triangleEvent">
+            <button class="tool" title="Triangle" (click)="triangleEvent">
                 <!--Triangle-->
                 <mat-icon>change_history</mat-icon>
             </button>
 
-            <button class="tool" (click)="squareEvent">
+            <button class="tool" title="Square" (click)="squareEvent">
                 <!--Square-->
                 <mat-icon>crop_square</mat-icon>
             </button>
 
-            <button class="tool" (click)="circleEvent">
+            <button class="tool" title="Circle" (click)="circleEvent">
                 <!--Circle-->
                 <mat-icon>circle</mat-icon>
             </button>
 
-            <button class="tool" (click)="ImageEvent">
+            <button class="tool" title="Download image" (click)="ImageEvent">
                 <mat-icon>image</mat-icon>
             </button>
         </div>
