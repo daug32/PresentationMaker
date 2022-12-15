@@ -10,12 +10,6 @@ export function copyPresentation(presentation: Presentation): Presentation {
     };
 }
 
-export function setPresentationName(presentation: Presentation, newName: string): Presentation {
-    let newPresentation = copyPresentation(presentation);
-    newPresentation.name = newName;
-    return newPresentation;
-}
-
 export function savePresentation(presentation: Presentation): void {
     let fileContent: string = JSON.stringify(presentation);
 
@@ -42,6 +36,23 @@ export function openPresentation(): void {
 
 export function exportPresentation(): void {
 };
+
+export function setPresentationName(presentation: Presentation, newName: string): Presentation {
+    let newPresentation = copyPresentation(presentation);
+    newPresentation.name = newName;
+    return newPresentation;
+}
+
+export function removeSlide(presentation: Presentation, slideId: number): Presentation {
+    return removeSlides(presentation, [slideId]);
+}
+
+export function removeSlides(presentation: Presentation, sildesIds: number[]): Presentation {
+    let newPresentation = copyPresentation(presentation);
+    newPresentation.slides = presentation.slides.filter(x => sildesIds.every(id => id != x.id));
+
+    return newPresentation;
+}
 
 function loadFile(input: HTMLInputElement, onLoad: (presentation: Presentation) => void): void {
     let files: FileList | null = input?.files;

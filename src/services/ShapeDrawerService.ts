@@ -1,5 +1,5 @@
 import { Vector2 } from "src/models/other/Vector2";
-import { Attachment } from "src/models/presentation/Attachment";
+import { PrimitiveAttachment } from "src/models/presentation/Attachment";
 
 export class ShapeDrawerService {
     private _context: CanvasRenderingContext2D;
@@ -13,12 +13,11 @@ export class ShapeDrawerService {
         this._context.scale(1, 1);
     }
 
-    public draw(attachment: Attachment): void {
-        let vertices = attachment.data as Vector2[];
+    public draw(attachment: PrimitiveAttachment): void {
+        let vertices = attachment.vertices.map(el => new Vector2(el.x * attachment.size.x, el.y * attachment.size.y));
         if (!vertices || vertices.length < 1) {
             return;
         }
-        vertices = vertices.map(el => new Vector2(el.x * attachment.scale.x, el.y * attachment.scale.y));
 
         let start = vertices[0];
 
