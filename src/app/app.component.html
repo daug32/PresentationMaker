@@ -11,7 +11,8 @@
             <presentation-slide-preview 
                 *ngFor="let slide of presentation.slides"
                 [slide]="slide"
-                (onClick)="onSlideChange($event)">
+                (onClick)="onSlideChange($event)"
+                (contextMenu)="onContextMenu(slide.id)">
             </presentation-slide-preview>
         </div>
 
