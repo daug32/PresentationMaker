@@ -6,10 +6,16 @@
     &__text {
         border: 0;
         text-align: start;
-
+        
         &:focus {
             outline: none;
         }
+    }
+
+    &__focus:focus{
+        border-style: dashed;
+        border-color: black;
+        border-width: 5px;
     }
 
     &__settings {
