@@ -1,5 +1,7 @@
 <div class="presentation-workspace">
-    <attachment *ngFor="let attachment of slide.attachments"
-                [attachment]="attachment">
-    </attachment>
+    <div class="presentation-workspace__container">
+        <attachment *ngFor="let attachment of slide.attachments"
+                    [attachment]="attachment">
+        </attachment>
+    </div>
 </div>
