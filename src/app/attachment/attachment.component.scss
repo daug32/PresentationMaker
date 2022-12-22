@@ -6,16 +6,15 @@
     &__text {
         border: 0;
         text-align: start;
-        
+
         &:focus {
             outline: none;
         }
     }
 
-    &__focus:focus{
-        border-style: dashed;
+    &__focus{
         border-color: black;
-        border-width: 5px;
+        border-width: 1px;
     }
 
     &__settings {
@@ -47,6 +46,10 @@
             &_labeled {
                 max-width: 40%;
             }
+        }
+
+        &-file-loader {
+            margin: 10px 0;
         }
     }
 }

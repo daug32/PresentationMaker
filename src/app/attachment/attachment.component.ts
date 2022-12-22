@@ -1,6 +1,8 @@
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit, ViewChild, AfterViewInit, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { ReplaySubject } from 'rxjs';
 import { Attachment, ImageAttachment, PrimitiveAttachment, TextAttachment } from 'src/models/presentation/Attachment';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { ShapeDrawerService } from 'src/services/ShapeDrawerService';
@@ -25,13 +27,15 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 		colorControl: new FormControl(),
 		fillControl: new FormControl(),
 		fontFamily: new FormControl(),
-		fontSize: new FormControl(),
+		fontSize: new FormControl()
 	});
 
-	constructor() { }
+	constructor(
+		private _sanitizer: DomSanitizer
+	) { }
 
 	public isText: boolean = false;
-	public isImage: boolean = false; 
+	public isImage: boolean = false;
 	public isPrimitive: boolean = false;
 
 	public get text(): string {
@@ -51,7 +55,7 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 		this.onInput.emit(value);
 	}
 
-	public get imageContent(): string | null {
+	public get imageContent(): SafeUrl {
 		if (!this.isImage) {
 			return "";
 		}
@@ -66,7 +70,7 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 		this.isText = type == AttachmentType.Text;
 		this.isImage = type == AttachmentType.Image;
 		this.isPrimitive = type == AttachmentType.Shape ||
-			type == AttachmentType.Circle || 
+			type == AttachmentType.Circle ||
 			type == AttachmentType.Triangle ||
 			type == AttachmentType.Rectangle;
 
@@ -78,6 +82,19 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 			let drawer = new ShapeDrawerService(this.canvas!.nativeElement);
 			drawer.draw(this.attachment as PrimitiveAttachment);
 		}
+	}
+
+	public onFileLoad(): void {
+		if (!this.isImage) {
+			return;
+		}
+
+		let input: HTMLInputElement = document.createElement('input');
+		input.type = 'file';
+		input.accept = '.png';
+		input.onchange = _ => this.loadFile(input);
+		input.click();
+		document.removeChild(input);
 	}
 
 	public onDragDropped(data: CdkDragEnd): void {
@@ -107,7 +124,23 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 			colorControl: '#000',
 			fillControl: '#000',
 			fontFamily: 'Roboto',
-			fontSize: 14,
+			fontSize: 14
 		});
+	}
+
+	private loadFile(input: HTMLInputElement): void {
+		let files: FileList | null = input.files;
+		if (files = null) {
+			return;
+		}
+
+		let file = input.files?.item(0) as File;
+		if (file == null) {
+			return;
+		}
+
+		let objectURL = URL.createObjectURL(file);
+		let imageAttachment = this.attachment as ImageAttachment;
+		imageAttachment.image = this._sanitizer.bypassSecurityTrustUrl(objectURL) as string;
 	}
 }
