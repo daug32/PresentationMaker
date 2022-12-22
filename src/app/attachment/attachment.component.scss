@@ -12,6 +12,12 @@
         }
     }
 
+    &__focus:focus{
+        border-style: dashed;
+        border-color: black;
+        border-width: 5px;
+    }
+
     &__settings {
         width: 225px;
 
