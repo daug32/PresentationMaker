@@ -14,6 +14,8 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 	@Input() attachment!: Attachment;
 	@Output() onInput = new EventEmitter<any>();
 
+	@Output() focus = new EventEmitter<number>();
+
 	@ViewChild('canvas') canvas: ElementRef | null = null;
 
 	private isContextMenuVisisble: boolean = false;
@@ -89,10 +91,19 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 	public onRightClick(event: MouseEvent): void {
 		event.preventDefault();
 
+		console.log(this.attachment.id);
+
 		this.isContextMenuVisisble = !this.isContextMenuVisisble;
 		this.contextMenu.nativeElement.style.visibility = this.isContextMenuVisisble ? 'visible' : 'hidden';
 		this.contextMenu.nativeElement.style.left = `${event.clientX}`;
 		this.contextMenu.nativeElement.style.top = `${event.clientY}`;
+	}
+
+	public onLeftClick(event: any): void {
+		event.preventDefault();
+		console.log(this.attachment.id);
+
+		this.focus.emit(this.attachment.id);
 	}
 
 	public onSubmitSettings(): void {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, AfterViewInit, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Vector2 } from 'src/models/other/Vector2';
 import { Attachment, ImageAttachment, TextAttachment } from 'src/models/presentation/Attachment';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
@@ -13,6 +13,9 @@ import { SelectedItem } from 'src/models/other/SelectedItem';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+    @Input() toSelector = new EventEmitter<number>();
+
     public presentation: Presentation;
     public currentSlide: Slide;
     public attachmentToAdd?: Attachment;
