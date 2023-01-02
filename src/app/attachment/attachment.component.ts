@@ -38,30 +38,12 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 	public isImage: boolean = false;
 	public isPrimitive: boolean = false;
 
-	public get text(): string {
-		if (!this.isText) {
-			return "";
-		}
-
-		let textAttachment = this.attachment as TextAttachment;
-		return textAttachment.text;
+	public get textAttachment(): TextAttachment {
+		return this.attachment as TextAttachment;
 	}
 
-	public set text(value: string) {
-		if (!this.isText) {
-			return;
-		}
-
-		this.onInput.emit(value);
-	}
-
-	public get imageContent(): SafeUrl {
-		if (!this.isImage) {
-			return "";
-		}
-
-		let imageAttachment = this.attachment as ImageAttachment;
-		return imageAttachment.image;
+	public get imageAttachment(): ImageAttachment {
+		return this.attachment as ImageAttachment;
 	}
 
 	ngOnInit(): void {
@@ -120,11 +102,16 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 	}
 
 	private updateSettings(): void {
+		let color = '#000';
+		let backgroundColor = '#0000';
+		let fontFamily = '';
+		let fontSize = 0;
+
 		this.settingsGroup.setValue({
-			colorControl: '#000',
-			fillControl: '#000',
-			fontFamily: 'Roboto',
-			fontSize: 14
+			colorControl: color,
+			fillControl: backgroundColor,
+			fontFamily: fontFamily,
+			fontSize: fontSize
 		});
 	}
 
