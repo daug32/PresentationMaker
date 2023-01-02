@@ -14,6 +14,13 @@ export class AttachmentComponent implements OnInit {
 	@Input() attachment!: Attachment;
 	@Output() onInput = new EventEmitter<any>();
 
+	@Output() focus = new EventEmitter<number>();
+
+	@ViewChild('canvas') canvas: ElementRef | null = null;
+
+	private isContextMenuVisisble: boolean = false;
+	@ViewChild('contextMenu') contextMenu!: ElementRef;
+
 	@ViewChild('container') container!: CdkDrag;
 
 	private _hasOpenedSettings: boolean = false;
@@ -74,4 +81,12 @@ export class AttachmentComponent implements OnInit {
 
 		this._hasOpenedSettings = !this._hasOpenedSettings;
 	}
+
+	public onLeftClick(event: any): void {
+		event.preventDefault();
+		console.log(this.attachment.id);
+
+		this.focus.emit(this.attachment.id);
+	}
+
 }
