@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PresentationToolbarComponent } from './presentation-toolbar/presentation-toolbar.component';
 import { PresentationSlidePreview } from './presentation-slide-preview/presentation-slides-list.component';
-import { PresentationWorkspaceComponent } from './presentation-workspace/presentation-workspace.component';
 import { AttachmentComponent } from './attachment/attachment.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +22,6 @@ import { MatIconModule } from '@angular/material/icon';
     AppComponent,
     PresentationToolbarComponent,
     PresentationSlidePreview,
-    PresentationWorkspaceComponent,
     AttachmentComponent,
   ],
   imports: [

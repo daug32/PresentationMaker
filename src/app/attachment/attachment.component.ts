@@ -90,8 +90,6 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 	public onRightClick(event: MouseEvent): void {
 		event.preventDefault();
 
-		console.log(this.attachment.id);
-
 		this.isContextMenuVisisble = !this.isContextMenuVisisble;
 		this.contextMenu.nativeElement.style.visibility = this.isContextMenuVisisble ? 'visible' : 'hidden';
 		this.contextMenu.nativeElement.style.left = `${event.clientX}`;
@@ -100,8 +98,8 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 
 	public onLeftClick(event: any): void {
 		event.preventDefault();
+		
 		console.log(this.attachment.id);
-
 		this.focus.emit(this.attachment.id);
 	}
 

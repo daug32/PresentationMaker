@@ -2,7 +2,8 @@
     cdkDrag #container="cdkDrag" 
     [cdkDragFreeDragPosition]="attachment.position"
     (cdkDragEnded)="onDragDropped($event)" 
-    (contextmenu)="onRightClick($event)">
+    (contextmenu)="onRightClick($event)"
+    (click)="onLeftClick($event)">
 
     <input *ngIf="isText" 
         class="attachment__text attachment__focus" 

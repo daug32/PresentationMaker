@@ -14,8 +14,6 @@ import { SelectedItem } from 'src/models/other/SelectedItem';
 })
 export class AppComponent {
 
-    @Input() toSelector = new EventEmitter<number>();
-
     public presentation: Presentation;
     public currentSlide: Slide;
     public attachmentToAdd?: Attachment;
@@ -32,6 +30,10 @@ export class AppComponent {
     public onUndo(): void { }
 
     public onRedo(): void { }
+
+    public onSelect(): void { 
+        
+    }
 
     // Atttachments
     public onAddText(): void {
