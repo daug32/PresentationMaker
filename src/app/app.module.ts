@@ -14,7 +14,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DragDropModule } from "@angular/cdk/drag-drop"; 
 import { MatMenuModule } from '@angular/material/menu';
-import { NgxMatColorPickerModule, MAT_COLOR_FORMATS, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatIconModule } from '@angular/material/icon';
 
@@ -37,12 +36,10 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     DragDropModule,
     MatMenuModule,
-    NgxMatColorPickerModule,
     MatButtonToggleModule,
     MatIconModule
   ],
   providers: [
-    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
   ],
   bootstrap: [AppComponent]
 })

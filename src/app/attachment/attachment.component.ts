@@ -17,16 +17,17 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 
 	@ViewChild('canvas') canvas: ElementRef | null = null;
 
+	@ViewChild('container') container!: CdkDrag;
+
 	private isContextMenuVisisble: boolean = false;
 	@ViewChild('contextMenu') contextMenu!: ElementRef;
-
-	@ViewChild('container') container!: CdkDrag;
 
 	public settingsGroup = new FormGroup({
 		colorControl: new FormControl(),
 		fillControl: new FormControl(),
 		fontFamily: new FormControl(),
-		fontSize: new FormControl()
+		fontSize: new FormControl(),
+		fontStyle: new FormControl()
 	});
 
 	constructor(
@@ -75,13 +76,11 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 		input.accept = '.png, .jpeg, .jpg, .gif';
 		input.onchange = _ => this.loadFile(input);
 		input.click();
-		document.removeChild(input);
 	}
 
 	public onDragDropped(data: CdkDragEnd): void {
 		this.attachment.position.x += data.distance.x;
 		this.attachment.position.y += data.distance.y;
-		this.updateSettings();
 	}
 
 	public onRightClick(event: MouseEvent): void {
@@ -100,17 +99,15 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 		this.container.setFreeDragPosition(this.attachment.position);
 	}
 
-	private updateSettings(): void {
-		let color = '#000';
-		let backgroundColor = '#0000';
-		let fontFamily = '';
-		let fontSize = 0;
+	public updateSettings(): void {
+		let settings = this.settingsGroup.value;
 
 		this.settingsGroup.setValue({
-			colorControl: color,
-			fillControl: backgroundColor,
-			fontFamily: fontFamily,
-			fontSize: fontSize
+			colorControl: settings.colorControl ?? '#000',
+			fillControl: settings.fillControl ?? '#fff',
+			fontFamily: settings.fontFamily ?? 'calibria',
+			fontSize: settings.fontSize ?? '14',
+			fontStyle: settings.fontStyle ?? ''
 		});
 	}
 
