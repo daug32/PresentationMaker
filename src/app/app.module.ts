@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PresentationToolbarComponent } from './presentation-toolbar/presentation-toolbar.component';
 import { PresentationSlidePreview } from './presentation-slide-preview/presentation-slides-list.component';
-import { PresentationWorkspaceComponent } from './presentation-workspace/presentation-workspace.component';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { SettingsComponent } from './attachment/settings/settings.component';
 
@@ -24,7 +23,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
     AppComponent,
     PresentationToolbarComponent,
     PresentationSlidePreview,
-    PresentationWorkspaceComponent,
     AttachmentComponent,
     SettingsComponent,
   ],

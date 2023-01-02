@@ -84,8 +84,8 @@ export class AttachmentComponent implements OnInit {
 
 	public onLeftClick(event: any): void {
 		event.preventDefault();
+		
 		console.log(this.attachment.id);
-
 		this.focus.emit(this.attachment.id);
 	}
 

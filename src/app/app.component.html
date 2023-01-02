@@ -30,10 +30,13 @@
             </button>
         </div>
 
-        <presentation-workspace 
-            class="presentation-maker__workspace"
-            [slide]="currentSlide">
-        </presentation-workspace>
+        <div class="presentation-maker__workspace">
+            <div class="presentation-maker__workspace-container">
+                <attachment *ngFor="let attachment of currentSlide.attachments"
+                            [attachment]="attachment">
+                </attachment>
+            </div>
+        </div>
 
     </div>
     

@@ -16,8 +16,6 @@ import { removeSlide } from 'src/functions/PresentationFunctions';
 })
 export class AppComponent {
 
-    @Input() toSelector = new EventEmitter<number>();
-
     public presentation: Presentation;
     public attachmentToAdd?: Attachment;
     public selectedItems: SelectedItem[] = [];
@@ -39,6 +37,10 @@ export class AppComponent {
     public onUndo(): void { }
 
     public onRedo(): void { }
+
+    public onSelect(): void { 
+        
+    }
 
     // Atttachments
 
