@@ -96,8 +96,8 @@ export class AppComponent {
         let height: number = 100;
 
         return [image, text, shape].map((el, index) => {
-            setAttachmentSize(el, new Vector2(100, height));
-            setAttachmentPosition(el, new Vector2(0, height * index));
+            el = setAttachmentSize(el, new Vector2(100, height));
+            el = setAttachmentPosition(el, new Vector2(0, height * index));
             return el;
         });
     }
