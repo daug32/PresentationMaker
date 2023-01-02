@@ -26,7 +26,7 @@
     </canvas>
 
     <form #contextMenu [formGroup]="settingsGroup" (ngSubmit)="onSubmitSettings()" class="attachment__settings">
-        <mat-button-toggle-group name="ingredients" appearance="legacy" aria-label="Ingredients"
+        <mat-button-toggle-group name="font-style" appearance="legacy" aria-label="Font styles"
             class="attachment__settings-toggles" *ngIf="isText" multiple>
             <mat-button-toggle value="italic">I</mat-button-toggle>
             <mat-button-toggle value="bold">B</mat-button-toggle>

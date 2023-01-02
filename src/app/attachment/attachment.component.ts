@@ -1,8 +1,7 @@
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit, ViewChild, AfterViewInit, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ReplaySubject } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Attachment, ImageAttachment, PrimitiveAttachment, TextAttachment } from 'src/models/presentation/Attachment';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { ShapeDrawerService } from 'src/services/ShapeDrawerService';
@@ -32,7 +31,7 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 
 	constructor(
 		private _sanitizer: DomSanitizer
-	) { }
+	) {}
 
 	public isText: boolean = false;
 	public isImage: boolean = false;
@@ -73,7 +72,7 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 
 		let input: HTMLInputElement = document.createElement('input');
 		input.type = 'file';
-		input.accept = '.png';
+		input.accept = '.png, .jpeg, .jpg, .gif';
 		input.onchange = _ => this.loadFile(input);
 		input.click();
 		document.removeChild(input);
