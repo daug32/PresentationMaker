@@ -12,10 +12,9 @@
         }
     }
 
-    &__focus:focus{
-        border-style: dashed;
+    &__focus{
         border-color: black;
-        border-width: 5px;
+        border-width: 1px;
     }
 
     &__settings {
