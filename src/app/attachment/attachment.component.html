@@ -1,77 +1,66 @@
 <div class="attachment" 
-     cdkDrag 
-     #container="cdkDrag"
-     [cdkDragFreeDragPosition]="attachment.position" 
-     (cdkDragEnded)="onDragDropped($event)"
-     (contextmenu)="onRightClick($event)"
-     (focus)="onLeftClick($event)" >
+    cdkDrag #container="cdkDrag" 
+    [cdkDragFreeDragPosition]="attachment.position"
+    (cdkDragEnded)="onDragDropped($event)" 
+    (contextmenu)="onRightClick($event)">
 
     <input *ngIf="isText" 
-            class="attachment__text attachment__focus"
-            [style.width.px]="attachment.size.x" 
-            [style.height.px]="attachment.size.y"
-            [(ngModel)]="text" />
+        class="attachment__text attachment__focus" 
+        [style.width.px]="attachment.size.x"
+        [style.height.px]="attachment.size.y" 
+        [(ngModel)]="textAttachment.text" />
 
-    <img *ngIf="isImage"
-         class = "attachment__focus"
-         src="data:image/gif;base64,{{ imageContent }}"
-         [style.width.px]="attachment.size.x" 
-         [style.height.px]="attachment.size.y" />
+    <img *ngIf="isImage" 
+        class="attachment__focus" 
+        [src]="imageAttachment.image"
+        [style.width.px]="attachment.size.x" 
+        [style.height.px]="attachment.size.y"/>
 
-    <canvas *ngIf="isPrimitive"
-            class = "attachment__focus"
-            #canvas 
-            [style.width.px]="attachment.size.x" 
-            [style.height.px]="attachment.size.y"
-            width="{{ attachment.size.x }}"
-            height="{{ attachment.size.y }}">
+    <canvas *ngIf="isPrimitive" 
+        class="attachment__focus" 
+        #canvas 
+        [style.width.px]="attachment.size.x"
+        [style.height.px]="attachment.size.y" 
+        width="{{ attachment.size.x }}" 
+        height="{{ attachment.size.y }}">
     </canvas>
 
-    <form #contextMenu
-          [formGroup]="settingsGroup"
-          (ngSubmit)="onSubmitSettings()"
-          class="attachment__settings">
-        <mat-button-toggle-group name="ingredients" 
-                                 appearance="legacy" 
-                                 aria-label="Ingredients" 
-                                 class="attachment__settings-toggles"
-                                 *ngIf="isText"
-                                 multiple>
-            <mat-button-toggle value="flour">Flour</mat-button-toggle>
-            <mat-button-toggle value="eggs">Eggs</mat-button-toggle>
-            <mat-button-toggle value="sugar">Sugar</mat-button-toggle>
+    <form #contextMenu [formGroup]="settingsGroup" (ngSubmit)="onSubmitSettings()" class="attachment__settings">
+        <mat-button-toggle-group name="ingredients" appearance="legacy" aria-label="Ingredients"
+            class="attachment__settings-toggles" *ngIf="isText" multiple>
+            <mat-button-toggle value="italic">I</mat-button-toggle>
+            <mat-button-toggle value="bold">B</mat-button-toggle>
+            <mat-button-toggle value="stroked">S</mat-button-toggle>
         </mat-button-toggle-group>
 
         <mat-form-field class="attachment__settings-item" *ngIf="isText">
             <mat-label class="attachment__settings-label">Font family</mat-label>
-            <input class="attachment__settings-input attachment__settings-input_labeled"
-                   matInput
-                   formControlName="fontFamily" />
+            <input class="attachment__settings-input attachment__settings-input_labeled" matInput
+                formControlName="fontFamily" />
         </mat-form-field>
 
         <mat-form-field class="attachment__settings-item" *ngIf="isText">
             <mat-label class="attachment__settings-label">Font size</mat-label>
-            <input class="attachment__settings-input attachment__settings-input_labeled"
-                   matInput
-                   formControlName="fontSize" />
+            <input class="attachment__settings-input attachment__settings-input_labeled" matInput
+                formControlName="fontSize" />
         </mat-form-field>
-          
+
         <mat-form-field class="attachment__settings-item" *ngIf="isText">
             <mat-label class="attachment__settings-label">Text</mat-label>
-            <input class="attachment__settings-input attachment__settings-input_labeled"
-                   matInput
-                   [ngxMatColorPicker]="colorPicker"
-                   formControlName="colorControl" />
+            <input class="attachment__settings-input attachment__settings-input_labeled" matInput
+                [ngxMatColorPicker]="colorPicker" formControlName="colorControl" />
             <ngx-mat-color-toggle matSuffix [for]="colorPicker"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #colorPicker [color]="'primary'"></ngx-mat-color-picker>
         </mat-form-field>
 
+        <button *ngIf="isImage" class="attachment__settings-input attachment__settings-file-loader" title="Open File" (click)="onFileLoad()">
+            <mat-icon>file_open</mat-icon>
+        </button>
+
         <mat-form-field class="attachment__settings-item">
             <mat-label class="attachment__settings-label">Fill color</mat-label>
-            <input class="attachment__settings-input attachment__settings-input_labeled"
-                   matInput
-                   [ngxMatColorPicker]="fillPicker"
-                   formControlName="fillControl" />
+            <input class="attachment__settings-input attachment__settings-input_labeled" matInput
+                [ngxMatColorPicker]="fillPicker" formControlName="fillControl" />
             <ngx-mat-color-toggle matSuffix [for]="fillPicker"></ngx-mat-color-toggle>
             <ngx-mat-color-picker #fillPicker [color]="'primary'"></ngx-mat-color-picker>
         </mat-form-field>

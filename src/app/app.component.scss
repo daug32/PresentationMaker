@@ -1,27 +1,28 @@
 .presentation-maker
 {
+    height: 100%;
     width: 100%;
 
     &__content-container
     {
+        height: calc(100% - 121px);
         display: flex;
         flex-direction: row;
     }
 
     &__slides-container
     {
-        padding: 0 20px;
-    }
-}
+        width: 300px;
+        height: 100%;
 
-.presentation-maker__slides-container
-{
-    height: 790px;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 80px;
-    box-shadow: 2px 2px 2px 0px rgba(34, 60, 80, 0.2);
-    padding-top: 10px;
+        padding: 0 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 2px 2px 2px 0px rgba(34, 60, 80, 0.2);
+    }
+
+    &__workspace {
+        width: 100%;
+    }
 }

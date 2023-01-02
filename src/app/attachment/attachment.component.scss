@@ -12,10 +12,16 @@
         }
     }
 
+<<<<<<< HEAD
     &__focus:focus{
         border-style: dashed;
         border-color: black;
         border-width: 5px;
+=======
+    &__focus{
+        border-color: black;
+        border-width: 1px;
+>>>>>>> c0cde57555fc8b7e123fdf5d6965470c5bb86ef8
     }
 
     &__settings {
@@ -47,6 +53,10 @@
             &_labeled {
                 max-width: 40%;
             }
+        }
+
+        &-file-loader {
+            margin: 10px 0;
         }
     }
 }
