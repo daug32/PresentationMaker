@@ -3,16 +3,12 @@
     <presentation-toolbar 
         
         [presentation]="presentation"
-        (onPresentationLoad)="onPresentationLoad($event)">
+        (onPresentationLoad)="onPresentationLoad($event)"
 
         (undoEvent)="onUndo()"
         (redoEvent)="onRedo()"
 
-        (textEvent)="onAddText()"
-        (ImageEvent)="onAddImage()"
-        (squareEvent)="onAddSquare()"
-        (circleEvent)="onAddCircle()"
-        (triangleEvent)="onAddTriangle()">
+        (onCreateAttachmentEvent)="onCreateAttachment($event)">
     </presentation-toolbar>
 
     <div class="presentation-maker__content-container">

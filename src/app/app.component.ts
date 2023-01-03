@@ -31,24 +31,10 @@ export class AppComponent {
     public onRedo(): void { }
 
     // Atttachments
-    public onAddText(): void {
-        this.attachmentToAdd = createAttachment(this._attachmentLastId++, AttachmentType.Text);
-    }
 
-    public onAddImage(): void {
-        this.attachmentToAdd = createAttachment(this._attachmentLastId++, AttachmentType.Image);
-    }
-    
-    public onAddSquare(): void {
-        this.attachmentToAdd = createAttachment(this._attachmentLastId++, AttachmentType.Rectangle);
-    }
-    
-    public onAddCircle(): void {
-        this.attachmentToAdd = createAttachment(this._attachmentLastId++, AttachmentType.Circle);
-    }
-    
-    public onAddTriangle(): void {
-        this.attachmentToAdd = createAttachment(this._attachmentLastId++, AttachmentType.Triangle);
+    public onCreateAttachment(attachmentType: AttachmentType): void {
+        console.log(attachmentType);
+        this.currentSlide.attachments.push(createAttachment(this._attachmentLastId++, attachmentType));
     }
 
     public onPresentationLoad(presentation: Presentation): void {

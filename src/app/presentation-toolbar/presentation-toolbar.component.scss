@@ -17,15 +17,12 @@
     width: 312px;
     margin-left: 12px;
     margin-right: 75px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
 }
 
 .toolbar-section
 {
-    width: 277px;
+    width: 255px;
     height: 96px;
     background-color: rgba(255, 255, 255, 1);
     display: flex;
@@ -62,14 +59,4 @@
     justify-content: center;
     align-items: center;
     background-color: rgba(255, 255, 255, 1);
-}
-
-.section__actions
-{
-    width: 191px;
-}
-
-.section__attachments
-{
-    width: 255px;
 }
