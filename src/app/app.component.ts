@@ -18,7 +18,7 @@ export class AppComponent {
 
     public presentation: Presentation;
     public attachmentToAdd?: Attachment;
-    public selectedItems: SelectedItem[] = [];
+    public selectedAttachments: Attachment[] = [];
 
     private _currentSlideId: number = 0;
     public get currentSlide(): Slide {
@@ -37,10 +37,6 @@ export class AppComponent {
     public onUndo(): void { }
 
     public onRedo(): void { }
-
-    public onSelect(): void { 
-        
-    }
 
     // Atttachments
 
@@ -95,6 +91,36 @@ export class AppComponent {
         this.presentation.slides[index] = changed;
     }
     
+    public onSelect(attachment: Attachment): void { 
+        for (let i = 0; i < this.selectedAttachments.length; i++){
+            if (this.selectedAttachments[i] == attachment){
+                this.selectedAttachments.splice(i, 1);
+                return;
+            }
+        } 
+        this.selectedAttachments.push(attachment);
+    }
+
+    public isSelected(attachment: Attachment): boolean {
+        return this.selectedAttachments.some(selectedAttachment => selectedAttachment == attachment);
+    }
+
+    public cleanSelected(event: MouseEvent): void {
+        let path: EventTarget[] = event.composedPath();
+        let isAttachment: boolean = path.some(step => {
+            let element: HTMLElement = step as HTMLElement;
+            return element.classList?.contains('attachment');
+        });
+
+        if(isAttachment){
+            return;
+        }
+        else {
+            this.selectedAttachments = [];
+        }
+    }
+
+
     public onContextMenu(slideId: number): void {
         // let index: number = this.selectedItems.findIndex(x => x == slideId);
 

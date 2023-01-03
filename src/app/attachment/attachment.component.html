@@ -2,11 +2,10 @@
     cdkDrag #container="cdkDrag" 
     [cdkDragFreeDragPosition]="attachment.position"
     (cdkDragEnded)="onDragDropped($event)" 
-    (contextmenu)="onRightClick($event)"
-    (click)="onLeftClick($event)">
+    (contextmenu)="onRightClick($event)">
 
     <input *ngIf="isText" 
-        class="attachment__text attachment__focus" 
+        class="attachment__text {{isSelected ? 'attachment_focused' : 'attachment_unfocused'}}" 
         [(ngModel)]="textAttachment.text"
         [style.fontSize.px]="textAttachment.fontSize"
         [style.fontFamily]="textAttachment.fontFamily"
@@ -17,7 +16,7 @@
         [style.backgroundColor]="textAttachment.fillColor" />
 
     <img *ngIf="isImage" 
-        class="attachment__focus" 
+        class="{{isSelected ? 'attachment_focused' : 'attachment_unfocused'}}" 
         [src]="imageAttachment.image"
         [style.width.px]="attachment.size.x" 
         [style.height.px]="attachment.size.y" />
