@@ -5,7 +5,6 @@ import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
 import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
-import { SelectedItem } from 'src/models/other/SelectedItem';
 
 @Component({
     selector: 'app-root',
@@ -17,7 +16,7 @@ export class AppComponent {
     public presentation: Presentation;
     public currentSlide: Slide;
     public attachmentToAdd?: Attachment;
-    public selectedItems: SelectedItem[] = [];
+    public selectedAttachments: Attachment[] = [];
 
     private _attachmentLastId: number = 0;
 
@@ -30,10 +29,6 @@ export class AppComponent {
     public onUndo(): void { }
 
     public onRedo(): void { }
-
-    public onSelect(): void { 
-        
-    }
 
     // Atttachments
     public onAddText(): void {
@@ -64,6 +59,36 @@ export class AppComponent {
         this.currentSlide = slide;
         console.log(slide);
     }
+
+    public onSelect(attachment: Attachment): void { 
+        for (let i = 0; i < this.selectedAttachments.length; i++){
+            if (this.selectedAttachments[i] == attachment){
+                this.selectedAttachments.splice(i, 1);
+                return;
+            }
+        } 
+        this.selectedAttachments.push(attachment);
+    }
+
+    public isSelected(attachment: Attachment): boolean {
+        return this.selectedAttachments.some(selectedAttachment => selectedAttachment == attachment);
+    }
+
+    public cleanSelected(event: MouseEvent): void {
+        let path: EventTarget[] = event.composedPath();
+        let isAttachment: boolean = path.some(step => {
+            let element: HTMLElement = step as HTMLElement;
+            return element.classList?.contains('attachment');
+        });
+
+        if(isAttachment){
+            return;
+        }
+        else {
+            this.selectedAttachments = [];
+        }
+    }
+
 
     public onContextMenu(slideId: number): void {
         // let index: number = this.selectedItems.findIndex(x => x == slideId);

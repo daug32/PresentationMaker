@@ -3,7 +3,7 @@
     <presentation-toolbar 
         
         [presentation]="presentation"
-        (onPresentationLoad)="onPresentationLoad($event)">
+        (onPresentationLoad)="onPresentationLoad($event)"
 
         (undoEvent)="onUndo()"
         (redoEvent)="onRedo()"
@@ -26,10 +26,13 @@
             </presentation-slide-preview>
         </div>
 
-        <div class="presentation-maker__workspace">
+        <div class="presentation-maker__workspace"
+             (contextmenu)="cleanSelected($event)">
             <div class="presentation-maker__workspace-container">
                 <attachment *ngFor="let attachment of currentSlide.attachments"
-                            [attachment]="attachment">
+                            [attachment]="attachment"
+                            [isSelected]="isSelected(attachment)"
+                            (contextmenu)="onSelect(attachment)">
                 </attachment>
             </div>
         </div>
