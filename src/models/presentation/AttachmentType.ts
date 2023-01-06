@@ -1,8 +1,8 @@
 export enum AttachmentType {
     Image = 0, 
-    Text, 
-    Shape,
-    Rectangle, 
-    Circle, 
-    Triangle
+    Text = 1, 
+    Shape = 2,
+    Rectangle = 3, 
+    Circle = 4, 
+    Triangle = 5
 }

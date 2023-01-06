@@ -6,65 +6,55 @@
 
     <input *ngIf="isText" 
         class="attachment__text attachment__focus" 
-        [style.width.px]="attachment.size.x"
-        [style.height.px]="attachment.size.y" 
-        [(ngModel)]="textAttachment.text" />
+        [(ngModel)]="textAttachment.text"
+        [style.fontSize.px]="textAttachment.fontSize"
+        [style.fontFamily]="textAttachment.fontFamily"
+        [style.textDecoration]="isStriked ? 'line-through' : ''"
+        [style.fontStyle]="isItalic ? 'italic' : ''"
+        [style.fontWeight]="isBold ? 'bold' : ''"
+        [style.color]="textAttachment.color"
+        [style.backgroundColor]="textAttachment.fillColor" />
 
     <img *ngIf="isImage" 
         class="attachment__focus" 
         [src]="imageAttachment.image"
         [style.width.px]="attachment.size.x" 
-        [style.height.px]="attachment.size.y"/>
+        [style.height.px]="attachment.size.y" />
 
-    <canvas *ngIf="isPrimitive" 
-        class="attachment__focus" 
-        #canvas 
-        [style.width.px]="attachment.size.x"
-        [style.height.px]="attachment.size.y" 
-        width="{{ attachment.size.x }}" 
-        height="{{ attachment.size.y }}">
-    </canvas>
+    <svg *ngIf="isPrimitive"
+        [attr.width]="primitiveAttachment.size.x"
+        [attr.height]="primitiveAttachment.size.y"
+        [ngSwitch]="primitiveAttachment.attachmentType">
+        <rect *ngSwitchCase="3" 
+            [attr.x]="primitiveAttachment.strokeWidth"
+            [attr.y]="primitiveAttachment.strokeWidth"
+            [attr.width]="primitiveAttachment.size.x - primitiveAttachment.strokeWidth"
+            [attr.height]="primitiveAttachment.size.y - primitiveAttachment.strokeWidth"
+            [attr.fill]="primitiveAttachment.fillColor"
+            [attr.stroke]="primitiveAttachment.color"
+            [attr.strokeWidth]="primitiveAttachment.strokeWidth">
+        </rect>
 
-    <form #contextMenu [formGroup]="settingsGroup" (ngSubmit)="onSubmitSettings()" class="attachment__settings">
-        <mat-button-toggle-group name="ingredients" appearance="legacy" aria-label="Ingredients"
-            class="attachment__settings-toggles" *ngIf="isText" multiple>
-            <mat-button-toggle value="italic">I</mat-button-toggle>
-            <mat-button-toggle value="bold">B</mat-button-toggle>
-            <mat-button-toggle value="stroked">S</mat-button-toggle>
-        </mat-button-toggle-group>
+        <circle *ngSwitchCase="4"
+            [attr.x]="primitiveAttachment.strokeWidth"
+            [attr.y]="primitiveAttachment.strokeWidth"
+            [attr.cx]="primitiveAttachment.size.x / 2"
+            [attr.cy]="primitiveAttachment.size.y / 2"
+            [attr.r]="primitiveAttachment.size.x / 2 - primitiveAttachment.strokeWidth"
+            [attr.fill]="primitiveAttachment.fillColor"
+            [attr.stroke]="primitiveAttachment.color"
+            [attr.strokeWidth]="primitiveAttachment.strokeWidth">
+        </circle>
 
-        <mat-form-field class="attachment__settings-item" *ngIf="isText">
-            <mat-label class="attachment__settings-label">Font family</mat-label>
-            <input class="attachment__settings-input attachment__settings-input_labeled" matInput
-                formControlName="fontFamily" />
-        </mat-form-field>
+        <polygon *ngSwitchCase="5"
+            [attr.points]="parsePolygonPointsFromVertices()"
+            [attr.fill]="primitiveAttachment.fillColor"
+            [attr.stroke]="primitiveAttachment.color"
+            [attr.strokeWidth]="primitiveAttachment.strokeWidth">
+        </polygon>
+    </svg>
 
-        <mat-form-field class="attachment__settings-item" *ngIf="isText">
-            <mat-label class="attachment__settings-label">Font size</mat-label>
-            <input class="attachment__settings-input attachment__settings-input_labeled" matInput
-                formControlName="fontSize" />
-        </mat-form-field>
-
-        <mat-form-field class="attachment__settings-item" *ngIf="isText">
-            <mat-label class="attachment__settings-label">Text</mat-label>
-            <input class="attachment__settings-input attachment__settings-input_labeled" matInput
-                [ngxMatColorPicker]="colorPicker" formControlName="colorControl" />
-            <ngx-mat-color-toggle matSuffix [for]="colorPicker"></ngx-mat-color-toggle>
-            <ngx-mat-color-picker #colorPicker [color]="'primary'"></ngx-mat-color-picker>
-        </mat-form-field>
-
-        <button *ngIf="isImage" class="attachment__settings-input attachment__settings-file-loader" title="Open File" (click)="onFileLoad()">
-            <mat-icon>file_open</mat-icon>
-        </button>
-
-        <mat-form-field class="attachment__settings-item">
-            <mat-label class="attachment__settings-label">Fill color</mat-label>
-            <input class="attachment__settings-input attachment__settings-input_labeled" matInput
-                [ngxMatColorPicker]="fillPicker" formControlName="fillControl" />
-            <ngx-mat-color-toggle matSuffix [for]="fillPicker"></ngx-mat-color-toggle>
-            <ngx-mat-color-picker #fillPicker [color]="'primary'"></ngx-mat-color-picker>
-        </mat-form-field>
-
-        <button></button>
-    </form>
+    <settings #attachmentSettings
+        [attachment]="attachment">
+    </settings>
 </div>

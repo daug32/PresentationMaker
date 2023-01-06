@@ -122,11 +122,15 @@ export class AppComponent {
         let text = createAttachment(this._attachmentLastId++, AttachmentType.Text);
         text = setAttachmentText(text as TextAttachment, "Test attachmentText");
         
-        let shape = createAttachment(this._attachmentLastId++, AttachmentType.Rectangle);
+        let shapes = [
+            createAttachment(this._attachmentLastId++, AttachmentType.Rectangle),
+            createAttachment(this._attachmentLastId++, AttachmentType.Circle),
+            createAttachment(this._attachmentLastId++, AttachmentType.Triangle),
+        ];
 
         let height: number = 100;
 
-        return [image, text, shape].map((el, index) => {
+        return [image, text, ...shapes].map((el, index) => {
             el = setAttachmentSize(el, new Vector2(100, height));
             el = setAttachmentPosition(el, new Vector2(0, height * index));
             return el;
