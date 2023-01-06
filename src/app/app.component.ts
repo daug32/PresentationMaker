@@ -5,7 +5,9 @@ import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
 import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
+import { createSlide } from 'src/functions/SlideFunctions';
 import { SelectedItem } from 'src/models/other/SelectedItem';
+import { removeSlide } from 'src/functions/PresentationFunctions';
 
 @Component({
     selector: 'app-root',
@@ -14,15 +16,20 @@ import { SelectedItem } from 'src/models/other/SelectedItem';
 })
 export class AppComponent {
     public presentation: Presentation;
-    public currentSlide: Slide;
     public attachmentToAdd?: Attachment;
     public selectedItems: SelectedItem[] = [];
 
+    private _currentSlideId: number = 0;
+    public get currentSlide(): Slide {
+        return this.presentation.slides.find(slide => slide.id == this._currentSlideId) ?? new Slide(0, [], 0);
+    }
+
     private _attachmentLastId: number = 0;
+    private _slideLastId: number = 0;
 
     constructor() {        
         this.presentation = this.testPresentation();
-        this.currentSlide = this.presentation.slides[0] ?? new Slide(0, [], 0);
+        this._currentSlideId = this.presentation.slides[0]?.id ?? 0;
     }
 
     // System operations
@@ -33,7 +40,6 @@ export class AppComponent {
     // Atttachments
 
     public onCreateAttachment(attachmentType: AttachmentType): void {
-        console.log(attachmentType);
         this.currentSlide.attachments.push(createAttachment(this._attachmentLastId++, attachmentType));
     }
 
@@ -42,10 +48,49 @@ export class AppComponent {
     }
 
     public onSlideChange(slide: Slide): void {
-        this.currentSlide = slide;
+        this._currentSlideId = slide.id;
         console.log(slide);
+        this.selectedItems = [];
     }
 
+    public onAddSlide(): void {
+        this.presentation.slides.push(createSlide(this._slideLastId++, this.presentation.slides.length));
+    }
+
+    public onRaiseSlide(id: number): void {
+        let index = this.presentation.slides.findIndex(slide => slide.id == id);
+        if (index == -1) {
+            return;
+        }
+
+        if (index - 1 < 0) {
+            return;
+        }
+
+        let changed = this.presentation.slides[index - 1];
+        this.presentation.slides[index - 1] = this.presentation.slides[index];
+        this.presentation.slides[index] = changed;
+    }
+
+    public onDeleteSlide(id: number): void {
+        this.presentation = removeSlide(this.presentation, id);
+    }
+
+    public onDropSlide(id: number): void {
+        let index = this.presentation.slides.findIndex(slide => slide.id == id);
+        if (index == -1) {
+            return;
+        }
+
+        if (index + 1 >= this.presentation.slides.length) {
+            return;
+        }
+
+        let changed = this.presentation.slides[index + 1];
+        this.presentation.slides[index + 1] = this.presentation.slides[index];
+        this.presentation.slides[index] = changed;
+    }
+    
     public onContextMenu(slideId: number): void {
         // let index: number = this.selectedItems.findIndex(x => x == slideId);
 
@@ -63,7 +108,8 @@ export class AppComponent {
     private testPresentation(): Presentation {
         let slides: Slide[] = [];
         for (let i = 0; i < 2; i++) {
-            let slide = new Slide(i, this.testAttachments(), 1);
+            let slide = createSlide(this._slideLastId++, this._slideLastId);
+            slide.attachments = this.testAttachments();
             slides.push(slide);
         }
 

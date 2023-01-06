@@ -18,8 +18,16 @@
                 *ngFor="let slide of presentation.slides"
                 [slide]="slide"
                 (onClick)="onSlideChange($event)"
-                (contextMenu)="onContextMenu(slide.id)">
+                (contextMenu)="onContextMenu(slide.id)"
+                (onRaise)="onRaiseSlide($event)"
+                (onDelete)="onDeleteSlide($event)"
+                (onDrop)="onDropSlide($event)">
             </presentation-slide-preview>
+            <button class="presentation-maker__slides-adder"
+                    title="Add slide"
+                    (click)="onAddSlide()">
+                <mat-icon>add</mat-icon>
+            </button>
         </div>
 
         <presentation-workspace 
