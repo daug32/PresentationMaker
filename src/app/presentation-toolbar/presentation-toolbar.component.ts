@@ -17,7 +17,6 @@ export class PresentationToolbarComponent {
     constructor() { }
 
     public textEvent(): void {
-        console.log('NewAttachment');
         this.onCreateAttachmentEvent.emit(AttachmentType.Text);
     }
 
