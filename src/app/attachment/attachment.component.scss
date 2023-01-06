@@ -13,6 +13,7 @@
     }
 
     &_unfocused {
+        border: none;
         border-width: 0;
     }
 
@@ -24,6 +25,7 @@
 
     &__settings {
         width: 225px;
+    }
 
     &__primitive {
         background-color: transparent;

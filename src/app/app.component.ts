@@ -6,7 +6,6 @@ import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
 import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
 import { createSlide } from 'src/functions/SlideFunctions';
-import { SelectedItem } from 'src/models/other/SelectedItem';
 import { removeSlide } from 'src/functions/PresentationFunctions';
 
 @Component({
@@ -50,7 +49,6 @@ export class AppComponent {
 
     public onSlideChange(slide: Slide): void {
         this._currentSlideId = slide.id;
-        this.selectedItems = [];
     }
 
     public onAddSlide(): void {
