@@ -20,7 +20,7 @@ export class TextAttachment extends Attachment {
     public text: string = "";
     public fontSize: number = 16;
     public fontFamily: string = "Roboto"; // TODO: register all supported fonts
-    public fontStyle: string[] = ["striked"];
+    public fontStyle: string[] = [];
 }
 
 export class ImageAttachment extends Attachment {

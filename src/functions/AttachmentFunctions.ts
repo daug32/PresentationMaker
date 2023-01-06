@@ -74,20 +74,3 @@ export function setAttachmentImage(attachment: ImageAttachment, content: string)
         image: content
     };
 }
-
-// Other
-function getRegularPolygonVertices(verticesNumber: number): Vector2[] {
-    let vertices: Vector2[] = [];
-
-    let radiansStep = 2 * Math.PI / verticesNumber;
-    for (let i = 0; i < verticesNumber; i++) {
-        let radians = radiansStep * i;
-
-        let x: number = Math.cos(radians) + 0.5;
-        let y: number = Math.sin(radians) + 0.5;
-
-        vertices.push(new Vector2(x, y));
-    }
-
-    return vertices;
-}
