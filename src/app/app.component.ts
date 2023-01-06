@@ -49,7 +49,6 @@ export class AppComponent {
 
     public onSlideChange(slide: Slide): void {
         this._currentSlideId = slide.id;
-        console.log(slide);
         this.selectedItems = [];
     }
 
