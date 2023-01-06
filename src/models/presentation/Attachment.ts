@@ -13,12 +13,14 @@ export abstract class Attachment {
 
 export class TextAttachment extends Attachment {
     public readonly attachmentType: AttachmentType = AttachmentType.Text;
-
+    
+    public color: string = "#000000";
+    public fillColor: string = "#ffffff";
+    
     public text: string = "";
-
-    public color: string = "#000";
-    public fontSize: number = 14;
-    public fontFamily: string = "Calibria"; // TODO: register all supported fonts
+    public fontSize: number = 16;
+    public fontFamily: string = "Roboto"; // TODO: register all supported fonts
+    public fontStyle: string[] = [];
 }
 
 export class ImageAttachment extends Attachment {
@@ -30,17 +32,18 @@ export class ImageAttachment extends Attachment {
 export class PrimitiveAttachment extends Attachment {
     public readonly attachmentType: AttachmentType;
 
-    public borderColor: string = "#000";
-    public backgroundColor: string = "#fff";
+    public color: string = "#000";
+    public fillColor: string = "#fff";
+    public strokeWidth: number = 1;
 
     public vertices: Vector2[] = [];
 
     constructor(
         id: number,
-        vertices: Vector2[],
+        vertices: Vector2[], 
+        attachmentType: AttachmentType = AttachmentType.Shape,
         size: Vector2 = new Vector2(100, 100),
-        position: Vector2 = new Vector2(0, 0), 
-        attachmentType: AttachmentType = AttachmentType.Shape
+        position: Vector2 = new Vector2(0, 0)
     ) {
         super(id, size, position);
 

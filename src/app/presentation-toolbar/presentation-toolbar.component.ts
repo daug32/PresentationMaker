@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 
 @Component({
@@ -11,16 +12,42 @@ export class PresentationToolbarComponent {
 
     @Output() onPresentationLoad = new EventEmitter<Presentation>();
 
-    @Output() undoEvent = new EventEmitter<undefined>();
-    @Output() redoEvent = new EventEmitter<undefined>();
-
-    @Output() textEvent = new EventEmitter<undefined>();
-    @Output() ImageEvent = new EventEmitter<undefined>();
-    @Output() squareEvent = new EventEmitter<undefined>();
-    @Output() circleEvent = new EventEmitter<undefined>();
-    @Output() triangleEvent = new EventEmitter<undefined>();
+    @Output() onCreateAttachmentEvent = new EventEmitter<AttachmentType>()
 
     constructor() { }
+
+    public textEvent(): void {
+        this.onCreateAttachmentEvent.emit(AttachmentType.Text);
+    }
+
+    public triangleEvent(): void {
+        this.onCreateAttachmentEvent.emit(AttachmentType.Triangle);
+    }
+
+    public squareEvent(): void {
+        this.onCreateAttachmentEvent.emit(AttachmentType.Rectangle);
+    }
+
+    public circleEvent(): void {
+        this.onCreateAttachmentEvent.emit(AttachmentType.Circle);
+    }
+
+    public imageEvent(): void {
+        this.onCreateAttachmentEvent.emit(AttachmentType.Image);
+    }
+
+    public newPresentationEvent(): void {
+
+    }
+
+    public onUndoEvent(): void {
+
+    }
+
+    public onRedoEvent(): void {
+
+    }
+
 
     public onSave(): void {
         let file = JSON.stringify(this.presentation);

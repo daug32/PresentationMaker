@@ -17,6 +17,15 @@
         flex-direction: column;
         align-items: center;
         box-shadow: 2px 2px 2px 0px rgba(34, 60, 80, 0.2);
+
+        overflow-y: scroll;
+    }
+
+    &__slides-adder
+    {
+        height: auto;
+        width: auto;
+        align-self: center;
     }
 
     &__workspace {

@@ -13,6 +13,10 @@
     }
 
     &_unfocused {
+<<<<<<< HEAD
+=======
+        border: none;
+>>>>>>> ed7894efb64cd386a2542da9f278fdf8cf3a5b95
         border-width: 0;
     }
 
@@ -24,37 +28,9 @@
 
     &__settings {
         width: 225px;
+    }
 
-        padding: 5px 10px;
-        background-color: white;
-
-        visibility: hidden;
-        position: absolute;
-
-        &-toggles {
-            margin-bottom: 5px;
-        }
-
-        &-item {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        }
-
-        &-label {
-            max-width: 40%;
-        }
-
-        &-input {
-            width: 100%;
-
-            &_labeled {
-                max-width: 40%;
-            }
-        }
-
-        &-file-loader {
-            margin: 10px 0;
-        }
+    &__primitive {
+        background-color: transparent;
     }
 }

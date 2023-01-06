@@ -14,13 +14,22 @@ export function createAttachment(id: number, attachmentType: AttachmentType): At
             return new PrimitiveAttachment(id, []);
 
         case AttachmentType.Rectangle:
-            return new PrimitiveAttachment(id, getRegularPolygonVertices(4));
+            return new PrimitiveAttachment(id, [
+                new Vector2(0, 0),
+                new Vector2(1, 0),
+                new Vector2(1, 1),
+                new Vector2(0, 1)
+            ], attachmentType);
 
         case AttachmentType.Triangle:
-            return new PrimitiveAttachment(id, getRegularPolygonVertices(3));
+            return new PrimitiveAttachment(id, [
+                new Vector2(0, 1),
+                new Vector2(0.5, 0.14),
+                new Vector2(1, 1)
+            ], attachmentType);
 
         case AttachmentType.Circle:
-            return new PrimitiveAttachment(id, getRegularPolygonVertices(32));
+            return new PrimitiveAttachment(id, [], attachmentType);
     }
 }
 
@@ -64,20 +73,4 @@ export function setAttachmentImage(attachment: ImageAttachment, content: string)
         ...attachment,
         image: content
     };
-}
-
-// Other
-function getRegularPolygonVertices(verticesNumber: number): Vector2[] {
-    let vertices: Vector2[] = [];
-
-    for (let i = 0; i < verticesNumber; i++) {
-        let radians: number = i * 2 * Math.PI / verticesNumber;
-
-        let x: number = Math.cos(radians);
-        let y: number = Math.sin(radians);
-
-        vertices.push(new Vector2(x, y));
-    }
-
-    return vertices;
 }

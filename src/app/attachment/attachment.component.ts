@@ -1,18 +1,16 @@
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
-import { Component, Input, OnInit, ViewChild, AfterViewInit, ElementRef, Output, EventEmitter } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ReplaySubject } from 'rxjs';
+import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Attachment, ImageAttachment, PrimitiveAttachment, TextAttachment } from 'src/models/presentation/Attachment';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
-import { ShapeDrawerService } from 'src/services/ShapeDrawerService';
+import { SettingsComponent } from './settings/settings.component';
+import { Vector2 } from 'src/models/other/Vector2';
 
 @Component({
 	selector: 'attachment',
 	templateUrl: './attachment.component.html',
 	styleUrls: ['./attachment.component.scss']
 })
-export class AttachmentComponent implements OnInit, AfterViewInit {
+export class AttachmentComponent implements OnInit {
 	@Input() attachment!: Attachment;
 	@Input() isSelected! : boolean;
 	@Output() onInput = new EventEmitter<any>();
@@ -24,111 +22,63 @@ export class AttachmentComponent implements OnInit, AfterViewInit {
 
 	@ViewChild('container') container!: CdkDrag;
 
-	public settingsGroup = new FormGroup({
-		colorControl: new FormControl(),
-		fillControl: new FormControl(),
-		fontFamily: new FormControl(),
-		fontSize: new FormControl()
-	});
+	private _hasOpenedSettings: boolean = false;
+	@ViewChild('attachmentSettings', { read: ElementRef }) attachmentSettings!: ElementRef;
 
-	constructor(
-		private _sanitizer: DomSanitizer
-	) { }
-
-	public isText: boolean = false;
-	public isImage: boolean = false;
-	public isPrimitive: boolean = false;
-
-	public get textAttachment(): TextAttachment {
-		return this.attachment as TextAttachment;
-	}
-
-	public get imageAttachment(): ImageAttachment {
-		return this.attachment as ImageAttachment;
-	}
+	constructor() {}
 
 	ngOnInit(): void {
 		let type: AttachmentType = this.attachment.attachmentType;
 
 		this.isText = type == AttachmentType.Text;
 		this.isImage = type == AttachmentType.Image;
-		this.isPrimitive = type == AttachmentType.Shape ||
-			type == AttachmentType.Circle ||
-			type == AttachmentType.Triangle ||
-			type == AttachmentType.Rectangle;
-
-		this.updateSettings();
+		this.isPrimitive = !this.isText && !this.isImage;
 	}
 
-	ngAfterViewInit(): void {
-		if (this.isPrimitive) {
-			let drawer = new ShapeDrawerService(this.canvas!.nativeElement);
-			drawer.draw(this.attachment as PrimitiveAttachment);
-		}
+	// Text
+	public isText: boolean = false;
+	public get textAttachment(): TextAttachment { return this.attachment as TextAttachment; }
+
+	public get isBold(): boolean { return this.textAttachment.fontStyle.some(style => style == 'bold'); }
+	public get isItalic(): boolean { return this.textAttachment.fontStyle.some(style => style == 'italic'); }
+	public get isStriked(): boolean { return this.textAttachment.fontStyle.some(style => style == 'striked'); }
+
+	// Image
+	public isImage: boolean = false;
+	public get imageAttachment(): ImageAttachment { return this.attachment as ImageAttachment; }
+
+	// Primitives
+	public isPrimitive: boolean = false;
+	public get primitiveAttachment(): PrimitiveAttachment { return this.attachment as PrimitiveAttachment; }
+
+	public parsePolygonPointsFromVertices(): string {
+		let points: string = this.primitiveAttachment.vertices.reduce((result, el) => {
+			let x = el.x * this.primitiveAttachment.size.x;
+			let y = el.y * this.primitiveAttachment.size.y;
+			return result + `${x},${y} `;
+		}, '');
+
+		return points;
 	}
 
-	public onFileLoad(): void {
-		if (!this.isImage) {
-			return;
-		}
-
-		let input: HTMLInputElement = document.createElement('input');
-		input.type = 'file';
-		input.accept = '.png';
-		input.onchange = _ => this.loadFile(input);
-		input.click();
-		document.removeChild(input);
-	}
-
+	// Methods
 	public onDragDropped(data: CdkDragEnd): void {
 		this.attachment.position.x += data.distance.x;
 		this.attachment.position.y += data.distance.y;
-		this.updateSettings();
 	}
 
 	public onRightClick(event: MouseEvent): void {
 		event.preventDefault();
 
-		this.isContextMenuVisisble = !this.isContextMenuVisisble;
-		this.contextMenu.nativeElement.style.visibility = this.isContextMenuVisisble ? 'visible' : 'hidden';
-		this.contextMenu.nativeElement.style.left = `${event.clientX}`;
-		this.contextMenu.nativeElement.style.top = `${event.clientY}`;
-	}
-
-	public onSubmitSettings(): void {
-		this.attachment.position.x = this.settingsGroup.get('positionXControl')!.value;
-		this.attachment.position.y = this.settingsGroup.get('positionYControl')!.value;
-
-		this.container.setFreeDragPosition(this.attachment.position);
-	}
-
-	private updateSettings(): void {
-		let color = '#000';
-		let backgroundColor = '#0000';
-		let fontFamily = '';
-		let fontSize = 0;
-
-		this.settingsGroup.setValue({
-			colorControl: color,
-			fillControl: backgroundColor,
-			fontFamily: fontFamily,
-			fontSize: fontSize
-		});
-	}
-
-	private loadFile(input: HTMLInputElement): void {
-		let files: FileList | null = input.files;
-		if (files = null) {
-			return;
+		if (SettingsComponent.isShown) {
+			SettingsComponent.close();
 		}
 
-		let file = input.files?.item(0) as File;
-		if (file == null) {
-			return;
+		if (!this._hasOpenedSettings) {
+			SettingsComponent.open(this.attachmentSettings);
 		}
 
-		let objectURL = URL.createObjectURL(file);
-		let imageAttachment = this.attachment as ImageAttachment;
-		imageAttachment.image = this._sanitizer.bypassSecurityTrustUrl(objectURL) as string;
+		this._hasOpenedSettings = !this._hasOpenedSettings;
 	}
+
 }

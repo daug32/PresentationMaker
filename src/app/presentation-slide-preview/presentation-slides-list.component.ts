@@ -10,5 +10,9 @@ export class PresentationSlidePreview {
     @Input() slide!: Slide;
     @Output() onClick = new EventEmitter<Slide>();
 
+    @Output() onRaise = new EventEmitter<number>();
+    @Output() onDelete = new EventEmitter<number>();
+    @Output() onDrop = new EventEmitter<number>();
+
     constructor() {}
 }

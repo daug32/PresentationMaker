@@ -1,9 +1,7 @@
 <div class="presentation-maker-toolbar">
-    <div class="title">
-        <p>{{presentation.name}}</p>
-    </div>
+    <input class="title" [(ngModel)]="presentation.name">
     <!--File actions starts-->
-    <div class="toolbar-section section__actions">
+    <div class="toolbar-section">
         <div class="section-tools">
             <button class="tool" title="Open File" (click)="onOpen()">
                 <mat-icon>file_open</mat-icon>
@@ -11,12 +9,16 @@
             <button class="tool" title="Save project" (click)="onSave()">
                 <mat-icon>save</mat-icon>
             </button>
-            <button class="tool" title="Undo" (click)="undoEvent">
+            <button class="tool" title="New Presentation" (click)="newPresentationEvent()">
+                <mat-icon>library_add</mat-icon>
+            </button>
+            <button class="tool" title="Undo" (click)="onUndoEvent()">
                 <mat-icon>undo</mat-icon>
             </button>
-            <button class="tool" title="Redo" (click)="redoEvent">
+            <button class="tool" title="Redo" (click)="onRedoEvent()">
                 <mat-icon>redo</mat-icon>
             </button>
+
         </div>
         <div class="section-title">
             <p>FILE ACTIONS</p>
@@ -25,28 +27,28 @@
     <!--File actions close-->
 
     <!--Attachments starts-->
-    <div class="toolbar-section section__attachments">
+    <div class="toolbar-section">
         <div class="section-tools">
-            <button class="tool" title="Text" (click)="textEvent">
+            <button class="tool" title="Text" (click)="textEvent()">
                 <p>T</p>
             </button>
 
-            <button class="tool" title="Triangle" (click)="triangleEvent">
+            <button class="tool" title="Triangle" (click)="triangleEvent()">
                 <!--Triangle-->
                 <mat-icon>change_history</mat-icon>
             </button>
 
-            <button class="tool" title="Square" (click)="squareEvent">
+            <button class="tool" title="Square" (click)="squareEvent()">
                 <!--Square-->
                 <mat-icon>crop_square</mat-icon>
             </button>
 
-            <button class="tool" title="Circle" (click)="circleEvent">
+            <button class="tool" title="Circle" (click)="circleEvent()">
                 <!--Circle-->
                 <mat-icon>circle</mat-icon>
             </button>
 
-            <button class="tool" title="Download image" (click)="ImageEvent">
+            <button class="tool" title="Download image" (click)="imageEvent()">
                 <mat-icon>image</mat-icon>
             </button>
         </div>
