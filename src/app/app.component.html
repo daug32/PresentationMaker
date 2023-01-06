@@ -27,12 +27,12 @@
         </div>
 
         <div class="presentation-maker__workspace"
-             (contextmenu)="cleanSelected($event)">
+             (click)="cleanSelected($event)">
             <div class="presentation-maker__workspace-container">
                 <attachment *ngFor="let attachment of currentSlide.attachments"
                             [attachment]="attachment"
-                            [isSelected]="isSelected(attachment)"
-                            (contextmenu)="onSelect(attachment)">
+                            [isSelected]="isSelected(attachment.id)"
+                            (click)="onSelect(attachment.id)">
                 </attachment>
             </div>
         </div>

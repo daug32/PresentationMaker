@@ -5,19 +5,19 @@
     (contextmenu)="onRightClick($event)">
 
     <input *ngIf="isText" 
-        class="attachment__text {{isSelected ? 'attachment_focused' : 'attachment_unfocused'}}" 
+        class="attachment__text {{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         [style.width.px]="attachment.size.x"
         [style.height.px]="attachment.size.y" 
         [(ngModel)]="textAttachment.text" />
 
     <img *ngIf="isImage" 
-        class="{{isSelected ? 'attachment_focused' : 'attachment_unfocused'}}" 
+        class="{{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         [src]="imageAttachment.image"
         [style.width.px]="attachment.size.x" 
         [style.height.px]="attachment.size.y"/>
 
     <canvas *ngIf="isPrimitive" 
-        class="{{isSelected ? 'attachment_focused' : 'attachment_unfocused'}}" 
+        class="{{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         #canvas 
         [style.width.px]="attachment.size.x"
         [style.height.px]="attachment.size.y" 

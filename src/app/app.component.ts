@@ -5,6 +5,7 @@ import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
 import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
+import { deleteAttachment } from 'src/functions/SlideFunctions';
 
 @Component({
     selector: 'app-root',
@@ -16,13 +17,25 @@ export class AppComponent {
     public presentation: Presentation;
     public currentSlide: Slide;
     public attachmentToAdd?: Attachment;
-    public selectedAttachments: Attachment[] = [];
+    public selectedAttachments: number[] = [];
 
     private _attachmentLastId: number = 0;
 
     constructor() {        
         this.presentation = this.testPresentation();
         this.currentSlide = this.presentation.slides[0] ?? new Slide(0, [], 0);
+
+        document.addEventListener("keydown", (event: KeyboardEvent) => this.deleteSelected(event));
+    }
+
+    public deleteSelected(event: KeyboardEvent): void {
+        if (event.keyCode !== 46) {
+            return;
+        }
+        console.log(this.selectedAttachments);
+        for (let i = 0; i < this.selectedAttachments.length; i++){
+            this.currentSlide = deleteAttachment(this.currentSlide, this.selectedAttachments[i]);
+        }
     }
 
     // System operations
@@ -60,18 +73,18 @@ export class AppComponent {
         console.log(slide);
     }
 
-    public onSelect(attachment: Attachment): void { 
+    public onSelect(id: number): void { 
         for (let i = 0; i < this.selectedAttachments.length; i++){
-            if (this.selectedAttachments[i] == attachment){
+            if (this.selectedAttachments[i] == id){
                 this.selectedAttachments.splice(i, 1);
                 return;
             }
         } 
-        this.selectedAttachments.push(attachment);
+        this.selectedAttachments.push(id);
     }
 
-    public isSelected(attachment: Attachment): boolean {
-        return this.selectedAttachments.some(selectedAttachment => selectedAttachment == attachment);
+    public isSelected(id: number): boolean {
+        return this.selectedAttachments.some(selectedAttachment => selectedAttachment == id);
     }
 
     public cleanSelected(event: MouseEvent): void {
@@ -84,11 +97,8 @@ export class AppComponent {
         if(isAttachment){
             return;
         }
-        else {
-            this.selectedAttachments = [];
-        }
+        this.selectedAttachments = [];
     }
-
 
     public onContextMenu(slideId: number): void {
         // let index: number = this.selectedItems.findIndex(x => x == slideId);
