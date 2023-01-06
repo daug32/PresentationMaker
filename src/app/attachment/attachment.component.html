@@ -5,16 +5,7 @@
     (contextmenu)="onRightClick($event)">
 
     <input *ngIf="isText" 
-<<<<<<< HEAD
         class="attachment__text {{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
-        [style.width.px]="attachment.size.x"
-        [style.height.px]="attachment.size.y" 
-        [(ngModel)]="textAttachment.text" />
-
-    <img *ngIf="isImage" 
-        class="{{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
-=======
-        class="attachment__text {{isSelected ? 'attachment_focused' : 'attachment_unfocused'}}" 
         [(ngModel)]="textAttachment.text"
         [style.fontSize.px]="textAttachment.fontSize"
         [style.fontFamily]="textAttachment.fontFamily"
@@ -25,23 +16,13 @@
         [style.backgroundColor]="textAttachment.fillColor" />
 
     <img *ngIf="isImage" 
-        class="{{isSelected ? 'attachment_focused' : 'attachment_unfocused'}}" 
->>>>>>> ed7894efb64cd386a2542da9f278fdf8cf3a5b95
+        class="{{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         [src]="imageAttachment.image"
         [style.width.px]="attachment.size.x" 
         [style.height.px]="attachment.size.y" />
 
-<<<<<<< HEAD
-    <canvas *ngIf="isPrimitive" 
-        class="{{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
-        #canvas 
-        [style.width.px]="attachment.size.x"
-        [style.height.px]="attachment.size.y" 
-        width="{{ attachment.size.x }}" 
-        height="{{ attachment.size.y }}">
-    </canvas>
-=======
     <svg *ngIf="isPrimitive"
+        class="{{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         [attr.width]="primitiveAttachment.size.x"
         [attr.height]="primitiveAttachment.size.y"
         [ngSwitch]="primitiveAttachment.attachmentType">
@@ -54,7 +35,6 @@
             [attr.stroke]="primitiveAttachment.color"
             [attr.strokeWidth]="primitiveAttachment.strokeWidth">
         </rect>
->>>>>>> ed7894efb64cd386a2542da9f278fdf8cf3a5b95
 
         <circle *ngSwitchCase="4"
             [attr.x]="primitiveAttachment.strokeWidth"

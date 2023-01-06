@@ -31,21 +31,12 @@
         </div>
 
         <div class="presentation-maker__workspace"
-<<<<<<< HEAD
              (click)="cleanSelected($event)">
             <div class="presentation-maker__workspace-container">
                 <attachment *ngFor="let attachment of currentSlide.attachments"
                             [attachment]="attachment"
-                            [isSelected]="isSelected(attachment.id)"
-                            (click)="onSelect(attachment.id)">
-=======
-             (contextmenu)="cleanSelected($event)">
-            <div class="presentation-maker__workspace-container">
-                <attachment *ngFor="let attachment of currentSlide.attachments"
-                            [attachment]="attachment"
                             [isSelected]="isSelected(attachment)"
-                            (contextmenu)="onSelect(attachment)">
->>>>>>> ed7894efb64cd386a2542da9f278fdf8cf3a5b95
+                            (click)="onSelect(attachment)">
                 </attachment>
             </div>
         </div>
