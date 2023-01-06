@@ -1,0 +1,66 @@
+<div #settings class="attachment-settings">
+    <button *ngIf="isImage" 
+        class="attachment-settings__input attachment-settings__file-loader" 
+        title="Open File" 
+        (click)="onFileLoad()">
+        <mat-icon>file_open</mat-icon>
+    </button>
+
+    <mat-button-toggle-group *ngIf="isText"
+        name="font-style" 
+        appearance="legacy"
+        aria-label="Font styles"
+        class="attachment-settings__toggles"
+        multiple
+        [(ngModel)]="textAttachment.fontStyle">
+        <mat-button-toggle value="italic">I</mat-button-toggle>
+        <mat-button-toggle value="bold">B</mat-button-toggle>
+        <mat-button-toggle value="striked">S</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-form-field *ngIf="isText"
+        class="attachment-settings__item">
+        <mat-label class="attachment-settings__label">Font family</mat-label>   
+        <input matInput
+            type="text"
+            class="attachment-settings__input attachment-settings__input_labeled"
+            [(ngModel)]="textAttachment.fontFamily"/>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="isText"
+        class="attachment-settings__item">
+        <mat-label class="attachment-settings__label">Font size</mat-label>
+        <input matInput
+            type="number"
+            class="attachment-settings__input attachment-settings__input_labeled"
+            [(ngModel)]="textAttachment.fontSize"/>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="isText || isPrimitive"
+        class="attachment-settings__item">
+        <mat-label class="attachment-settings__label">Color</mat-label>
+        <input matInput
+            type="text"
+            class="attachment-settings__input attachment-settings__input_labeled" 
+            [(colorPicker)]="color"
+            [value]="color" />
+    </mat-form-field>
+
+    <mat-form-field class="attachment-settings__item" *ngIf="isText || isPrimitive">
+        <mat-label class="attachment-settings__label">Fill color</mat-label>
+        <input matInput 
+            type="text"
+            class="attachment-settings__input attachment-settings__input_labeled" 
+            [(colorPicker)]="fillColor"
+            [value]="fillColor" />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="isPrimitive"
+        class="attachment-settings__item">
+        <mat-label class="attachment-settings__label">Stroke width</mat-label>
+        <input matInput
+            type="number"
+            class="attachment-settings__input attachment-settings__input_labeled"
+            [(ngModel)]="primitiveAttachment.strokeWidth"/>
+    </mat-form-field>
+</div>

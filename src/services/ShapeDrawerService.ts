@@ -1,3 +1,4 @@
+import { SlicePipe } from "@angular/common";
 import { Vector2 } from "src/models/other/Vector2";
 import { PrimitiveAttachment } from "src/models/presentation/Attachment";
 

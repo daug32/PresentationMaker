@@ -8,6 +8,7 @@ import { PresentationToolbarComponent } from './presentation-toolbar/presentatio
 import { PresentationSlidePreview } from './presentation-slide-preview/presentation-slides-list.component';
 import { PresentationWorkspaceComponent } from './presentation-workspace/presentation-workspace.component';
 import { AttachmentComponent } from './attachment/attachment.component';
+import { SettingsComponent } from './attachment/settings/settings.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,6 +17,7 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatIconModule } from '@angular/material/icon';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
     PresentationSlidePreview,
     PresentationWorkspaceComponent,
     AttachmentComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,10 +39,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     DragDropModule,
     MatMenuModule,
+    ColorPickerModule,
     MatButtonToggleModule,
     MatIconModule
-  ],
-  providers: [
   ],
   bootstrap: [AppComponent]
 })
