@@ -21,6 +21,8 @@
                 (contextMenu)="onContextMenu(slide.id)"
                 (onRaise)="onRaiseSlide($event)"
                 (onDelete)="onDeleteSlide($event)"
+                (contextmenu)="onSelectSlide(slide.id, $event)"
+                [isSelectedSlide]="isSelectedSlide(slide.id)"
                 (onDrop)="onDropSlide($event)">
             </presentation-slide-preview>
             <button class="presentation-maker__slides-adder"
@@ -35,8 +37,8 @@
             <div class="presentation-maker__workspace-container">
                 <attachment *ngFor="let attachment of currentSlide.attachments"
                             [attachment]="attachment"
-                            [isSelected]="isSelected(attachment)"
-                            (click)="onSelect(attachment)">
+                            [isSelected]="isSelected(attachment.id)"
+                            (click)="onSelect(attachment.id)">
                 </attachment>
             </div>
         </div>

@@ -37,7 +37,9 @@ export class PresentationToolbarComponent {
     }
 
     public newPresentationEvent(): void {
-
+        this.onSave();
+        this.presentation.slides = [];
+        this.presentation.name = "Set name, please";
     }
 
     public onUndoEvent(): void {
