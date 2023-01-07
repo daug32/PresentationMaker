@@ -43,6 +43,7 @@ export class AttachmentComponent implements OnInit {
 
 	// Primitives
 	public isPrimitive: boolean = false;
+    public strokeWidth: number = 1;
 	public get primitiveAttachment(): PrimitiveAttachment { return this.attachment as PrimitiveAttachment; }
 
 	public parsePolygonPointsFromVertices(): string {

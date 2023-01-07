@@ -54,13 +54,4 @@
             [(colorPicker)]="fillColor"
             [value]="fillColor" />
     </mat-form-field>
-
-    <mat-form-field *ngIf="isPrimitive"
-        class="attachment-settings__item">
-        <mat-label class="attachment-settings__label">Stroke width</mat-label>
-        <input matInput
-            type="number"
-            class="attachment-settings__input attachment-settings__input_labeled"
-            [(ngModel)]="primitiveAttachment.strokeWidth"/>
-    </mat-form-field>
 </div>

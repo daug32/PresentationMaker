@@ -26,31 +26,31 @@
         [attr.height]="primitiveAttachment.size.y"
         [ngSwitch]="primitiveAttachment.attachmentType">
         <rect *ngSwitchCase="3" 
-            [attr.x]="primitiveAttachment.strokeWidth"
-            [attr.y]="primitiveAttachment.strokeWidth"
-            [attr.width]="primitiveAttachment.size.x - primitiveAttachment.strokeWidth"
-            [attr.height]="primitiveAttachment.size.y - primitiveAttachment.strokeWidth"
+            [attr.x]="strokeWidth / 2"
+            [attr.y]="strokeWidth / 2"
+            [attr.width]="primitiveAttachment.size.x - strokeWidth"
+            [attr.height]="primitiveAttachment.size.y - strokeWidth"
             [attr.fill]="primitiveAttachment.fillColor"
             [attr.stroke]="primitiveAttachment.color"
-            [attr.strokeWidth]="primitiveAttachment.strokeWidth">
+            [attr.stroke-width]="strokeWidth">
         </rect>
 
         <circle *ngSwitchCase="4"
-            [attr.x]="primitiveAttachment.strokeWidth"
-            [attr.y]="primitiveAttachment.strokeWidth"
+            [attr.x]="strokeWidth / 2"
+            [attr.y]="strokeWidth / 2"
             [attr.cx]="primitiveAttachment.size.x / 2"
             [attr.cy]="primitiveAttachment.size.y / 2"
-            [attr.r]="primitiveAttachment.size.x / 2 - primitiveAttachment.strokeWidth"
+            [attr.r]="primitiveAttachment.size.x / 2 - strokeWidth / 2"
             [attr.fill]="primitiveAttachment.fillColor"
             [attr.stroke]="primitiveAttachment.color"
-            [attr.strokeWidth]="primitiveAttachment.strokeWidth">
+            [attr.stroke-width]="strokeWidth">
         </circle>
 
         <polygon *ngSwitchCase="5"
             [attr.points]="parsePolygonPointsFromVertices()"
             [attr.fill]="primitiveAttachment.fillColor"
             [attr.stroke]="primitiveAttachment.color"
-            [attr.strokeWidth]="primitiveAttachment.strokeWidth">
+            [attr.stroke-width]="strokeWidth">
         </polygon>
     </svg>
 

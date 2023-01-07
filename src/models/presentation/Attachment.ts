@@ -34,7 +34,6 @@ export class PrimitiveAttachment extends Attachment {
 
     public color: string = "#000";
     public fillColor: string = "#fff";
-    public strokeWidth: number = 1;
 
     public vertices: Vector2[] = [];
 
