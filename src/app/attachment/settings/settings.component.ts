@@ -38,10 +38,8 @@ abstract class SettingsComponentController {
     styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent extends SettingsComponentController implements OnInit {
-    @Input('attachment') inputAttachment!: Attachment;
+    @Input('attachment') public attachment!: Attachment;
 
-    public attachment!: Attachment;
-    
     public isText: boolean = false;
     public get textAttachment(): TextAttachment { return this.attachment as TextAttachment; }
     
@@ -89,13 +87,21 @@ export class SettingsComponent extends SettingsComponentController implements On
         }
     }
 
+    public canShowHeight(): boolean {
+        var prohibited: AttachmentType[] = [AttachmentType.Text];
+        return !prohibited.some(type => type == this.attachment.attachmentType);
+    }
+
+    public canShowWidth(): boolean {
+        var prohibited: AttachmentType[] = [AttachmentType.Text, AttachmentType.Circle];
+        return !prohibited.some(type => type == this.attachment.attachmentType);
+    }
+
     constructor() {
         super();
     }
 
     ngOnInit(): void {
-        // this.attachment = copyAttachment(this.inputAttachment.id, this.inputAttachment);
-        this.attachment = this.inputAttachment;
         let type: AttachmentType = this.attachment.attachmentType;
 
         this.isText = type == AttachmentType.Text;

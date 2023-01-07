@@ -18,6 +18,26 @@
         <mat-button-toggle value="striked">S</mat-button-toggle>
     </mat-button-toggle-group>
 
+    <mat-form-field *ngIf="canShowHeight()"
+        class="attachment-settings__item">
+        <mat-label class="attachment-settings__label">Height</mat-label>
+        <input matInput
+            type="number"
+            class="attachment-settings__input attachment-settings__input_labeled"
+            [(ngModel)]="attachment.size.y" />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="canShowWidth()"
+        class="attachment-settings__item">
+        <mat-label class="attachment-settings__label">
+            {{ attachment.attachmentType != 4 ? 'Width' : 'Radius' }}
+        </mat-label>
+        <input matInput
+            type="number"
+            class="attachment-settings__input attachment-settings__input_labeled"
+            [(ngModel)]="attachment.size.x" />
+    </mat-form-field>
+
     <mat-form-field *ngIf="isText"
         class="attachment-settings__item">
         <mat-label class="attachment-settings__label">Font family</mat-label>   
