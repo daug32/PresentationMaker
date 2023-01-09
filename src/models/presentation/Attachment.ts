@@ -15,9 +15,9 @@ export class TextAttachment extends Attachment {
     public readonly attachmentType: AttachmentType = AttachmentType.Text;
     
     public color: string = "#000000";
-    public fillColor: string = "#ffffff";
+    public fillColor: string = "rgba(255,255,255,0)";
     
-    public text: string = "";
+    public text: string = "Text";
     public fontSize: number = 16;
     public fontFamily: string = "Roboto"; // TODO: register all supported fonts
     public fontStyle: string[] = [];
@@ -32,8 +32,8 @@ export class ImageAttachment extends Attachment {
 export class PrimitiveAttachment extends Attachment {
     public readonly attachmentType: AttachmentType;
 
-    public color: string = "#000";
-    public fillColor: string = "#fff";
+    public color: string = "#000000";
+    public fillColor: string = "rgba(255,255,255,0)";
 
     public vertices: Vector2[] = [];
 
