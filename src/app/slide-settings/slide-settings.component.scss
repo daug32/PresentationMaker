@@ -1,0 +1,37 @@
+.slide-settings {
+    width: 225px;
+    z-index: 100;
+    padding: 5px 10px;
+
+    &__toggles {
+        margin-bottom: 5px;
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &__label {
+        max-width: 40%;
+    }
+
+    &__input {
+        width: 100%;
+    }
+
+    &__file-loader {
+        margin: 10px 0;
+    }
+
+    &__buttons-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        & button {
+            width: 40%;
+        }
+    }
+}

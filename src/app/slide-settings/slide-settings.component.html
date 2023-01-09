@@ -1,0 +1,26 @@
+<div #settings class="slide-settings">
+    <div class="slide-settings__buttons-container">
+        <button
+            class="slide-settings__input slide-settings__file-loader" 
+            title="Open File" 
+            (click)="onFileLoad()">
+            <mat-icon>file_open</mat-icon>
+        </button>
+
+        <button
+            class="slide-settings__input slide-settings__file-loader" 
+            title="Open File" 
+            (click)="slide.deleteImage()">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+
+    <mat-form-field class="slide-settings__item">
+        <mat-label class="slide-settings__label">Fill color</mat-label>
+        <input matInput 
+            type="text"
+            class="slide-settings__input" 
+            [(colorPicker)]="slide.backgroundColor"
+            [value]="slide.backgroundColor" />
+    </mat-form-field>
+</div>

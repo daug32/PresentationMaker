@@ -1,5 +1,7 @@
 <div class="slide-preview">
-    <div class="slide-preview__container {{ isSelected ? 'slide-preview_focused' : 'slide-preview_unfocused' }}">
+    <div class="slide-preview__container {{ isSelected ? 'slide-preview_focused' : 'slide-preview_unfocused' }}"
+        [style.backgroundColor]="slide.backgroundColor">
+        <img *ngIf="slide.image.length > 0" [src]="slide.image" class="slide-preview__image" />
         <attachment *ngFor="let attachment of slide.attachments"
             [attachment]="attachment"
             [needCompactView]="true">

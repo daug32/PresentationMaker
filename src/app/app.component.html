@@ -51,8 +51,11 @@
         </div>
 
         <div class="presentation-maker__workspace"
-             (click)="cleanSelectedAttachments($event)">
-            <div class="presentation-maker__workspace-container">
+             (click)="cleanSelectedAttachments($event)"
+             (contextmenu)="onWorkspaceRightClick($event)">
+            <div class="presentation-maker__workspace-container"
+                [style.backgroundColor]="currentSlide.backgroundColor">
+                <img *ngIf="currentSlide.hasImage" [src]="currentSlide.image" class="presentation-maker__workspace-image" />
                 <attachment *ngFor="let attachment of currentSlide.attachments"
                     [attachment]="attachment"
                     [isSelected]="isAttachmentSelected(attachment.id)"
@@ -60,5 +63,10 @@
                 </attachment>
             </div>
         </div>
+
+        <slide-settings class="presentation-maker__settings"
+            #slideSettings
+            [slide]="currentSlide">
+        </slide-settings>
     </div>
 </div>
