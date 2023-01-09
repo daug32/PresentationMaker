@@ -12,7 +12,13 @@ import { Vector2 } from 'src/models/other/Vector2';
 })
 export class AttachmentComponent implements OnInit {
 	@Input() attachment!: Attachment;
+	@Input() isSelected! : boolean;
 	@Output() onInput = new EventEmitter<any>();
+
+	@ViewChild('canvas') canvas: ElementRef | null = null;
+
+	private isContextMenuVisisble: boolean = false;
+	@ViewChild('contextMenu') contextMenu!: ElementRef;
 
 	@ViewChild('container') container!: CdkDrag;
 
@@ -75,4 +81,5 @@ export class AttachmentComponent implements OnInit {
 
 		this._hasOpenedSettings = !this._hasOpenedSettings;
 	}
+
 }

@@ -20,6 +20,13 @@ export function deleteAttachment(slide: Slide, attachmentId: number): Slide {
     return newSlide;
 }
 
+export function deleteAttachments(slide: Slide, attachments: number[]): Slide {
+    let newSlide: Slide = copySlide(slide.id, slide);
+    newSlide.attachments = slide.attachments.filter(a => attachments.every(excludeAttachmentId => excludeAttachmentId !== a.id));
+
+    return newSlide;
+}
+
 export function selectSlide(slide: Slide): void {
 }
 

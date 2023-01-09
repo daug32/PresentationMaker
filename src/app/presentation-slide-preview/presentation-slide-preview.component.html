@@ -1,5 +1,6 @@
 <div class="presentation-slide-preview__container">
-    <div class="presentation-slide-preview" (click)="onClick.emit(slide)">
+    <div class="presentation-slide-preview {{ isSelectedSlide ? 'presentation-slide-preview_focused' : 'presentation-slide-preview_unfocused' }}" 
+        (click)="onClick.emit(slide)">
         {{ slide.id }}
         <!-- <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
             <div class="example-box" *ngFor="let movie of movies" cdkDrag>
@@ -19,7 +20,7 @@
                 title="Delete"
                 (click)="onDelete.emit(slide.id)">
             <mat-icon>delete</mat-icon>
-        </button>
+        </button> 
         <button class="presentation-maker__slides-adder"
                 title="Drop"
                 (click)="onDrop.emit(slide.id)">

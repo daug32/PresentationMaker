@@ -12,9 +12,19 @@
         }
     }
 
-    &__focus{
-        border-color: black;
+    &_unfocused {
+        border: none;
+        border-width: 0;
+    }
+
+    &_focused {
+        border-style: dashed;
         border-width: 1px;
+        border-color: rgb(0, 0, 0);
+    }
+
+    &__settings {
+        width: 225px;
     }
 
     &__primitive {
