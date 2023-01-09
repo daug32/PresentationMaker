@@ -64,7 +64,7 @@ export class PresentationToolbarComponent {
     }
 
     public onExport(): void {
-        let slides: HTMLCollection = document.getElementsByClassName('presentation-maker__workspace-container');
+        let slides: HTMLCollection = document.getElementsByTagName('slide-preview');
         let builder = new PdfBuilderService();
         builder.pdfConvertor(slides, this.presentation.name);    
     }
