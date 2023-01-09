@@ -1,5 +1,5 @@
 <div class="slide-preview">
-    <div class="slide-preview__container">
+    <div class="slide-preview__container {{ isSelected ? 'slide-preview_focused' : 'slide-preview_unfocused' }}">
         <attachment *ngFor="let attachment of slide.attachments"
             [attachment]="attachment"
             [needCompactView]="true">

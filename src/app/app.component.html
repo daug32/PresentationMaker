@@ -14,6 +14,7 @@
                 <slide-preview
                     class="presentation-maker__slide"
                     [slide]="slide"
+                    [isSelected]="isSlideSelected(slide.id)"
                     (click)="onSlideClick(slide.id, $event)">
                 </slide-preview>
 
@@ -53,9 +54,9 @@
              (click)="cleanSelectedAttachments($event)">
             <div class="presentation-maker__workspace-container">
                 <attachment *ngFor="let attachment of currentSlide.attachments"
-                            [attachment]="attachment"
-                            [isSelected]="isAttachmentSelected(attachment.id)"
-                            (click)="selectAttachment(attachment.id, $event)">
+                    [attachment]="attachment"
+                    [isSelected]="isAttachmentSelected(attachment.id)"
+                    (click)="selectAttachment(attachment.id, $event)">
                 </attachment>
             </div>
         </div>

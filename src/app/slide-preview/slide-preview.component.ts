@@ -8,6 +8,7 @@ import { Slide } from 'src/models/presentation/Slide';
 })
 export class SlidePreviewComponent {
     @Input() slide!: Slide;
+    @Input() isSelected: boolean = false;
 
     constructor() {}
 }

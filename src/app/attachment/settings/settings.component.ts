@@ -42,12 +42,12 @@ export class SettingsComponent extends SettingsComponentController implements On
 
     public isText: boolean = false;
     public get textAttachment(): TextAttachment { return this.attachment as TextAttachment; }
-    
+
     public isImage: boolean = false;
     public get imageAttachment(): ImageAttachment { return this.attachment as ImageAttachment; }
 
     public isPrimitive: boolean = false;
-	public get primitiveAttachment(): PrimitiveAttachment { return this.attachment as PrimitiveAttachment; }
+    public get primitiveAttachment(): PrimitiveAttachment { return this.attachment as PrimitiveAttachment; }
 
     public get color(): string {
         switch (this.attachment.attachmentType) {
@@ -93,7 +93,7 @@ export class SettingsComponent extends SettingsComponentController implements On
     }
 
     public canShowWidth(): boolean {
-        var prohibited: AttachmentType[] = [AttachmentType.Text, AttachmentType.Circle];
+        var prohibited: AttachmentType[] = [AttachmentType.Circle];
         return !prohibited.some(type => type == this.attachment.attachmentType);
     }
 

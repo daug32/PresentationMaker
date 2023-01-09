@@ -11,4 +11,11 @@
         height: 600px;
         box-shadow: 4px 4px 4px 4px rgba(34, 60, 80, 0.2);
     }
+    
+    &_focused
+    {
+        border-width: 2px;
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+    }
 }
