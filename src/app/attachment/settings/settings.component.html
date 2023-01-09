@@ -29,13 +29,20 @@
 
     <mat-form-field *ngIf="canShowWidth()"
         class="attachment-settings__item">
-        <mat-label class="attachment-settings__label">
-            {{ attachment.attachmentType != 4 ? 'Width' : 'Radius' }}
-        </mat-label>
+        <mat-label class="attachment-settings__label">Width</mat-label>
         <input matInput
             type="number"
             class="attachment-settings__input attachment-settings__input_labeled"
             [(ngModel)]="attachment.size.x" />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="canShowRadius()"
+        class="attachment-settings__item">
+        <mat-label class="attachment-settings__label">Radius</mat-label>
+        <input matInput
+            type="number"
+            class="attachment-settings__input attachment-settings__input_labeled"
+            [(ngModel)]="radius" />
     </mat-form-field>
 
     <mat-form-field *ngIf="isText"

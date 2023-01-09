@@ -75,33 +75,96 @@ export class AppComponent {
 
     public onRedo(): void { }
 
+    // Presentation
+    public onPresentationLoad(presentation: Presentation): void {
+        this.presentation = presentation;
+    }
+
     // Atttachments
     public onCreateAttachment(attachmentType: AttachmentType): void {
         this.currentSlide.attachments.push(createAttachment(this._attachmentLastId++, attachmentType));
     }
 
-    public onPresentationLoad(presentation: Presentation): void {
-        this.presentation = presentation;
+    public selectAttachment(attachmentId: number, event: MouseEvent): void {
+        if (!event.shiftKey) {
+            return;
+        }
+
+        for (let i = 0; i < this.selectedAttachments.length; i++) {
+            if (this.selectedAttachments[i] == attachmentId) {
+                this.selectedAttachments.splice(i, 1);
+                return;
+            }
+        }
+
+        this.selectedAttachments.push(attachmentId);
+    }
+ 
+    public cleanSelectedAttachments(event: MouseEvent): void {
+        let path: EventTarget[] = event.composedPath();
+
+        let isAttachment: boolean = path.some(step => {
+            let element: HTMLElement = step as HTMLElement;
+            return element.classList?.contains('attachment');
+        });
+
+        if (isAttachment) {
+            return;
+        }
+
+        this.selectedAttachments = [];
     }
 
-    public onSlideChange(slide: Slide): void {
-        this._currentSlideId = slide.id;
+    public isAttachmentSelected(attachmentId: number): boolean {
+        return this.selectedAttachments.some(selectedAttachmentId => selectedAttachmentId == attachmentId);
     }
 
+    // Slides
     public onAddSlide(): void {
         this.presentation.slides.push(createSlide(this._slideLastId++, this.presentation.slides.length));
     }
 
+    public onSlideClick(slideId: number, event: MouseEvent): void {
+        if (event.shiftKey) {
+            this.selectSlide(slideId, event);
+        }
+        else {
+            this.changeSlide(slideId);
+            this.selectedSlides = [];
+        }
+    }
+
+    private selectSlide(id: number, event: MouseEvent): void {
+        event.preventDefault();
+
+        for (let i = 0; i < this.selectedSlides.length; i++) {
+            if (this.selectedSlides[i] == id) {
+                this.selectedSlides.splice(i, 1);
+                return;
+            }
+        }
+
+        this.selectedSlides.push(id);
+    }
+
+    private changeSlide(slideId: number): void {
+        this._currentSlideId = slideId;
+    }
+
+    public isSlideSelected(id: number): boolean {
+        return this.selectedSlides.some(selectedSlide => selectedSlide == id);
+    }
+
     public onRaiseSlide(id: number): void {
         if (this.selectedSlides.length == 0) {
-            this.raiseSlide(id);
+            this.moveSlideUp(id);
             return;
         }
 
-        this.raiseSlides()
+        this.moveSlidesUp();
     }
 
-    public raiseSlide(id: number): void {
+    public moveSlideUp(id: number): void {
         let index = this.presentation.slides.findIndex(slide => slide.id == id);
         if (index == -1) {
             return;
@@ -116,7 +179,7 @@ export class AppComponent {
         this.presentation.slides[index] = changed;
     }
 
-    public raiseSlides(): void {
+    private moveSlidesUp(): void {
         let selectedId = this.selectedSlides;
         
         for (let i = 0; i < this.presentation.slides.length; i++) {
@@ -127,24 +190,20 @@ export class AppComponent {
                 continue;
             }
 
-            this.raiseSlide(slide.id);
+            this.moveSlideUp(slide.id);
         }
-    }
-
-    public onDeleteSlide(id: number): void {
-        this.presentation = removeSlide(this.presentation, id);
     }
 
     public onDropSlide(id: number): void {
         if (this.selectedSlides.length == 0) {
-            this.dropSlide(id);
+            this.moveSlideDown(id);
             return;
         }
 
-        this.dropSlides()
+        this.moveSlidesDown()
     }
 
-    public dropSlide(id: number): void {
+    private moveSlideDown(id: number): void {
         let index = this.presentation.slides.findIndex(slide => slide.id == id);
         if (index == -1) {
             return;
@@ -159,67 +218,23 @@ export class AppComponent {
         this.presentation.slides[index] = changed;
     }
 
-    public dropSlides(): void {
+    private moveSlidesDown(): void {
         let selectedId = this.selectedSlides;
         
         for (let i = this.presentation.slides.length - 1; i > -1; i--) {
             let slide = this.presentation.slides[i];
-            let isSlideSelected: boolean = selectedId.some( selectedSlideId => selectedSlideId == slide.id);
 
+            let isSlideSelected: boolean = selectedId.some(selectedSlideId => selectedSlideId == slide.id);
             if(!isSlideSelected) {
                 continue;
             }
 
-            this.dropSlide(slide.id);
+            this.moveSlideDown(slide.id);
         }
     }
 
-    public onSelect(id: number): void {
-        for (let i = 0; i < this.selectedAttachments.length; i++) {
-            if (this.selectedAttachments[i] == id) {
-                this.selectedAttachments.splice(i, 1);
-                return;
-            }
-        }
-
-        this.selectedAttachments.push(id);
-    }
-
-    public isSelected(id: number): boolean {
-        return this.selectedAttachments.some(selectedAttachment => selectedAttachment == id);
-    }
-
-    public onSelectSlide(id: number, event: MouseEvent): void {
-        event.preventDefault();
-
-        for (let i = 0; i < this.selectedSlides.length; i++) {
-            if (this.selectedSlides[i] == id) {
-                this.selectedSlides.splice(i, 1);
-                return;
-            }
-        }
-
-        this.selectedSlides.push(id);
-    }
-
-    public isSelectedSlide(id: number): boolean {
-        return this.selectedSlides.some(selectedSlide => selectedSlide == id);
-    }
-
- 
-    public cleanSelected(event: MouseEvent): void {
-        let path: EventTarget[] = event.composedPath();
-
-        let isAttachment: boolean = path.some(step => {
-            let element: HTMLElement = step as HTMLElement;
-            return element.classList?.contains('attachment');
-        });
-
-        if (isAttachment) {
-            return;
-        }
-
-        this.selectedAttachments = [];
+    public onDeleteSlide(id: number): void {
+        this.presentation = removeSlide(this.presentation, id);
     }
 
     private testPresentation(): Presentation {

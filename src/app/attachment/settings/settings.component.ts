@@ -88,13 +88,20 @@ export class SettingsComponent extends SettingsComponentController implements On
     }
 
     public canShowHeight(): boolean {
-        var prohibited: AttachmentType[] = [AttachmentType.Text];
+        var prohibited: AttachmentType[] = [AttachmentType.Text, AttachmentType.Circle];
         return !prohibited.some(type => type == this.attachment.attachmentType);
     }
 
     public canShowWidth(): boolean {
         var prohibited: AttachmentType[] = [AttachmentType.Text, AttachmentType.Circle];
         return !prohibited.some(type => type == this.attachment.attachmentType);
+    }
+
+    public get radius(): number { return this.attachment.size.x; }
+    public set radius(value: number) { this.attachment.size.x = this.attachment.size.y = value; }
+
+    public canShowRadius(): boolean {
+        return this.attachment.attachmentType == AttachmentType.Circle;
     }
 
     constructor() {

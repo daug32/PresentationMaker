@@ -14,11 +14,10 @@
             <presentation-slide-preview 
                 *ngFor="let slide of presentation.slides"
                 [slide]="slide"
-                (onClick)="onSlideChange($event)"
+                (click)="onSlideClick(slide.id, $event)"
                 (onRaise)="onRaiseSlide($event)"
                 (onDelete)="onDeleteSlide($event)"
-                (contextmenu)="onSelectSlide(slide.id, $event)"
-                [isSelectedSlide]="isSelectedSlide(slide.id)"
+                [isSelectedSlide]="isSlideSelected(slide.id)"
                 (onDrop)="onDropSlide($event)">
             </presentation-slide-preview>
             
@@ -30,12 +29,12 @@
         </div>
 
         <div class="presentation-maker__workspace"
-             (click)="cleanSelected($event)">
+             (click)="cleanSelectedAttachments($event)">
             <div class="presentation-maker__workspace-container">
                 <attachment *ngFor="let attachment of currentSlide.attachments"
                             [attachment]="attachment"
-                            [isSelected]="isSelected(attachment.id)"
-                            (click)="onSelect(attachment.id)">
+                            [isSelected]="isAttachmentSelected(attachment.id)"
+                            (click)="selectAttachment(attachment.id, $event)">
                 </attachment>
             </div>
         </div>
