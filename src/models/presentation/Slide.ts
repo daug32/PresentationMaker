@@ -1,5 +1,4 @@
 import { Attachment } from "./Attachment";
-import { AttachmentType } from "./AttachmentType";
 
 export class Slide {
     constructor( 

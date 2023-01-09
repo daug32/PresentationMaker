@@ -17,6 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatIconModule } from '@angular/material/icon';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatButtonModule,
     DragDropModule,
     MatMenuModule,
     ColorPickerModule,

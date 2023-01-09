@@ -48,7 +48,7 @@ export class AppComponent {
         this._currentSlideId = this.presentation.slides[0]?.id ?? 0;
         document.addEventListener("keydown", (event: KeyboardEvent) => this.deleteSelected(event));
     }
-
+    
     public deleteSelected(event: KeyboardEvent): void {
         if (event.keyCode !== 46) {
             return;
@@ -126,6 +126,7 @@ export class AppComponent {
         this.presentation.slides.push(createSlide(this._slideLastId++, this.presentation.slides.length));
     }
 
+    // Slide previews
     public onSlideClick(slideId: number, event: MouseEvent): void {
         if (event.shiftKey) {
             this.selectSlide(slideId, event);
@@ -220,6 +221,7 @@ export class AppComponent {
         this.presentation.slides[index] = changed;
     }
 
+    // Other
     private moveSlidesDown(): void {
         let selectedId = this.selectedSlides;
         

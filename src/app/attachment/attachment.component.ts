@@ -3,7 +3,6 @@ import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter }
 import { Attachment, ImageAttachment, PrimitiveAttachment, TextAttachment } from 'src/models/presentation/Attachment';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { SettingsComponent } from './settings/settings.component';
-import { Vector2 } from 'src/models/other/Vector2';
 
 @Component({
 	selector: 'attachment',

@@ -9,11 +9,6 @@ import { Slide } from 'src/models/presentation/Slide';
 export class PresentationSlidePreview {
     @Input() slide!: Slide;
     @Input() isSelectedSlide!: boolean;
-    @Output() onClick = new EventEmitter<Slide>();
-
-    @Output() onRaise = new EventEmitter<number>();
-    @Output() onDelete = new EventEmitter<number>();
-    @Output() onDrop = new EventEmitter<number>();
 
     constructor() {}
 }
