@@ -18,7 +18,6 @@
                 *ngFor="let slide of presentation.slides"
                 [slide]="slide"
                 (onClick)="onSlideChange($event)"
-                (contextMenu)="onContextMenu(slide.id)"
                 (onRaise)="onRaiseSlide($event)"
                 (onDelete)="onDeleteSlide($event)"
                 (contextmenu)="onSelectSlide(slide.id, $event)"

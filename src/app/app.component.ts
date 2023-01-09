@@ -15,13 +15,15 @@ import { removeSlide } from 'src/functions/PresentationFunctions';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-
     public presentation: Presentation;
-    public attachmentToAdd?: Attachment;
-    public selectedAttachments: number[] = [];
-    public selectedSlides: number[] = [];
 
+    // Selections
+    public selectedSlides: number[] = [];
+    public selectedAttachments: number[] = [];
+
+    // Current slide
     private _currentSlideId: number = 0;
+
     public get currentSlide(): Slide {
         return this.presentation.slides.find(slide => slide.id == this._currentSlideId) ?? new Slide(0, [], 0);
     }
@@ -31,10 +33,13 @@ export class AppComponent {
         if (index == -1) {
             return;
         }
+
         this.presentation.slides[index] = slide;
         this._currentSlideId = slide.id;
     }
 
+    // Items repository info
+    // TODO: Вынести в репозитории сущностей
     private _attachmentLastId: number = 0;
     private _slideLastId: number = 0;
 
@@ -51,7 +56,6 @@ export class AppComponent {
 
         this.currentSlide = deleteAttachments(this.currentSlide, this.selectedAttachments);
         
-        //Удаление выделенных слайдов
         let selectedId = this.selectedSlides;
         for (let i = 0; i < this.presentation.slides.length; i++) {
             let slide = this.presentation.slides[i];
@@ -61,7 +65,6 @@ export class AppComponent {
                 continue;
             }
 
-            console.log(slide.id);
             this.onDeleteSlide(slide.id);
             i--;
         }
@@ -73,7 +76,6 @@ export class AppComponent {
     public onRedo(): void { }
 
     // Atttachments
-
     public onCreateAttachment(attachmentType: AttachmentType): void {
         this.currentSlide.attachments.push(createAttachment(this._attachmentLastId++, attachmentType));
     }
@@ -91,14 +93,12 @@ export class AppComponent {
     }
 
     public onRaiseSlide(id: number): void {
-
         if (this.selectedSlides.length == 0) {
             this.raiseSlide(id);
             return;
         }
+
         this.raiseSlides()
-
-
     }
 
     public raiseSlide(id: number): void {
@@ -140,8 +140,8 @@ export class AppComponent {
             this.dropSlide(id);
             return;
         }
+
         this.dropSlides()
-        
     }
 
     public dropSlide(id: number): void {
@@ -181,13 +181,13 @@ export class AppComponent {
                 return;
             }
         }
+
         this.selectedAttachments.push(id);
     }
 
     public isSelected(id: number): boolean {
         return this.selectedAttachments.some(selectedAttachment => selectedAttachment == id);
     }
-
 
     public onSelectSlide(id: number, event: MouseEvent): void {
         event.preventDefault();
@@ -198,6 +198,7 @@ export class AppComponent {
                 return;
             }
         }
+
         this.selectedSlides.push(id);
     }
 
@@ -208,6 +209,7 @@ export class AppComponent {
  
     public cleanSelected(event: MouseEvent): void {
         let path: EventTarget[] = event.composedPath();
+
         let isAttachment: boolean = path.some(step => {
             let element: HTMLElement = step as HTMLElement;
             return element.classList?.contains('attachment');
@@ -216,24 +218,8 @@ export class AppComponent {
         if (isAttachment) {
             return;
         }
-        else {
-            this.selectedAttachments = [];
-        }
-    }
 
-
-    public onContextMenu(slideId: number): void {
-        // let index: number = this.selectedItems.findIndex(x => x == slideId);
-
-        // if (index != -1) {
-        //     // снять пометку с миниатюры слайда
-        //     this.selectedItems.splice(index, 1);
-        // } else {
-        //     // добавить пометку миниатюры слайда
-        //     this.selectedItems.push(
-        //         new SelectedItem(slideId, [])
-        //     );
-        // }
+        this.selectedAttachments = [];
     }
 
     private testPresentation(): Presentation {
