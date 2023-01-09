@@ -126,7 +126,6 @@ export class AppComponent {
         this.presentation.slides.push(createSlide(this._slideLastId++, this.presentation.slides.length));
     }
 
-    // Slide previews
     public onSlideClick(slideId: number, event: MouseEvent): void {
         if (event.shiftKey) {
             this.selectSlide(slideId, event);
@@ -221,6 +220,10 @@ export class AppComponent {
         this.presentation.slides[index] = changed;
     }
 
+    public onDeleteSlide(id: number): void {
+        this.presentation = removeSlide(this.presentation, id);
+    }
+
     // Other
     private moveSlidesDown(): void {
         let selectedId = this.selectedSlides;
@@ -235,10 +238,6 @@ export class AppComponent {
 
             this.moveSlideDown(slide.id);
         }
-    }
-
-    public onDeleteSlide(id: number): void {
-        this.presentation = removeSlide(this.presentation, id);
     }
 
     private testPresentation(): Presentation {

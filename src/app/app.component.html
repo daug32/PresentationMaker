@@ -14,7 +14,7 @@
                 <slide-preview
                     class="presentation-maker__slide"
                     [slide]="slide"
-                    (click)="onSlideChange(slide.id)">
+                    (click)="onSlideClick(slide.id, $event)">
                 </slide-preview>
 
                 <div class="presentation-maker__slide-actions">
