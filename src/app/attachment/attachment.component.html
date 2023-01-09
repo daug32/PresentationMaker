@@ -1,12 +1,14 @@
 <div class="attachment" 
+    *ngIf="!needCompactView"
     cdkDrag #container="cdkDrag" 
-    [cdkDragFreeDragPosition]="attachment.position"
+    [cdkDragFreeDragPosition]="position"
     (cdkDragEnded)="onDragDropped($event)" 
     (contextmenu)="onRightClick($event)">
 
     <input *ngIf="isText" 
         class="attachment__text {{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         [(ngModel)]="textAttachment.text"
+        [style.width.px]="attachment.size.x" 
         [style.fontSize.px]="textAttachment.fontSize"
         [style.fontFamily]="textAttachment.fontFamily"
         [style.textDecoration]="isStriked ? 'line-through' : ''"
@@ -19,7 +21,7 @@
         class="{{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         [src]="imageAttachment.image"
         [style.width.px]="attachment.size.x" 
-        [style.height.px]="attachment.size.y" />
+        [style.height.px]="attachment.size.y"/>
 
     <svg *ngIf="isPrimitive"
         class="{{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
@@ -58,4 +60,59 @@
     <settings #attachmentSettings
         [attachment]="attachment">
     </settings>
+</div>
+
+<div class="attachment"
+    *ngIf="needCompactView"
+    [style.transform]="'translate(' + position.x + 'px, ' + position.y +'px)'">
+    <p *ngIf="isText" 
+        class="attachment__text attachment__text_static"
+        [style.width.px]="attachment.size.x" 
+        [style.fontSize.px]="textAttachment.fontSize"
+        [style.fontFamily]="textAttachment.fontFamily"
+        [style.textDecoration]="isStriked ? 'line-through' : ''"
+        [style.fontStyle]="isItalic ? 'italic' : ''"
+        [style.fontWeight]="isBold ? 'bold' : ''"
+        [style.color]="textAttachment.color"
+        [style.backgroundColor]="textAttachment.fillColor">
+        {{ textAttachment.text }}
+    </p>
+
+    <img *ngIf="isImage" 
+        [src]="imageAttachment.image"
+        [style.width.px]="attachment.size.x" 
+        [style.height.px]="attachment.size.y" />
+
+    <svg *ngIf="isPrimitive"
+        [attr.width]="primitiveAttachment.size.x"
+        [attr.height]="primitiveAttachment.size.y"
+        [ngSwitch]="primitiveAttachment.attachmentType">
+        <rect *ngSwitchCase="3" 
+            [attr.x]="strokeWidth / 2"
+            [attr.y]="strokeWidth / 2"
+            [attr.width]="primitiveAttachment.size.x - strokeWidth"
+            [attr.height]="primitiveAttachment.size.y - strokeWidth"
+            [attr.fill]="primitiveAttachment.fillColor"
+            [attr.stroke]="primitiveAttachment.color"
+            [attr.stroke-width]="strokeWidth">
+        </rect>
+
+        <circle *ngSwitchCase="4"
+            [attr.x]="strokeWidth / 2"
+            [attr.y]="strokeWidth / 2"
+            [attr.cx]="primitiveAttachment.size.x / 2"
+            [attr.cy]="primitiveAttachment.size.y / 2"
+            [attr.r]="primitiveAttachment.size.x / 2 - strokeWidth / 2"
+            [attr.fill]="primitiveAttachment.fillColor"
+            [attr.stroke]="primitiveAttachment.color"
+            [attr.stroke-width]="strokeWidth">
+        </circle>
+
+        <polygon *ngSwitchCase="5"
+            [attr.points]="parsePolygonPointsFromVertices()"
+            [attr.fill]="primitiveAttachment.fillColor"
+            [attr.stroke]="primitiveAttachment.color"
+            [attr.stroke-width]="strokeWidth">
+        </polygon>
+    </svg>
 </div>
