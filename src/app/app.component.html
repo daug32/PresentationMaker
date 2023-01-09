@@ -11,11 +11,11 @@
         <div class="presentation-maker__slides-container">
             <div class="presentation-maker__slide-container"
                 *ngFor="let slide of presentation.slides">
-                <presentation-workspace 
+                <slide-preview
                     class="presentation-maker__slide"
                     [slide]="slide"
                     (click)="onSlideChange(slide.id)">
-                </presentation-workspace>
+                </slide-preview>
 
                 <div class="presentation-maker__slide-actions">
                     <button mat-icon-button

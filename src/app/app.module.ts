@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { PresentationToolbarComponent } from './presentation-toolbar/presentation-toolbar.component';
-import { PresentationSlidePreview } from './presentation-slide-preview/presentation-slides-list.component';
+import { SlidePreviewComponent } from './slide-preview/slide-preview.component';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { SettingsComponent } from './attachment/settings/settings.component';
 
@@ -23,7 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
   declarations: [
     AppComponent,
     PresentationToolbarComponent,
-    PresentationSlidePreview,
+    SlidePreviewComponent,
     AttachmentComponent,
     SettingsComponent,
   ],
