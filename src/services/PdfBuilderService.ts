@@ -27,7 +27,13 @@ export class PdfBuilderService {
 
         for (let i = 0; i < slides.length; i++) {
             let slide: HTMLElement = slides.item(i) as HTMLElement;
+            let transform = slide.style.transform;
+            let border = slide.style.borderStyle;
+            slide.style.transform = 'none';
+            slide.style.borderStyle = 'hidden';
             let canvas = await html2Canvas(slide);
+            slide.style.borderStyle = border;
+            slide.style.transform = transform;
             canvases.push(canvas);
         }
         return canvases
