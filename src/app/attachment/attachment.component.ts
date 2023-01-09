@@ -1,17 +1,19 @@
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { Attachment, ImageAttachment, PrimitiveAttachment, TextAttachment } from 'src/models/presentation/Attachment';
-import { AttachmentType } from 'src/models/presentation/AttachmentType';
+import { Attachment } from 'src/models/presentation/Attachment';
 import { SettingsComponent } from './settings/settings.component';
 import { Vector2 } from 'src/models/other/Vector2';
+import { AttachmentBaseComponent } from './AttachmentBaseComponent';
+import { Slide } from 'src/models/presentation/Slide';
 
 @Component({
 	selector: 'attachment',
 	templateUrl: './attachment.component.html',
 	styleUrls: ['./attachment.component.scss']
 })
-export class AttachmentComponent implements OnInit {
-	@Input() attachment!: Attachment;
+export class AttachmentComponent extends AttachmentBaseComponent implements OnInit {
+	@Input() public override attachment!: Attachment;
+	@Input() public needCompactView: boolean = false;
 	@Input() isSelected! : boolean;
 	@Output() onInput = new EventEmitter<any>();
 
@@ -25,50 +27,39 @@ export class AttachmentComponent implements OnInit {
 	private _hasOpenedSettings: boolean = false;
 	@ViewChild('attachmentSettings', { read: ElementRef }) attachmentSettings!: ElementRef;
 
-	constructor() {}
-
-	ngOnInit(): void {
-		let type: AttachmentType = this.attachment.attachmentType;
-
-		this.isText = type == AttachmentType.Text;
-		this.isImage = type == AttachmentType.Image;
-		this.isPrimitive = !this.isText && !this.isImage;
+	constructor() {
+		super();
 	}
 
-	// Text
-	public isText: boolean = false;
-	public get textAttachment(): TextAttachment { return this.attachment as TextAttachment; }
+	ngOnInit(): void {
+		this.updateSettings();
+	}
 
-	public get isBold(): boolean { return this.textAttachment.fontStyle.some(style => style == 'bold'); }
-	public get isItalic(): boolean { return this.textAttachment.fontStyle.some(style => style == 'italic'); }
-	public get isStriked(): boolean { return this.textAttachment.fontStyle.some(style => style == 'striked'); }
+	// General 
+	public get position(): Vector2 { return this.attachment.position; }
+	public set position(value: Vector2) {
+		if (this.needCompactView) {
+			return;
+		}
 
-	// Image
-	public isImage: boolean = false;
-	public get imageAttachment(): ImageAttachment { return this.attachment as ImageAttachment; }
-
-	// Primitives
-	public isPrimitive: boolean = false;
-    public strokeWidth: number = 1;
-	public get primitiveAttachment(): PrimitiveAttachment { return this.attachment as PrimitiveAttachment; }
-
-	public parsePolygonPointsFromVertices(): string {
-		let points: string = this.primitiveAttachment.vertices.reduce((result, el) => {
-			let x = el.x * this.primitiveAttachment.size.x;
-			let y = el.y * this.primitiveAttachment.size.y;
-			return result + `${x},${y} `;
-		}, '');
-
-		return points;
+		this.attachment.position = value;
 	}
 
 	// Methods
 	public onDragDropped(data: CdkDragEnd): void {
+		if (this.needCompactView) {
+			return;
+		}
+
 		this.attachment.position.x += data.distance.x;
 		this.attachment.position.y += data.distance.y;
 	}
 
 	public onRightClick(event: MouseEvent): void {
+		if (this.needCompactView) {
+			return;
+		}
+		
 		event.preventDefault();
 
 		if (SettingsComponent.isShown) {

@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { PresentationToolbarComponent } from './presentation-toolbar/presentation-toolbar.component';
-import { PresentationSlidePreview } from './presentation-slide-preview/presentation-slides-list.component';
+import { SlidePreviewComponent } from './slide-preview/slide-preview.component';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { SettingsComponent } from './attachment/settings/settings.component';
 
@@ -17,12 +17,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatIconModule } from '@angular/material/icon';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
     AppComponent,
     PresentationToolbarComponent,
-    PresentationSlidePreview,
+    SlidePreviewComponent,
     AttachmentComponent,
     SettingsComponent,
   ],
@@ -35,6 +36,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatButtonModule,
     DragDropModule,
     MatMenuModule,
     ColorPickerModule,

@@ -1,5 +1,4 @@
 <div class="presentation-maker">
-
     <presentation-toolbar 
         [presentation]="presentation"
         (onPresentationLoad)="onPresentationLoad($event)"
@@ -9,21 +8,43 @@
     </presentation-toolbar>
 
     <div class="presentation-maker__content-container">
-
         <div class="presentation-maker__slides-container">
-            <presentation-slide-preview 
-                *ngFor="let slide of presentation.slides"
-                [slide]="slide"
-                (click)="onSlideClick(slide.id, $event)"
-                (onRaise)="onRaiseSlide($event)"
-                (onDelete)="onDeleteSlide($event)"
-                [isSelectedSlide]="isSlideSelected(slide.id)"
-                (onDrop)="onDropSlide($event)">
-            </presentation-slide-preview>
-            
-            <button class="presentation-maker__slides-adder"
-                    title="Add slide"
-                    (click)="onAddSlide()">
+            <div class="presentation-maker__slide-container"
+                *ngFor="let slide of presentation.slides">
+                <slide-preview
+                    class="presentation-maker__slide"
+                    [slide]="slide"
+                    (click)="onSlideClick(slide.id, $event)">
+                </slide-preview>
+
+                <div class="presentation-maker__slide-actions">
+                    <button mat-icon-button
+                        class="presentation-maker__slide-action-button"
+                        title="Raise"
+                        (click)="onRaiseSlide(slide.id)">
+                        <mat-icon>arrow_upward</mat-icon>
+                    </button>
+
+                    <button mat-icon-button
+                        class="presentation-maker__slide-action-button"
+                        title="Delete"
+                        (click)="onDeleteSlide(slide.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <button mat-icon-button
+                        class="presentation-maker__slide-action-button"
+                        title="Drop"
+                        (click)="onDropSlide(slide.id)">
+                        <mat-icon>arrow_downward</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <button mat-icon-button
+                class="presentation-maker__slide-action-button presentation-maker__add-slide-button"
+                title="Add slide"
+                (click)="onAddSlide()">
                 <mat-icon>add</mat-icon>
             </button>
         </div>
@@ -38,7 +59,5 @@
                 </attachment>
             </div>
         </div>
-
     </div>
-    
 </div>
