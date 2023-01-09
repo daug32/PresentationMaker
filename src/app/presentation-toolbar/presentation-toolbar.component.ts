@@ -4,7 +4,6 @@ import { Presentation } from 'src/models/presentation/Presentation';
 import *as jsPDF from 'jspdf';
 import html2Canvas from "html2canvas"
 import { PdfBuilderService } from 'src/services/PdfBuilderService';
-//import * as html2pdf from 'html2pdf.js'
 
 @Component({
     selector: 'presentation-toolbar',
@@ -78,7 +77,6 @@ export class PresentationToolbarComponent {
     }
 
     private loadFile(input: HTMLInputElement): void {
-        // you can use this method to get file and perform respective operations
         let files: FileList | null = input.files;
         if (files = null) {
             return;
