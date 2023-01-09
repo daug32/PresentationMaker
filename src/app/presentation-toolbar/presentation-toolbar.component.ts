@@ -39,17 +39,14 @@ export class PresentationToolbarComponent {
     public newPresentationEvent(): void {
         this.onSave();
         this.presentation.slides = [];
-        this.presentation.name = "Set name, please";
+        this.presentation.name = "Presentation title";
     }
 
     public onUndoEvent(): void {
-
     }
 
     public onRedoEvent(): void {
-
     }
-
 
     public onSave(): void {
         let file = JSON.stringify(this.presentation);

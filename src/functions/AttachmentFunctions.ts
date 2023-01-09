@@ -5,9 +5,7 @@ import { AttachmentType } from "src/models/presentation/AttachmentType";
 export function createAttachment(id: number, attachmentType: AttachmentType): Attachment {
     switch (attachmentType) {
         case AttachmentType.Image:
-            let image = new ImageAttachment(id);
-            image.image = 'assets/images/test.jpg';
-            return image;
+            return new ImageAttachment(id);
 
         case AttachmentType.Text:
             return new TextAttachment(id);

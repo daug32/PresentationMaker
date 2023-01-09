@@ -86,6 +86,8 @@ export class AppComponent {
     }
 
     public selectAttachment(attachmentId: number, event: MouseEvent): void {
+        event.preventDefault();
+        
         if (!event.shiftKey) {
             return;
         }
