@@ -1,6 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
+import *as jsPDF from 'jspdf';
+import html2Canvas from "html2canvas"
+import { PdfBuilderService } from 'src/services/PdfBuilderService';
+//import * as html2pdf from 'html2pdf.js'
 
 @Component({
     selector: 'presentation-toolbar',
@@ -57,6 +61,12 @@ export class PresentationToolbarComponent {
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
+    }
+
+    public onExport(): void {
+        let slides: HTMLCollection = document.getElementsByClassName('presentation-maker__workspace-container');
+        let builder = new PdfBuilderService();
+        builder.pdfConvertor(slides, this.presentation.name);    
     }
 
     public onOpen(): void {
