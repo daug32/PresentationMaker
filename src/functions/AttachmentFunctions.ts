@@ -42,7 +42,6 @@ export function copyAttachment(newId: number, attachment: Attachment): Attachmen
 }
 
 export function selectAttachment(attachmentId: Attachment): void {
-    // something
 }
 
 export function setAttachmentSize(attachment: Attachment, newSize: Vector2): Attachment {

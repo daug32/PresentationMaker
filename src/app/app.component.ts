@@ -7,8 +7,9 @@ import { Slide } from 'src/models/presentation/Slide';
 import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
 import { deleteAttachments } from 'src/functions/SlideFunctions';
 import { createSlide } from 'src/functions/SlideFunctions';
-import { removeSlide } from 'src/functions/PresentationFunctions';
+import { createPresentation, removeSlide } from 'src/functions/PresentationFunctions';
 import { SlideSettingsComponent } from './slide-settings/slide-settings.component';
+import { ReserveCopier } from 'src/services/ReserveCopierService';
 
 @Component({
     selector: 'app-root',
@@ -39,6 +40,11 @@ export class AppComponent {
         this._currentSlideId = slide.id;
     }
 
+    public reserveCopy(presentation: Presentation): void {
+        let jsonContent: string = JSON.stringify(presentation);
+        localStorage.setItem('presentationJSON', jsonContent);
+    }
+
     // Settings 
 	private _hasOpenedSettings: boolean = false;
 	@ViewChild('slideSettings', { read: ElementRef }) slideSettings!: ElementRef;
@@ -49,7 +55,9 @@ export class AppComponent {
     private _slideLastId: number = 0;
 
     constructor() {
-        this.presentation = this.testPresentation();
+        this.presentation = ReserveCopier.loadPresentation() ?? createPresentation();
+        
+        setInterval(ReserveCopier.reserveCopyPresentation, ReserveCopier.interval, this.presentation);
         this._currentSlideId = this.presentation.slides[0]?.id ?? 0;
         document.addEventListener("keydown", (event: KeyboardEvent) => this.deleteSelected(event));
     }

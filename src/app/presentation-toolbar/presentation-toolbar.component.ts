@@ -17,7 +17,7 @@ export class PresentationToolbarComponent {
 
     @Output() onCreateAttachmentEvent = new EventEmitter<AttachmentType>()
 
-    constructor() { }
+    constructor() {}
 
     public textEvent(): void {
         this.onCreateAttachmentEvent.emit(AttachmentType.Text);
