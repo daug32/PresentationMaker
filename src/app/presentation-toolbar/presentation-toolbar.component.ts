@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
+import *as jsPDF from 'jspdf';
+import html2Canvas from "html2canvas"
+import { PdfBuilderService } from 'src/services/PdfBuilderService';
 
 @Component({
     selector: 'presentation-toolbar',
@@ -59,6 +62,12 @@ export class PresentationToolbarComponent {
         document.body.removeChild(element);
     }
 
+    public onExport(): void {
+        let slides: HTMLCollection = document.getElementsByTagName('slide-preview');
+        let builder = new PdfBuilderService();
+        builder.pdfConvertor(slides, this.presentation.name);    
+    }
+
     public onOpen(): void {
         let input: HTMLInputElement = document.createElement('input');
         input.type = 'file';
@@ -68,7 +77,6 @@ export class PresentationToolbarComponent {
     }
 
     private loadFile(input: HTMLInputElement): void {
-        // you can use this method to get file and perform respective operations
         let files: FileList | null = input.files;
         if (files = null) {
             return;
