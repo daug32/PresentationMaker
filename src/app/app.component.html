@@ -56,7 +56,8 @@
                 <attachment *ngFor="let attachment of currentSlide.attachments"
                     [attachment]="attachment"
                     [isSelected]="isAttachmentSelected(attachment.id)"
-                    (click)="selectAttachment(attachment.id, $event)">
+                    (click)="selectAttachment(attachment.id, $event)"
+                    (onDrag)="onDragSelected($event)">
                 </attachment>
             </div>
         </div>

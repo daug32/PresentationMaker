@@ -101,6 +101,15 @@ export class AppComponent {
 
         this.selectedAttachments.push(attachmentId);
     }
+
+    public onDragSelected(distance: Vector2): void {
+        console.log(distance);
+        if (this.selectedAttachments.length == 0) {
+            return;
+        }
+
+        
+    }
  
     public cleanSelectedAttachments(event: MouseEvent): void {
         let path: EventTarget[] = event.composedPath();

@@ -16,6 +16,7 @@ export class AttachmentComponent extends AttachmentBaseComponent implements OnIn
 	@Input() public needCompactView: boolean = false;
 	@Input() isSelected! : boolean;
 	@Output() onInput = new EventEmitter<any>();
+	@Output() onDrag = new EventEmitter<Vector2>();
 
 	@ViewChild('canvas') canvas: ElementRef | null = null;
 
@@ -50,6 +51,8 @@ export class AttachmentComponent extends AttachmentBaseComponent implements OnIn
 		if (this.needCompactView) {
 			return;
 		}
+
+		this.onDrag.emit(data.distance);
 
 		this.attachment.position.x += data.distance.x;
 		this.attachment.position.y += data.distance.y;
