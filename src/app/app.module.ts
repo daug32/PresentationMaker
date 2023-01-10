@@ -18,6 +18,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatIconModule } from '@angular/material/icon';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MatButtonModule } from '@angular/material/button';
+import { SlideSettingsComponent } from './slide-settings/slide-settings.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
     SlidePreviewComponent,
     AttachmentComponent,
     SettingsComponent,
+    SlideSettingsComponent,
   ],
   imports: [
     BrowserModule,

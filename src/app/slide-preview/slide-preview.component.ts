@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Slide } from 'src/models/presentation/Slide';
 
 @Component({
@@ -6,9 +6,12 @@ import { Slide } from 'src/models/presentation/Slide';
     templateUrl: './slide-preview.component.html',
     styleUrls: ['./slide-preview.component.scss']
 })
-export class SlidePreviewComponent {
+export class SlidePreviewComponent implements OnInit {
     @Input() slide!: Slide;
     @Input() isSelected: boolean = false;
 
     constructor() {}
+
+    ngOnInit(): void {
+    }
 }

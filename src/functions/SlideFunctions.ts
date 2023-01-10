@@ -9,7 +9,8 @@ export function copySlide(id: number, slide: Slide): Slide {
         id,
         [...slide.attachments],
         slide.orderPosition,
-        slide.backgroundColor
+        slide.backgroundColor, 
+        slide.image
     );
 }
 
