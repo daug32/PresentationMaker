@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { PresentationToolbarComponent } from './presentation-toolbar/presentation-toolbar.component';
-import { SlidePreviewComponent } from './slide-preview/slide-preview.component';
+import { SlidePreviewComponent } from './previews/slide-preview/slide-preview.component';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { SettingsComponent } from './settings/attachment-settings/attachment-settings.component';
 import { SlideSettingsComponent } from './settings/slide-settings/slide-settings.component';

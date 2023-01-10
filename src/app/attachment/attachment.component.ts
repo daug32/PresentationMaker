@@ -3,7 +3,7 @@ import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter }
 import { Attachment } from 'src/models/presentation/Attachment';
 import { SettingsComponent } from '../settings/attachment-settings/attachment-settings.component';
 import { Vector2 } from 'src/models/other/Vector2';
-import { AttachmentBaseComponent } from './AttachmentBaseComponent';
+import { AttachmentBaseComponent } from '../../models/other/AttachmentBaseComponent';
 
 @Component({
 	selector: 'attachment',
@@ -11,16 +11,11 @@ import { AttachmentBaseComponent } from './AttachmentBaseComponent';
 	styleUrls: ['./attachment.component.scss']
 })
 export class AttachmentComponent extends AttachmentBaseComponent implements OnInit {
-	@Input() public override attachment!: Attachment;
-	@Input() public needCompactView: boolean = false;
 	@Input() public isSelected! : boolean;
-	@Output() onInput = new EventEmitter<any>();
-
-	@ViewChild('canvas') canvas: ElementRef | null = null;
-
-	@ViewChild('contextMenu') contextMenu!: ElementRef;
+	@Input() public override attachment!: Attachment;
 
 	@ViewChild('container') container!: CdkDrag;
+	@ViewChild('contextMenu') contextMenu!: ElementRef;
 
 	private _hasOpenedSettings: boolean = false;
 	@ViewChild('attachmentSettings', { read: ElementRef }) attachmentSettings!: ElementRef;
@@ -35,29 +30,15 @@ export class AttachmentComponent extends AttachmentBaseComponent implements OnIn
 
 	// General 
 	public get position(): Vector2 { return this.attachment.position; }
-	public set position(value: Vector2) {
-		if (this.needCompactView) {
-			return;
-		}
-
-		this.attachment.position = value;
-	}
+	public set position(value: Vector2) { this.attachment.position = value; }
 
 	// Methods
 	public onDragDropped(data: CdkDragEnd): void {
-		if (this.needCompactView) {
-			return;
-		}
-
 		this.attachment.position.x += data.distance.x;
 		this.attachment.position.y += data.distance.y;
 	}
 
 	public onRightClick(event: MouseEvent): void {
-		if (this.needCompactView) {
-			return;
-		}
-		
 		event.preventDefault();
 
 		if (SettingsComponent.isShown) {

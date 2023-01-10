@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Attachment } from 'src/models/presentation/Attachment';
 import { Vector2 } from 'src/models/other/Vector2';
-import { AttachmentBaseComponent } from 'src/app/attachment/AttachmentBaseComponent';
+import { AttachmentBaseComponent } from 'src/models/other/AttachmentBaseComponent';
 
 @Component({
 	selector: 'attachment-preview',
@@ -10,7 +10,6 @@ import { AttachmentBaseComponent } from 'src/app/attachment/AttachmentBaseCompon
 })
 export class AttachmentPreviewComponent extends AttachmentBaseComponent implements OnInit {
 	@Input() public override attachment!: Attachment;
-	@Input() public isSelected!: boolean;
 
 	constructor() {
 		super();

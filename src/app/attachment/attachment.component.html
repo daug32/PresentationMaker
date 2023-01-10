@@ -1,10 +1,8 @@
 <div class="attachment" 
-    *ngIf="!needCompactView"
     cdkDrag #container="cdkDrag" 
     [cdkDragFreeDragPosition]="position"
     (cdkDragEnded)="onDragDropped($event)" 
     (contextmenu)="onRightClick($event)">
-
     <input *ngIf="isText" 
         class="attachment__text {{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         [(ngModel)]="textAttachment.text"
