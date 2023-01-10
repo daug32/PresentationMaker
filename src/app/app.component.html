@@ -22,21 +22,21 @@
                     <button mat-icon-button
                         class="presentation-maker__slide-action-button"
                         title="Raise"
-                        (click)="onRaiseSlide(slide.id)">
+                        (click)="onRaiseSlideButton(slide.id)">
                         <mat-icon>arrow_upward</mat-icon>
                     </button>
 
                     <button mat-icon-button
                         class="presentation-maker__slide-action-button"
                         title="Delete"
-                        (click)="onDeleteSlide(slide.id)">
+                        (click)="deleteSlide(slide.id)">
                         <mat-icon>delete</mat-icon>
                     </button>
 
                     <button mat-icon-button
                         class="presentation-maker__slide-action-button"
                         title="Drop"
-                        (click)="onDropSlide(slide.id)">
+                        (click)="onDropSlideButton(slide.id)">
                         <mat-icon>arrow_downward</mat-icon>
                     </button>
                 </div>
