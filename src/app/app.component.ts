@@ -48,20 +48,20 @@ export class AppComponent {
         this._currentSlideId = this.presentation.slides[0]?.id ?? 0;
         document.addEventListener("keydown", (event: KeyboardEvent) => this.deleteSelected(event));
     }
-    
+
     public deleteSelected(event: KeyboardEvent): void {
         if (event.keyCode !== 46) {
             return;
         }
 
         this.currentSlide = deleteAttachments(this.currentSlide, this.selectedAttachments);
-        
+
         let selectedId = this.selectedSlides;
         for (let i = 0; i < this.presentation.slides.length; i++) {
             let slide = this.presentation.slides[i];
-            let isSlideSelected: boolean = selectedId.some( selectedSlideId => selectedSlideId == slide.id);
+            let isSlideSelected: boolean = selectedId.some(selectedSlideId => selectedSlideId == slide.id);
 
-            if(!isSlideSelected) {
+            if (!isSlideSelected) {
                 continue;
             }
 
@@ -87,7 +87,7 @@ export class AppComponent {
 
     public selectAttachment(attachmentId: number, event: MouseEvent): void {
         event.preventDefault();
-        
+
         if (!event.shiftKey) {
             return;
         }
@@ -101,7 +101,7 @@ export class AppComponent {
 
         this.selectedAttachments.push(attachmentId);
     }
- 
+
     public cleanSelectedAttachments(event: MouseEvent): void {
         let path: EventTarget[] = event.composedPath();
 
@@ -183,12 +183,12 @@ export class AppComponent {
 
     private moveSlidesUp(): void {
         let selectedId = this.selectedSlides;
-        
+
         for (let i = 0; i < this.presentation.slides.length; i++) {
             let slide = this.presentation.slides[i];
-            let isSlideSelected: boolean = selectedId.some( selectedSlideId => selectedSlideId == slide.id);
+            let isSlideSelected: boolean = selectedId.some(selectedSlideId => selectedSlideId == slide.id);
 
-            if(!isSlideSelected) {
+            if (!isSlideSelected) {
                 continue;
             }
 
@@ -227,12 +227,12 @@ export class AppComponent {
     // Other
     private moveSlidesDown(): void {
         let selectedId = this.selectedSlides;
-        
+
         for (let i = this.presentation.slides.length - 1; i > -1; i--) {
             let slide = this.presentation.slides[i];
 
             let isSlideSelected: boolean = selectedId.some(selectedSlideId => selectedSlideId == slide.id);
-            if(!isSlideSelected) {
+            if (!isSlideSelected) {
                 continue;
             }
 
