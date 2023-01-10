@@ -8,7 +8,7 @@ import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachm
 import { addSlideAttachment, deleteAttachments } from 'src/functions/SlideFunctions';
 import { createSlide } from 'src/functions/SlideFunctions';
 import { addPresentationSlide, copyPresentation, createPresentation, movePresentationSlideDown, movePresentationSlideUp, movePresentationSlidesDown, movePresentationSlidesUp, removeSlide } from 'src/functions/PresentationFunctions';
-import { SlideSettingsComponent } from './slide-settings/slide-settings.component';
+import { SlideSettingsComponent } from './settings/slide-settings/slide-settings.component';
 import { DataService } from 'src/models/other/DataService';
 import { SelectionHandler } from 'src/services/SelectionHandler';
 

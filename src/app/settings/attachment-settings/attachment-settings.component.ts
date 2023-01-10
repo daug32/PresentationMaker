@@ -33,9 +33,9 @@ abstract class SettingsComponentController {
 }
 
 @Component({
-    selector: 'settings',
-    templateUrl: './settings.component.html',
-    styleUrls: ['./settings.component.scss']
+    selector: 'attachment-settings',
+    templateUrl: './attachment-settings.component.html',
+    styleUrls: ['./attachment-settings.component.scss']
 })
 export class SettingsComponent extends SettingsComponentController implements OnInit {
     @Input('attachment') public attachment!: Attachment;

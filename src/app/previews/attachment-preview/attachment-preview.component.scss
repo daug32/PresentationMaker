@@ -1,0 +1,38 @@
+.attachment {
+    width: 0;
+    height: 0;
+
+    &__text {
+        border: 0;
+        text-align: start;
+
+        &:focus {
+            outline: none;
+        }
+
+        &_static {
+            white-space: nowrap;
+            word-break: keep-all;
+            overflow: hidden;
+        }
+    }
+
+    &_unfocused {
+        border: none;
+        border-width: 0;
+    }
+
+    &_focused {
+        border-style: dashed;
+        border-width: 1px;
+        border-color: rgb(0, 0, 0);
+    }
+
+    &__settings {
+        width: 225px;
+    }
+
+    &__primitive {
+        background-color: transparent;
+    }
+}

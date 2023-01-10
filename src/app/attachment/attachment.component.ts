@@ -1,7 +1,7 @@
 import { CdkDrag, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Attachment } from 'src/models/presentation/Attachment';
-import { SettingsComponent } from './settings/settings.component';
+import { SettingsComponent } from '../settings/attachment-settings/attachment-settings.component';
 import { Vector2 } from 'src/models/other/Vector2';
 import { AttachmentBaseComponent } from './AttachmentBaseComponent';
 
