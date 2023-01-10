@@ -55,7 +55,10 @@
              (contextmenu)="onWorkspaceRightClick($event)">
             <div class="presentation-maker__workspace-container"
                 [style.backgroundColor]="currentSlide.backgroundColor">
-                <img *ngIf="currentSlide.hasImage" [src]="currentSlide.image" class="presentation-maker__workspace-image" />
+                <img *ngIf="currentSlide.hasImage"
+                    [src]="currentSlide.image"
+                    class="presentation-maker__workspace-image" />
+                    
                 <attachment *ngFor="let attachment of currentSlide.attachments"
                     [attachment]="attachment"
                     [isSelected]="isAttachmentSelected(attachment.id)"

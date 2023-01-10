@@ -7,8 +7,9 @@ import { Slide } from 'src/models/presentation/Slide';
 import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
 import { deleteAttachments } from 'src/functions/SlideFunctions';
 import { createSlide } from 'src/functions/SlideFunctions';
-import { removeSlide } from 'src/functions/PresentationFunctions';
+import { createPresentation, removeSlide } from 'src/functions/PresentationFunctions';
 import { SlideSettingsComponent } from './slide-settings/slide-settings.component';
+import { DataService } from 'src/models/other/DataService';
 
 @Component({
     selector: 'app-root',
@@ -16,7 +17,9 @@ import { SlideSettingsComponent } from './slide-settings/slide-settings.componen
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    public presentation: Presentation;
+    private _dataService: DataService<Presentation>;
+    public get presentation(): Presentation { return this._dataService.value; }
+    public set presentation(value: Presentation) { this._dataService.value = value; }
 
     // Selections
     public selectedSlides: number[] = [];
@@ -40,8 +43,8 @@ export class AppComponent {
     }
 
     // Settings 
-	private _hasOpenedSettings: boolean = false;
-	@ViewChild('slideSettings', { read: ElementRef }) slideSettings!: ElementRef;
+    private _hasOpenedSettings: boolean = false;
+    @ViewChild('slideSettings', { read: ElementRef }) slideSettings!: ElementRef;
 
     // Items repository info
     // TODO: Вынести в репозитории сущностей
@@ -49,30 +52,16 @@ export class AppComponent {
     private _slideLastId: number = 0;
 
     constructor() {
+        this._dataService = new DataService<Presentation>(createPresentation());
+
         this.presentation = this.testPresentation();
         this._currentSlideId = this.presentation.slides[0]?.id ?? 0;
         document.addEventListener("keydown", (event: KeyboardEvent) => this.deleteSelected(event));
-    }
-    
-    public deleteSelected(event: KeyboardEvent): void {
-        if (event.keyCode !== 46) {
-            return;
-        }
 
-        this.currentSlide = deleteAttachments(this.currentSlide, this.selectedAttachments);
-        
-        let selectedId = this.selectedSlides;
-        for (let i = 0; i < this.presentation.slides.length; i++) {
-            let slide = this.presentation.slides[i];
-            let isSlideSelected: boolean = selectedId.some( selectedSlideId => selectedSlideId == slide.id);
-
-            if(!isSlideSelected) {
-                continue;
-            }
-
-            this.onDeleteSlide(slide.id);
-            i--;
-        }
+        this._dataService.observable.subscribe(newPresentation => {
+            console.log('Presentation was changed');
+            console.log(newPresentation);
+        });
     }
 
     // System operations
@@ -92,7 +81,7 @@ export class AppComponent {
 
     public selectAttachment(attachmentId: number, event: MouseEvent): void {
         event.preventDefault();
-        
+
         if (!event.shiftKey) {
             return;
         }
@@ -112,19 +101,19 @@ export class AppComponent {
             return;
         }
 
-		event.preventDefault();
+        event.preventDefault();
 
-		if (SlideSettingsComponent.isShown) {
-			SlideSettingsComponent.close();
-		}
+        if (SlideSettingsComponent.isShown) {
+            SlideSettingsComponent.close();
+        }
 
-		if (!this._hasOpenedSettings) {
-			SlideSettingsComponent.open(this.slideSettings, new Vector2(event.clientX, event.clientY));
-		}
+        if (!this._hasOpenedSettings) {
+            SlideSettingsComponent.open(this.slideSettings, new Vector2(event.clientX, event.clientY));
+        }
 
-		this._hasOpenedSettings = !this._hasOpenedSettings;
+        this._hasOpenedSettings = !this._hasOpenedSettings;
     }
- 
+
     public cleanSelectedAttachments(event: MouseEvent): void {
         if (!this.isClickOnWorkspace(event)) {
             return;
@@ -209,12 +198,12 @@ export class AppComponent {
 
     private moveSlidesUp(): void {
         let selectedId = this.selectedSlides;
-        
+
         for (let i = 0; i < this.presentation.slides.length; i++) {
             let slide = this.presentation.slides[i];
-            let isSlideSelected: boolean = selectedId.some( selectedSlideId => selectedSlideId == slide.id);
+            let isSlideSelected: boolean = selectedId.some(selectedSlideId => selectedSlideId == slide.id);
 
-            if(!isSlideSelected) {
+            if (!isSlideSelected) {
                 continue;
             }
 
@@ -245,15 +234,15 @@ export class AppComponent {
         this.presentation.slides[index + 1] = this.presentation.slides[index];
         this.presentation.slides[index] = changed;
     }
-    
+
     private moveSlidesDown(): void {
         let selectedId = this.selectedSlides;
-        
+
         for (let i = this.presentation.slides.length - 1; i > -1; i--) {
             let slide = this.presentation.slides[i];
 
             let isSlideSelected: boolean = selectedId.some(selectedSlideId => selectedSlideId == slide.id);
-            if(!isSlideSelected) {
+            if (!isSlideSelected) {
                 continue;
             }
 
@@ -263,6 +252,27 @@ export class AppComponent {
 
     public onDeleteSlide(id: number): void {
         this.presentation = removeSlide(this.presentation, id);
+    }
+
+    public deleteSelected(event: KeyboardEvent): void {
+        if (event.keyCode !== 46) {
+            return;
+        }
+
+        this.currentSlide = deleteAttachments(this.currentSlide, this.selectedAttachments);
+
+        let selectedId = this.selectedSlides;
+        for (let i = 0; i < this.presentation.slides.length; i++) {
+            let slide = this.presentation.slides[i];
+            let isSlideSelected: boolean = selectedId.some(selectedSlideId => selectedSlideId == slide.id);
+
+            if (!isSlideSelected) {
+                continue;
+            }
+
+            this.onDeleteSlide(slide.id);
+            i--;
+        }
     }
 
     // Other
