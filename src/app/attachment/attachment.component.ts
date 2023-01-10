@@ -4,7 +4,6 @@ import { Attachment } from 'src/models/presentation/Attachment';
 import { SettingsComponent } from './settings/settings.component';
 import { Vector2 } from 'src/models/other/Vector2';
 import { AttachmentBaseComponent } from './AttachmentBaseComponent';
-import { Slide } from 'src/models/presentation/Slide';
 
 @Component({
 	selector: 'attachment',

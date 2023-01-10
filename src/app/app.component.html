@@ -1,10 +1,10 @@
 <div class="presentation-maker">
     <presentation-toolbar 
         [presentation]="presentation"
-        (onPresentationLoad)="onPresentationLoad($event)"
-        (undoEvent)="onUndo()"
-        (redoEvent)="onRedo()"
-        (onCreateAttachmentEvent)="onCreateAttachment($event)">
+        (onUndoEvent)="onUndo()"
+        (onRedoEvent)="onRedo()"
+        (onCreateAttachmentEvent)="onCreateAttachment($event)"
+        (onChangeEvent)="onPresentationChange($event)">
     </presentation-toolbar>
 
     <div class="presentation-maker__content-container">

@@ -8,6 +8,7 @@ import { PresentationToolbarComponent } from './presentation-toolbar/presentatio
 import { SlidePreviewComponent } from './slide-preview/slide-preview.component';
 import { AttachmentComponent } from './attachment/attachment.component';
 import { SettingsComponent } from './attachment/settings/settings.component';
+import { SlideSettingsComponent } from './slide-settings/slide-settings.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,7 +19,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatIconModule } from '@angular/material/icon';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MatButtonModule } from '@angular/material/button';
-import { SlideSettingsComponent } from './slide-settings/slide-settings.component';
 
 @NgModule({
   declarations: [

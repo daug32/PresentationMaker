@@ -59,18 +59,21 @@ export class AppComponent {
         document.addEventListener("keydown", (event: KeyboardEvent) => this.deleteSelected(event));
 
         this._dataService.observable.subscribe(newPresentation => {
-            console.log('Presentation was changed');
             console.log(newPresentation);
         });
     }
 
     // System operations
-    public onUndo(): void { }
+    public onUndo(): void {
+        console.log('Trying to do undo');
+    }
 
-    public onRedo(): void { }
+    public onRedo(): void {
+        console.log('Trying to do redo');
+    }
 
     // Presentation
-    public onPresentationLoad(presentation: Presentation): void {
+    public onPresentationChange(presentation: Presentation): void {
         this.presentation = presentation;
     }
 
