@@ -95,7 +95,8 @@ export class AppComponent {
     // Atttachments
     public onCreateAttachment(attachmentType: AttachmentType): void {
         let attachment = createAttachment(this._attachmentLastId++, attachmentType);
-        this.currentSlide = addSlideAttachment(this.currentSlide, attachment);
+        this.currentSlide.attachments.push(attachment);
+        this.stateManager.save(this.presentation);
     }
 
     public selectAttachment(attachmentId: number, event: MouseEvent): void {
