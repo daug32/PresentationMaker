@@ -6,13 +6,19 @@ import { Slide } from "src/models/presentation/Slide";
 export class StateManagerService {
     public states: Presentation[] = [];
     public position: number = 0;
+    private _maxLength = 20;
 
     public save(presentation: Presentation): void {
-        this.clear();
+        if (this.states.length > this._maxLength) {
+            this.deleteFirst();
+        }
+
+        if (this.position != 0) {
+            this.clear();
+        }
+
         let copy = this.getFullCopy(presentation);
         this.states.push(copy);
-        
-        console.log(this);
     }
 
     public back(): void {
@@ -37,17 +43,17 @@ export class StateManagerService {
             return null;
         }
 
-        console.log(this);
-
-        return this.states[index];
+        return this.getFullCopy(this.states[index]);
     }
 
     private clear(): void {
         let index = this.states.length - 1 - this.position;
-        for (let i = index + 1; i < this.states.length; i++) {
-            console.log(this.states.pop());
-        }
+        this.states.splice(index + 1);
         this.position = 0;
+    }
+
+    private deleteFirst(): void {
+        this.states.splice(0, 1);
     }
 
     private getFullCopy(presentation: Presentation): Presentation {
