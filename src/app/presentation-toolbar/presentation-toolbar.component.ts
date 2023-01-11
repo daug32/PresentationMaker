@@ -62,7 +62,7 @@ export class PresentationToolbarComponent {
     }
 
     public onExport(): void {
-        let slides: HTMLCollection = document.getElementsByTagName('slide-preview');
+        let slides = document.getElementsByTagName('slide-preview');
         let builder = new PdfBuilderService();
         builder.pdfConvertor(slides, this.presentation.name);    
     }

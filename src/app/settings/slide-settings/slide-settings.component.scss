@@ -34,4 +34,15 @@
             width: 40%;
         }
     }
+
+    &__color {
+        width: 40%;
+
+        &-group {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
 }

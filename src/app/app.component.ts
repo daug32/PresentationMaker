@@ -1,13 +1,11 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Vector2 } from 'src/models/other/Vector2';
-import { Attachment, ImageAttachment, TextAttachment } from 'src/models/presentation/Attachment';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
-import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
-import { deleteAttachments } from 'src/functions/SlideFunctions';
+import { createAttachment } from 'src/functions/AttachmentFunctions';
 import { createSlide } from 'src/functions/SlideFunctions';
-import { addPresentationSlide, createPresentation, movePresentationSlideDown, movePresentationSlideUp, movePresentationSlidesDown, movePresentationSlidesUp, removeSlide } from 'src/functions/PresentationFunctions';
+import { movePresentationSlideDown, movePresentationSlideUp, movePresentationSlidesDown, movePresentationSlidesUp } from 'src/functions/PresentationFunctions';
 import { SlideSettingsComponent } from './settings/slide-settings/slide-settings.component';
 import { SelectionHandler } from 'src/services/SelectionHandler';
 import { StateManagerService } from 'src/services/StateManagerService';
@@ -64,6 +62,7 @@ export class AppComponent {
     constructor() {
         this.onPresentationCreate();
         document.addEventListener("keyup", event => this.processKeyupEvent(event));
+        setInterval(() => console.log(this._slideLastId, this._currentSlideId), 100);
     }
 
     // System operations
@@ -90,14 +89,15 @@ export class AppComponent {
     // Presentation
     public onPresentationChange(presentation: Presentation): void {
         this.presentation = presentation;
-        this._slideLastId = this.presentation.slides.reduce((result, slide) => result = slide.id, 0);
+        this._slideLastId = this.presentation.slides.reduce((result, slide) => result > slide.id ? result : slide.id, -1) + 1;
         this.commitState();
     }
 
     public onPresentationCreate(): void {
         this.presentation = new Presentation('Presentation title', [
-            new Slide(this._currentSlideId++, [], 0)
+            new Slide(this._slideLastId++, [], 0)
         ]);
+        this._slideLastId = this.presentation.slides.reduce((result, slide) => result > slide.id ? result : slide.id, -1) + 1;
         this.commitState();
     }
 
@@ -121,6 +121,7 @@ export class AppComponent {
     // Slides
     public onAddSlide(): void {
         let slide = createSlide(this._slideLastId++, this.presentation.slides.length);
+        console.log(slide.id);
         this.presentation.slides.push(slide);
         this.commitState();
     }
@@ -175,7 +176,7 @@ export class AppComponent {
     public isAttachmentSelected = (attachmentId: number): boolean => this._selectionService.isAttachmentSelected(attachmentId);
 
     public cleanSelections(event: MouseEvent): void {
-        if (Utils.isClassClicked(event, 'attachment')) {
+        if (!Utils.isClassClicked(event, 'attachment')) {
             this._selectionService.clear();
         }
     }
@@ -202,7 +203,7 @@ export class AppComponent {
 
     // General
     public onWorkspaceRightClick(event: MouseEvent): void {
-        if (!Utils.isClassClicked(event, 'attachment')) {
+        if (Utils.isClassClicked(event, 'attachment')) {
             return;
         }
 
@@ -235,7 +236,8 @@ export class AppComponent {
     }
 
     private changeCurrentSlide(slide: Slide): void {
-        this.currentSlide = slide;
+        this._currentSlideId = slide.id;
+        console.log(this._currentSlideId);
         SlideSettingsComponent.close();
         this._hasOpenedSettings = false;
     }

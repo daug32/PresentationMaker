@@ -15,5 +15,14 @@
         </button>
     </div>
 
-    <input matInput type="color" (change)="colorChanged()" [(ngModel)]="slide.backgroundColor" />
+    
+    <div class="slide-settings__color-group" >
+        <label class="slide-settings__color">Fill color</label>
+
+        <input matInput
+            class="slide-settings__color"
+            type="color"
+            (change)="colorChanged()"
+            [(ngModel)]="slide.backgroundColor" />
+    </div>
 </div>

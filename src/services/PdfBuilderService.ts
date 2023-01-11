@@ -30,17 +30,19 @@ export class PdfBuilderService {
         let canvases: HTMLCanvasElement[] = [];
 
         for (let i = 0; i < slides.length; i++) {
-            let slide: HTMLElement = slides.item(i) as HTMLElement;
+            let slide: HTMLElement = slides.item(i)!.cloneNode(true) as HTMLElement;
 
-            let transform = slide.style.transform;
             slide.style.transform = 'none';
-            let border = slide.style.borderStyle;
             slide.style.borderStyle = 'hidden';
+            slide.style.position = 'absolute';
+            slide.style.right = '99999px';
+            slide.style.border = '999999px';
 
+            document.body.appendChild(slide);
+            
             let canvas = await html2Canvas(slide);
 
-            slide.style.borderStyle = border;
-            slide.style.transform = transform;
+            document.body.removeChild(slide);
 
             canvases.push(canvas);
         }

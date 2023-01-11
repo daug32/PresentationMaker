@@ -15,7 +15,7 @@ export class Utils {
         let path: EventTarget[] = event.composedPath();
         return path.some(target => {
             let element = target as HTMLElement;
-            element.classList?.contains(targetClass);
+            return element.classList?.contains(targetClass);
         });
     }
 }
