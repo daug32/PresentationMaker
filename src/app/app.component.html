@@ -1,10 +1,10 @@
 <div class="presentation-maker">
     <presentation-toolbar 
         [presentation]="presentation"
-        (onPresentationLoad)="onPresentationLoad($event)"
-        (undoEvent)="onUndo()"
-        (redoEvent)="onRedo()"
-        (onCreateAttachmentEvent)="onCreateAttachment($event)">
+        (onUndoEvent)="onUndo()"
+        (onRedoEvent)="onRedo()"
+        (onCreateAttachmentEvent)="onCreateAttachment($event)"
+        (onChangeEvent)="onPresentationChange($event)">
     </presentation-toolbar>
 
     <div class="presentation-maker__content-container">
@@ -22,21 +22,21 @@
                     <button mat-icon-button
                         class="presentation-maker__slide-action-button"
                         title="Raise"
-                        (click)="onRaiseSlide(slide.id)">
+                        (click)="onRaiseSlideButton(slide.id)">
                         <mat-icon>arrow_upward</mat-icon>
                     </button>
 
                     <button mat-icon-button
                         class="presentation-maker__slide-action-button"
                         title="Delete"
-                        (click)="onDeleteSlide(slide.id)">
+                        (click)="deleteSlide(slide.id)">
                         <mat-icon>delete</mat-icon>
                     </button>
 
                     <button mat-icon-button
                         class="presentation-maker__slide-action-button"
                         title="Drop"
-                        (click)="onDropSlide(slide.id)">
+                        (click)="onDropSlideButton(slide.id)">
                         <mat-icon>arrow_downward</mat-icon>
                     </button>
                 </div>
@@ -55,18 +55,23 @@
              (contextmenu)="onWorkspaceRightClick($event)">
             <div class="presentation-maker__workspace-container"
                 [style.backgroundColor]="currentSlide.backgroundColor">
-                <img *ngIf="currentSlide.hasImage" [src]="currentSlide.image" class="presentation-maker__workspace-image" />
+                <img *ngIf="currentSlide.image.length > 0"
+                    [src]="currentSlide.image"
+                    class="presentation-maker__workspace-image" />
+                    
                 <attachment *ngFor="let attachment of currentSlide.attachments"
                     [attachment]="attachment"
                     [isSelected]="isAttachmentSelected(attachment.id)"
-                    (click)="selectAttachment(attachment.id, $event)">
+                    (click)="selectAttachment(attachment.id, $event)"
+                    (onChange)="onAttachmentChangeEvent($event)">
                 </attachment>
             </div>
         </div>
 
         <slide-settings class="presentation-maker__settings"
             #slideSettings
-            [slide]="currentSlide">
+            [slide]="currentSlide"
+            (onChange)="onSlideChangeEvent($event)">
         </slide-settings>
     </div>
 </div>

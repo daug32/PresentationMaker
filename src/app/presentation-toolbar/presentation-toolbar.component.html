@@ -1,6 +1,6 @@
 <div class="presentation-maker-toolbar">
-    <input class="title" [(ngModel)]="presentation.name">
-    <!--File actions starts-->
+    <input class="title" [(ngModel)]="presentation.name" (change)="onDataChange()" />
+
     <div class="toolbar-section">
         <div class="section-tools">
             <button class="tool" title="Open File" (click)="onOpen()">
@@ -12,24 +12,22 @@
             <button class="tool" title="New Presentation" (click)="newPresentationEvent()">
                 <mat-icon>library_add</mat-icon>
             </button>
-            <button class="tool" title="Undo" (click)="onUndoEvent()">
+            <button class="tool" title="Undo" (click)="onUndoEvent.emit()">
                 <mat-icon>undo</mat-icon>
             </button>
-            <button class="tool" title="Redo" (click)="onRedoEvent()">
+            <button class="tool" title="Redo" (click)="onRedoEvent.emit()">
                 <mat-icon>redo</mat-icon>
             </button>
             <button class="tool" title="Export to PDF" (click)="onExport()">
                 <mat-icon>upgrade</mat-icon>
             </button>
-
         </div>
+
         <div class="section-title">
             <p>FILE ACTIONS</p>
         </div>
     </div>
-    <!--File actions close-->
 
-    <!--Attachments starts-->
     <div class="toolbar-section">
         <div class="section-tools">
             <button class="tool" title="Text" (click)="textEvent()">

@@ -1,7 +1,6 @@
 .attachment {
     width: 0;
     height: 0;
-    cursor: pointer;
 
     &__text {
         border: 0;
@@ -16,12 +15,6 @@
             word-break: keep-all;
             overflow: hidden;
         }
-    }
-
-    &_focused {
-        border-style: dashed;
-        border-width: 1px;
-        border-color: rgb(0, 0, 0);
     }
 
     &__settings {

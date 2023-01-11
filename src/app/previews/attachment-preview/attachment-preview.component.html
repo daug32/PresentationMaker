@@ -1,12 +1,9 @@
-<div class="attachment" 
-    cdkDrag #container="cdkDrag" 
-    [cdkDragFreeDragPosition]="position"
-    (cdkDragEnded)="onDragDropped($event)" 
-    (contextmenu)="onRightClick($event)">
-    <input *ngIf="isText" 
-        class="attachment__text {{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
-        [(ngModel)]="textAttachment.text"
-        (change)="onDataChange()"
+
+
+<div class="attachment"
+    [style.transform]="'translate(' + position.x + 'px, ' + position.y +'px)'">
+    <p *ngIf="isText" 
+        class="attachment__text attachment__text_static"
         [style.width.px]="attachment.size.x" 
         [style.fontSize.px]="textAttachment.fontSize"
         [style.fontFamily]="textAttachment.fontFamily"
@@ -14,16 +11,16 @@
         [style.fontStyle]="isItalic ? 'italic' : ''"
         [style.fontWeight]="isBold ? 'bold' : ''"
         [style.color]="textAttachment.color"
-        [style.backgroundColor]="textAttachment.fillColor" />
+        [style.backgroundColor]="textAttachment.fillColor">
+        {{ textAttachment.text }}
+    </p>
 
     <img *ngIf="isImage" 
-        class="{{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         [src]="imageAttachment.image"
         [style.width.px]="attachment.size.x" 
-        [style.height.px]="attachment.size.y"/>
+        [style.height.px]="attachment.size.y" />
 
     <svg *ngIf="isPrimitive"
-        class="{{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         [attr.width]="primitiveAttachment.size.x"
         [attr.height]="primitiveAttachment.size.y"
         [ngSwitch]="primitiveAttachment.attachmentType">
@@ -55,9 +52,4 @@
             [attr.stroke-width]="strokeWidth">
         </polygon>
     </svg>
-
-    <attachment-settings #attachmentSettings
-        [attachment]="attachment"
-        (onChange)="onDataChange()">
-    </attachment-settings>
 </div>

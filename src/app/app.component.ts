@@ -5,10 +5,13 @@ import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
 import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
-import { deleteAttachments } from 'src/functions/SlideFunctions';
+import { addSlideAttachment, copySlide, deleteAttachments } from 'src/functions/SlideFunctions';
 import { createSlide } from 'src/functions/SlideFunctions';
-import { removeSlide } from 'src/functions/PresentationFunctions';
-import { SlideSettingsComponent } from './slide-settings/slide-settings.component';
+import { addPresentationSlide, copyPresentation, createPresentation, movePresentationSlideDown, movePresentationSlideUp, movePresentationSlidesDown, movePresentationSlidesUp, removeSlide } from 'src/functions/PresentationFunctions';
+import { SlideSettingsComponent } from './settings/slide-settings/slide-settings.component';
+import { DataService } from 'src/models/other/DataService';
+import { SelectionHandler } from 'src/services/SelectionHandler';
+import { StateManagerService } from 'src/services/StateManagerService';
 
 @Component({
     selector: 'app-root',
@@ -16,11 +19,15 @@ import { SlideSettingsComponent } from './slide-settings/slide-settings.componen
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    public presentation: Presentation;
+    private _presentation!: Presentation;
+    public get presentation(): Presentation { return this._presentation; }
+    public set presentation(value: Presentation) { 
+        this._presentation = value;
+    }
 
     // Selections
-    public selectedSlides: number[] = [];
-    public selectedAttachments: number[] = [];
+    private stateManager = new StateManagerService();
+    private _selectionService = new SelectionHandler();
 
     // Current slide
     private _currentSlideId: number = 0;
@@ -34,24 +41,24 @@ export class AppComponent {
         if (index == -1) {
             return;
         }
-
-        this.presentation.slides[index] = slide;
+        
         this._currentSlideId = slide.id;
     }
 
     // Settings 
-	private _hasOpenedSettings: boolean = false;
-	@ViewChild('slideSettings', { read: ElementRef }) slideSettings!: ElementRef;
+    private _hasOpenedSettings: boolean = false;
+    @ViewChild('slideSettings', { read: ElementRef }) slideSettings!: ElementRef;
 
     // Items repository info
     // TODO: Вынести в репозитории сущностей
-    private _attachmentLastId: number = 0;
     private _slideLastId: number = 0;
+    private _attachmentLastId: number = 0;
 
     constructor() {
         this.presentation = this.testPresentation();
         this._currentSlideId = this.presentation.slides[0]?.id ?? 0;
         document.addEventListener("keydown", (event: KeyboardEvent) => this.deleteSelected(event));
+<<<<<<< HEAD
     }
 
     public deleteSelected(event: KeyboardEvent): void {
@@ -73,40 +80,65 @@ export class AppComponent {
             this.onDeleteSlide(slide.id);
             i--;
         }
+=======
+        this.stateManager.save(this.presentation);
+>>>>>>> f88795cfeac55bc4e898fa07f13bb957c6ede66e
     }
 
     // System operations
-    public onUndo(): void { }
+    public onUndo(): void {
+        this.stateManager.back();
+        let presentation = this.stateManager.get();
+        if (presentation) {
+            this.presentation = presentation;
+        }
+    }
 
-    public onRedo(): void { }
+    public onRedo(): void {
+        this.stateManager.further();
+        let presentation = this.stateManager.get();
+        if (presentation) {
+            this.presentation = presentation;
+        }
+    }
 
+    public onSlideChangeEvent(slide: Slide) {
+        this.stateManager.save(this.presentation);
+    }
+
+    public onAttachmentChangeEvent(attachment: Attachment): void {
+        this.stateManager.save(this.presentation);
+    }
+    
     // Presentation
-    public onPresentationLoad(presentation: Presentation): void {
+    public onPresentationChange(presentation: Presentation): void {
         this.presentation = presentation;
+        this.stateManager.save(this.presentation);
     }
 
     // Atttachments
     public onCreateAttachment(attachmentType: AttachmentType): void {
-        this.currentSlide.attachments.push(createAttachment(this._attachmentLastId++, attachmentType));
+        let attachment = createAttachment(this._attachmentLastId++, attachmentType);
+        this.currentSlide.attachments.push(attachment);
+        this.stateManager.save(this.presentation);
     }
 
     public selectAttachment(attachmentId: number, event: MouseEvent): void {
+<<<<<<< HEAD
         event.preventDefault();
 
+=======
+>>>>>>> f88795cfeac55bc4e898fa07f13bb957c6ede66e
         if (!event.shiftKey) {
             return;
         }
+        
+        event.preventDefault();
 
-        for (let i = 0; i < this.selectedAttachments.length; i++) {
-            if (this.selectedAttachments[i] == attachmentId) {
-                this.selectedAttachments.splice(i, 1);
-                return;
-            }
-        }
-
-        this.selectedAttachments.push(attachmentId);
+        this._selectionService.selectAttachment(attachmentId);
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
     public onWorkspaceRightClick(event: MouseEvent): void {
@@ -128,12 +160,14 @@ export class AppComponent {
     }
  
 >>>>>>> 6133c8be387b4b4f8fb8837fd456b6b5adc149e7
+=======
+>>>>>>> f88795cfeac55bc4e898fa07f13bb957c6ede66e
     public cleanSelectedAttachments(event: MouseEvent): void {
         if (!this.isClickOnWorkspace(event)) {
             return;
         }
-
-        this.selectedAttachments = [];
+        
+        this._selectionService.clear();
     }
 
     private isClickOnWorkspace(event: Event): boolean {
@@ -145,43 +179,111 @@ export class AppComponent {
     }
 
     public isAttachmentSelected(attachmentId: number): boolean {
-        return this.selectedAttachments.some(selectedAttachmentId => selectedAttachmentId == attachmentId);
+        return this._selectionService.isAttachmentSelected(attachmentId);
     }
 
     // Slides
     public onAddSlide(): void {
-        this.presentation.slides.push(createSlide(this._slideLastId++, this.presentation.slides.length));
+        let slide = createSlide(this._slideLastId++, this.presentation.slides.length);
+        this.presentation = addPresentationSlide(this.presentation, slide);
+        this.stateManager.save(this.presentation);
     }
 
     public onSlideClick(slideId: number, event: MouseEvent): void {
         if (event.shiftKey) {
-            this.selectSlide(slideId, event);
+            event.preventDefault();
+            this._selectionService.selectSlide(slideId);
+            return;
         }
-        else {
-            this.changeSlide(slideId);
-            this.selectedSlides = [];
+
+        this.changeCurrentSlide(slideId);
+        this._selectionService.clear();
+    }
+
+    public isSlideSelected(slideId: number): boolean { 
+        return this._selectionService.isSlideSelected(slideId);
+    }
+
+    public onRaiseSlideButton(slideId: number): void {
+        if (this._selectionService.slides.length > 1) {
+            this.presentation = movePresentationSlidesUp(this.presentation, this._selectionService.slides);
+            this.stateManager.save(this.presentation);
+            return;
+        }
+        
+        let presentation = movePresentationSlideUp(this.presentation, slideId);
+        if (presentation) {
+            this.presentation = presentation;
+            this.stateManager.save(this.presentation);
         }
     }
 
-    private selectSlide(id: number, event: MouseEvent): void {
+    public onDropSlideButton(slideId: number): void {
+        if (this._selectionService.slides.length > 1) {
+            this.presentation = movePresentationSlidesDown(this.presentation, this._selectionService.slides);
+            this.stateManager.save(this.presentation);
+            return;
+        }
+
+        let presentation = movePresentationSlideDown(this.presentation, slideId);
+        if (presentation) {
+            this.presentation = presentation;
+            this.stateManager.save(this.presentation);
+        }
+    }
+
+    public deleteSlide(id: number): void {
+        this.presentation = removeSlide(this.presentation, id);
+        this.stateManager.save(this.presentation);
+    }
+
+    // General
+    public deleteSelected(event: KeyboardEvent): void {
+        if (event.keyCode !== 46) {
+            return;
+        }
+
+        this.currentSlide = deleteAttachments(this.currentSlide, this._selectionService.attachments);
+
+        for (let i = 0; i < this.presentation.slides.length; i++) {
+            let slide = this.presentation.slides[i];
+            if (!this._selectionService.isSlideSelected(slide.id)) {
+                continue;
+            }
+
+            i--;
+            this.presentation = removeSlide(this.presentation, slide.id);
+        }
+
+        this.stateManager.save(this.presentation);
+    }
+
+    public onWorkspaceRightClick(event: MouseEvent): void {
+        if (!this.isClickOnWorkspace(event)) {
+            return;
+        }
+
         event.preventDefault();
 
-        for (let i = 0; i < this.selectedSlides.length; i++) {
-            if (this.selectedSlides[i] == id) {
-                this.selectedSlides.splice(i, 1);
-                return;
-            }
+        if (SlideSettingsComponent.isShown) {
+            SlideSettingsComponent.close();
         }
 
-        this.selectedSlides.push(id);
+        if (!this._hasOpenedSettings) {
+            SlideSettingsComponent.open(this.slideSettings, new Vector2(event.clientX, event.clientY));
+        }
+
+        this._hasOpenedSettings = !this._hasOpenedSettings;
     }
 
-    private changeSlide(slideId: number): void {
+    // Other
+    private changeCurrentSlide(slideId: number): void {
         this._currentSlideId = slideId;
         SlideSettingsComponent.close();
         this._hasOpenedSettings = false;
     }
 
+<<<<<<< HEAD
     public isSlideSelected(id: number): boolean {
         return this.selectedSlides.some(selectedSlide => selectedSlide == id);
     }
@@ -269,6 +371,8 @@ export class AppComponent {
     }
 
     // Other
+=======
+>>>>>>> f88795cfeac55bc4e898fa07f13bb957c6ede66e
     private testPresentation(): Presentation {
         let slides: Slide[] = [];
         for (let i = 0; i < 2; i++) {
