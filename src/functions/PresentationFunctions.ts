@@ -23,20 +23,6 @@ export function savePresentation(presentation: Presentation): void {
     document.body.removeChild(element);
 };
 
-export function openPresentation(): void {
-    let input: HTMLInputElement = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.asticots';
-    input.onchange = _ => loadFile(input, (presentation: Presentation) => console.log(presentation));
-
-    input.click();
-
-    document.body.removeChild(input);
-};
-
-export function exportPresentation(): void {
-};
-
 export function setPresentationName(presentation: Presentation, newName: string): Presentation {
     let newPresentation = copyPresentation(presentation);
     newPresentation.name = newName;
@@ -52,29 +38,4 @@ export function removeSlides(presentation: Presentation, sildesIds: number[]): P
     newPresentation.slides = presentation.slides.filter(x => sildesIds.every(id => id != x.id));
 
     return newPresentation;
-}
-
-function loadFile(input: HTMLInputElement, onLoad: (presentation: Presentation) => void): void {
-    let files: FileList | null = input?.files;
-    if (files = null) {
-        return;
-    }
-
-    let file: File | null | undefined = input.files?.item(0);
-    if (file == null) {
-        return;
-    }
-
-    let reader = new FileReader();
-
-    reader.onload = () => {
-        let result: string = reader.result as string;
-        console.log(result);
-
-        let loadedPresentation: Presentation = JSON.parse(result);
-
-        onLoad(loadedPresentation);
-    };
-
-    reader.readAsText(file);
 }

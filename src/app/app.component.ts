@@ -1,13 +1,14 @@
-import { Component, Input, OnInit, ViewChild, AfterViewInit, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Vector2 } from 'src/models/other/Vector2';
 import { Attachment, ImageAttachment, TextAttachment } from 'src/models/presentation/Attachment';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
 import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
-import { deleteAttachment, deleteAttachments } from 'src/functions/SlideFunctions';
+import { deleteAttachments } from 'src/functions/SlideFunctions';
 import { createSlide } from 'src/functions/SlideFunctions';
 import { removeSlide } from 'src/functions/PresentationFunctions';
+import { SlideSettingsComponent } from './slide-settings/slide-settings.component';
 
 @Component({
     selector: 'app-root',
@@ -37,6 +38,10 @@ export class AppComponent {
         this.presentation.slides[index] = slide;
         this._currentSlideId = slide.id;
     }
+
+    // Settings 
+	private _hasOpenedSettings: boolean = false;
+	@ViewChild('slideSettings', { read: ElementRef }) slideSettings!: ElementRef;
 
     // Items repository info
     // TODO: Вынести в репозитории сущностей
@@ -102,19 +107,41 @@ export class AppComponent {
         this.selectedAttachments.push(attachmentId);
     }
 
+<<<<<<< HEAD
+=======
+    public onWorkspaceRightClick(event: MouseEvent): void {
+        if (!this.isClickOnWorkspace(event)) {
+            return;
+        }
+
+		event.preventDefault();
+
+		if (SlideSettingsComponent.isShown) {
+			SlideSettingsComponent.close();
+		}
+
+		if (!this._hasOpenedSettings) {
+			SlideSettingsComponent.open(this.slideSettings, new Vector2(event.clientX, event.clientY));
+		}
+
+		this._hasOpenedSettings = !this._hasOpenedSettings;
+    }
+ 
+>>>>>>> 6133c8be387b4b4f8fb8837fd456b6b5adc149e7
     public cleanSelectedAttachments(event: MouseEvent): void {
-        let path: EventTarget[] = event.composedPath();
-
-        let isAttachment: boolean = path.some(step => {
-            let element: HTMLElement = step as HTMLElement;
-            return element.classList?.contains('attachment');
-        });
-
-        if (isAttachment) {
+        if (!this.isClickOnWorkspace(event)) {
             return;
         }
 
         this.selectedAttachments = [];
+    }
+
+    private isClickOnWorkspace(event: Event): boolean {
+        let path: EventTarget[] = event.composedPath();
+        return !path.some(step => {
+            let element: HTMLElement = step as HTMLElement;
+            return element.classList?.contains('attachment');
+        });
     }
 
     public isAttachmentSelected(attachmentId: number): boolean {
@@ -151,6 +178,8 @@ export class AppComponent {
 
     private changeSlide(slideId: number): void {
         this._currentSlideId = slideId;
+        SlideSettingsComponent.close();
+        this._hasOpenedSettings = false;
     }
 
     public isSlideSelected(id: number): boolean {
@@ -219,12 +248,7 @@ export class AppComponent {
         this.presentation.slides[index + 1] = this.presentation.slides[index];
         this.presentation.slides[index] = changed;
     }
-
-    public onDeleteSlide(id: number): void {
-        this.presentation = removeSlide(this.presentation, id);
-    }
-
-    // Other
+    
     private moveSlidesDown(): void {
         let selectedId = this.selectedSlides;
 
@@ -240,6 +264,11 @@ export class AppComponent {
         }
     }
 
+    public onDeleteSlide(id: number): void {
+        this.presentation = removeSlide(this.presentation, id);
+    }
+
+    // Other
     private testPresentation(): Presentation {
         let slides: Slide[] = [];
         for (let i = 0; i < 2; i++) {

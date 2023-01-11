@@ -14,12 +14,11 @@ import { Slide } from 'src/models/presentation/Slide';
 export class AttachmentComponent extends AttachmentBaseComponent implements OnInit {
 	@Input() public override attachment!: Attachment;
 	@Input() public needCompactView: boolean = false;
-	@Input() isSelected! : boolean;
+	@Input() public isSelected! : boolean;
 	@Output() onInput = new EventEmitter<any>();
 
 	@ViewChild('canvas') canvas: ElementRef | null = null;
 
-	private isContextMenuVisisble: boolean = false;
 	@ViewChild('contextMenu') contextMenu!: ElementRef;
 
 	@ViewChild('container') container!: CdkDrag;
