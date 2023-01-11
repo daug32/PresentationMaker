@@ -12,7 +12,8 @@
         aria-label="Font styles"
         class="attachment-settings__toggles"
         multiple
-        [(ngModel)]="textAttachment.fontStyle">
+        [(ngModel)]="textAttachment.fontStyle"
+        (change)="onDataChange()">
         <mat-button-toggle value="italic">I</mat-button-toggle>
         <mat-button-toggle value="bold">B</mat-button-toggle>
         <mat-button-toggle value="striked">S</mat-button-toggle>
@@ -24,7 +25,8 @@
         <input matInput
             type="number"
             class="attachment-settings__input attachment-settings__input_labeled"
-            [(ngModel)]="attachment.size.y" />
+            [(ngModel)]="attachment.size.y"
+            (change)="onDataChange()" />
     </mat-form-field>
 
     <mat-form-field *ngIf="canShowWidth()"
@@ -33,7 +35,8 @@
         <input matInput
             type="number"
             class="attachment-settings__input attachment-settings__input_labeled"
-            [(ngModel)]="attachment.size.x" />
+            [(ngModel)]="attachment.size.x"
+            (change)="onDataChange()" />
     </mat-form-field>
 
     <mat-form-field *ngIf="canShowRadius()"
@@ -42,7 +45,8 @@
         <input matInput
             type="number"
             class="attachment-settings__input attachment-settings__input_labeled"
-            [(ngModel)]="radius" />
+            [(ngModel)]="radius"
+            (change)="onDataChange()" />
     </mat-form-field>
 
     <mat-form-field *ngIf="isText"
@@ -51,7 +55,8 @@
         <input matInput
             type="text"
             class="attachment-settings__input attachment-settings__input_labeled"
-            [(ngModel)]="textAttachment.fontFamily"/>
+            [(ngModel)]="textAttachment.fontFamily"
+            (change)="onDataChange()" />
     </mat-form-field>
 
     <mat-form-field *ngIf="isText"
@@ -60,25 +65,27 @@
         <input matInput
             type="number"
             class="attachment-settings__input attachment-settings__input_labeled"
-            [(ngModel)]="textAttachment.fontSize"/>
+            [(ngModel)]="textAttachment.fontSize"
+            (change)="onDataChange()" />
     </mat-form-field>
+    
+    <div class="attachment-settings__color-group" *ngIf="isText || isPrimitive">
+        <label class="attachment-settings__color">Color</label>
 
-    <mat-form-field *ngIf="isText || isPrimitive"
-        class="attachment-settings__item">
-        <mat-label class="attachment-settings__label">Color</mat-label>
-        <input matInput
-            type="text"
-            class="attachment-settings__input attachment-settings__input_labeled" 
-            [(colorPicker)]="color"
-            [value]="color" />
-    </mat-form-field>
+        <input class="attachment-settings__color"
+            matInput 
+            type="color" 
+            (change)="onDataChange()"
+            [(ngModel)]="color" />
+    </div>
+    
+    <div class="attachment-settings__color-group"  *ngIf="isText || isPrimitive" >
+        <label class="attachment-settings__color">Fill color</label>
 
-    <mat-form-field class="attachment-settings__item" *ngIf="isText || isPrimitive">
-        <mat-label class="attachment-settings__label">Fill color</mat-label>
-        <input matInput 
-            type="text"
-            class="attachment-settings__input attachment-settings__input_labeled" 
-            [(colorPicker)]="fillColor"
-            [value]="fillColor" />
-    </mat-form-field>
+        <input class="attachment-settings__color"
+            matInput
+            type="color" 
+            (change)="onDataChange()" 
+            [(ngModel)]="fillColor" />
+    </div>
 </div>

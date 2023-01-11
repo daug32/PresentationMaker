@@ -6,6 +6,7 @@
     <input *ngIf="isText" 
         class="attachment__text {{ isSelected ? 'attachment_focused' : 'attachment_unfocused' }}" 
         [(ngModel)]="textAttachment.text"
+        (change)="onDataChange()"
         [style.width.px]="attachment.size.x" 
         [style.fontSize.px]="textAttachment.fontSize"
         [style.fontFamily]="textAttachment.fontFamily"
@@ -56,6 +57,7 @@
     </svg>
 
     <attachment-settings #attachmentSettings
-        [attachment]="attachment">
+        [attachment]="attachment"
+        (onChange)="onDataChange()">
     </attachment-settings>
 </div>

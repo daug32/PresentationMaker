@@ -38,6 +38,8 @@ export function copyAttachment(newId: number, attachment: Attachment): Attachmen
     return {
         ...attachment,
         id: newId,
+        position: { ...attachment.position },
+        size: { ...attachment.size }
     };
 }
 

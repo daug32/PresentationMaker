@@ -1,5 +1,5 @@
 <div class="presentation-maker-toolbar">
-    <input class="title" [formControl]="titleControl" />
+    <input class="title" [(ngModel)]="presentation.name" (change)="onDataChange()" />
 
     <div class="toolbar-section">
         <div class="section-tools">
@@ -12,7 +12,7 @@
             <button class="tool" title="New Presentation" (click)="newPresentationEvent()">
                 <mat-icon>library_add</mat-icon>
             </button>
-            <button class="tool" title="Undo" (click)="onRedoEvent.emit()">
+            <button class="tool" title="Undo" (click)="onUndoEvent.emit()">
                 <mat-icon>undo</mat-icon>
             </button>
             <button class="tool" title="Redo" (click)="onRedoEvent.emit()">

@@ -5,12 +5,13 @@ import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
 import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
-import { addSlideAttachment, deleteAttachments } from 'src/functions/SlideFunctions';
+import { addSlideAttachment, copySlide, deleteAttachments } from 'src/functions/SlideFunctions';
 import { createSlide } from 'src/functions/SlideFunctions';
 import { addPresentationSlide, copyPresentation, createPresentation, movePresentationSlideDown, movePresentationSlideUp, movePresentationSlidesDown, movePresentationSlidesUp, removeSlide } from 'src/functions/PresentationFunctions';
 import { SlideSettingsComponent } from './settings/slide-settings/slide-settings.component';
 import { DataService } from 'src/models/other/DataService';
 import { SelectionHandler } from 'src/services/SelectionHandler';
+import { StateManagerService } from 'src/services/StateManagerService';
 
 @Component({
     selector: 'app-root',
@@ -18,13 +19,15 @@ import { SelectionHandler } from 'src/services/SelectionHandler';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    private _dataService: DataService<Presentation>;
-    public get presentation(): Presentation { return this._dataService.value; }
-    public set presentation(value: Presentation) { this._dataService.value = value; }
+    private _presentation!: Presentation;
+    public get presentation(): Presentation { return this._presentation; }
+    public set presentation(value: Presentation) { 
+        this._presentation = value;
+    }
 
     // Selections
+    private stateManager = new StateManagerService();
     private _selectionService = new SelectionHandler();
-    public selectedAttachments: number[] = [];
 
     // Current slide
     private _currentSlideId: number = 0;
@@ -40,10 +43,6 @@ export class AppComponent {
         }
         
         this._currentSlideId = slide.id;
-
-        let newPresentation = copyPresentation(this.presentation);
-        newPresentation.slides[index] = slide;
-        this.presentation = newPresentation;
     }
 
     // Settings 
@@ -52,33 +51,46 @@ export class AppComponent {
 
     // Items repository info
     // TODO: Вынести в репозитории сущностей
-    private _attachmentLastId: number = 0;
     private _slideLastId: number = 0;
+    private _attachmentLastId: number = 0;
 
     constructor() {
-        this._dataService = new DataService<Presentation>(createPresentation());
-
         this.presentation = this.testPresentation();
         this._currentSlideId = this.presentation.slides[0]?.id ?? 0;
         document.addEventListener("keydown", (event: KeyboardEvent) => this.deleteSelected(event));
-
-        this._dataService.observable.subscribe(newPresentation => {
-            console.log(newPresentation);
-        });
+        this.stateManager.save(this.presentation);
     }
 
     // System operations
     public onUndo(): void {
         console.log('Trying to do undo');
+        this.stateManager.further();
+        let presentation = this.stateManager.get();
+        if (presentation) {
+            this.presentation = presentation;
+        }
     }
 
     public onRedo(): void {
         console.log('Trying to do redo');
+        this.stateManager.back();
+        let presentation = this.stateManager.get();
+        if (presentation) {
+            this.presentation = presentation;
+        }
     }
 
+    public onSlideChange(slide: Slide) {
+        this.stateManager.save(this.presentation);
+    }
+
+    public onAttachmentChange(attachment: Attachment): void {
+        this.stateManager.save(this.presentation);
+    }
+    
     // Presentation
     public onPresentationChange(presentation: Presentation): void {
-        this.presentation = presentation;
+        this.stateManager.save(this.presentation);
     }
 
     // Atttachments
@@ -88,10 +100,11 @@ export class AppComponent {
     }
 
     public selectAttachment(attachmentId: number, event: MouseEvent): void {
-        event.preventDefault();
         if (!event.shiftKey) {
             return;
         }
+        
+        event.preventDefault();
 
         this._selectionService.selectAttachment(attachmentId);
     }
@@ -120,6 +133,7 @@ export class AppComponent {
     public onAddSlide(): void {
         let slide = createSlide(this._slideLastId++, this.presentation.slides.length);
         this.presentation = addPresentationSlide(this.presentation, slide);
+        this.stateManager.save(this.presentation);
     }
 
     public onSlideClick(slideId: number, event: MouseEvent): void {
@@ -140,29 +154,34 @@ export class AppComponent {
     public onRaiseSlideButton(slideId: number): void {
         if (this._selectionService.slides.length > 1) {
             this.presentation = movePresentationSlidesUp(this.presentation, this._selectionService.slides);
+            this.stateManager.save(this.presentation);
             return;
         }
         
         let presentation = movePresentationSlideUp(this.presentation, slideId);
         if (presentation) {
             this.presentation = presentation;
+            this.stateManager.save(this.presentation);
         }
     }
 
     public onDropSlideButton(slideId: number): void {
         if (this._selectionService.slides.length > 1) {
             this.presentation = movePresentationSlidesDown(this.presentation, this._selectionService.slides);
+            this.stateManager.save(this.presentation);
             return;
         }
 
         let presentation = movePresentationSlideDown(this.presentation, slideId);
         if (presentation) {
             this.presentation = presentation;
+            this.stateManager.save(this.presentation);
         }
     }
 
     public deleteSlide(id: number): void {
         this.presentation = removeSlide(this.presentation, id);
+        this.stateManager.save(this.presentation);
     }
 
     // General
@@ -182,6 +201,8 @@ export class AppComponent {
             i--;
             this.presentation = removeSlide(this.presentation, slide.id);
         }
+
+        this.stateManager.save(this.presentation);
     }
 
     public onWorkspaceRightClick(event: MouseEvent): void {

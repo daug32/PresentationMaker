@@ -8,10 +8,4 @@ export class Slide {
         public backgroundColor: string = "#ffffff", 
         public image: string = ""
     ) { }
-
-    public get hasImage(): boolean { return this.image.length > 0; }
-
-    public deleteImage(): void {
-        this.image = "";
-    }
 }

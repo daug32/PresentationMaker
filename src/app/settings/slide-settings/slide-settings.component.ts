@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Vector2 } from 'src/models/other/Vector2';
 import { Slide } from 'src/models/presentation/Slide';
 
@@ -45,12 +45,22 @@ abstract class SlideSettingsComponentController {
 })
 export class SlideSettingsComponent extends SlideSettingsComponentController implements OnInit {
     @Input() public slide!: Slide;
+    @Output() onChange = new EventEmitter<Slide>();
 
     constructor() {
         super();
     }
 
     ngOnInit(): void {
+    }
+
+    public colorChanged() {
+        this.onChange.emit(this.slide);
+    }
+
+    public deleteImage() {
+        this.slide.image = "";
+        this.onChange.emit(this.slide);
     }
 
     public onFileLoad(): void {
@@ -67,7 +77,7 @@ export class SlideSettingsComponent extends SlideSettingsComponentController imp
             let reader = new FileReader();
             reader.onloadend = () => {
                 this.slide.image = reader.result as string;
-                console.log(this.slide);
+                this.onChange.emit(this.slide);
             }
             reader.readAsDataURL(file);
         };

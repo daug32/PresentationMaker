@@ -11,32 +11,18 @@ import { PdfBuilderService } from 'src/services/PdfBuilderService';
     templateUrl: './presentation-toolbar.component.html',
     styleUrls: ['./presentation-toolbar.component.scss']
 })
-export class PresentationToolbarComponent implements OnInit {
-    @Input('presentation') public _presentation!: Presentation;
+export class PresentationToolbarComponent {
+    @Input() public presentation!: Presentation;
 
     @Output() onUndoEvent = new EventEmitter<void>(); 
     @Output() onRedoEvent = new EventEmitter<void>(); 
     @Output() onChangeEvent = new EventEmitter<Presentation>(); 
     @Output() onCreateAttachmentEvent = new EventEmitter<AttachmentType>();
 
-    private _dataService!: DataService<Presentation>;
-    public get presentation(): Presentation { return this._dataService.value; }
-    public set presentation(value: Presentation) { 
-        this._dataService.value = value;
+    constructor() { }
+
+    public onDataChange(): void {
         this.onChangeEvent.emit(this.presentation);
-    }
-
-    public titleControl = new FormControl<string>('');
-
-    constructor() {
-        this.titleControl.valueChanges.subscribe(title => {
-            this.presentation = setPresentationName(this.presentation, title!);
-        });
-    }
-
-    ngOnInit(): void {
-        this._dataService = new DataService<Presentation>(this._presentation);
-        this.titleControl.setValue(this._presentation.name);
     }
 
     public textEvent(): void {
@@ -102,8 +88,8 @@ export class PresentationToolbarComponent implements OnInit {
 
         reader.onload = () => {
             let replaser: string = reader.result as string;
-            let newPresentation: Presentation = JSON.parse(replaser);
-            this.presentation = newPresentation;
+            this.presentation = JSON.parse(replaser);
+            this.onChangeEvent.emit(this.presentation);
         };
     }
 }

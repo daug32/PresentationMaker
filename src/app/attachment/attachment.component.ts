@@ -13,6 +13,7 @@ import { AttachmentBaseComponent } from '../../models/other/AttachmentBaseCompon
 export class AttachmentComponent extends AttachmentBaseComponent implements OnInit {
 	@Input() public isSelected! : boolean;
 	@Input() public override attachment!: Attachment;
+	@Output() onChange = new EventEmitter<Attachment>();
 
 	@ViewChild('container') container!: CdkDrag;
 	@ViewChild('contextMenu') contextMenu!: ElementRef;
@@ -32,10 +33,15 @@ export class AttachmentComponent extends AttachmentBaseComponent implements OnIn
 	public get position(): Vector2 { return this.attachment.position; }
 	public set position(value: Vector2) { this.attachment.position = value; }
 
+	public onDataChange(): void {
+		this.onChange.emit(this.attachment);
+	}
+
 	// Methods
 	public onDragDropped(data: CdkDragEnd): void {
 		this.attachment.position.x += data.distance.x;
 		this.attachment.position.y += data.distance.y;
+		this.onChange.emit(this.attachment);
 	}
 
 	public onRightClick(event: MouseEvent): void {

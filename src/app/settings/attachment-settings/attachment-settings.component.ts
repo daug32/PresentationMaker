@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Attachment, ImageAttachment, PrimitiveAttachment, TextAttachment } from 'src/models/presentation/Attachment';
+import { FormGroup } from '@angular/forms';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 
 abstract class SettingsComponentController {
@@ -39,6 +40,7 @@ abstract class SettingsComponentController {
 })
 export class SettingsComponent extends SettingsComponentController implements OnInit {
     @Input('attachment') public attachment!: Attachment;
+    @Output() onChange = new EventEmitter<Attachment>();
 
     public isText: boolean = false;
     public get textAttachment(): TextAttachment { return this.attachment as TextAttachment; }
@@ -52,38 +54,38 @@ export class SettingsComponent extends SettingsComponentController implements On
     public get color(): string {
         switch (this.attachment.attachmentType) {
             case AttachmentType.Text:
-                return (this.attachment as TextAttachment).color;
+                return this.textAttachment.color;
             default:
-                return (this.attachment as PrimitiveAttachment).color;
+                return this.primitiveAttachment.color;
         }
     }
 
     public set color(value: string) {
         switch (this.attachment.attachmentType) {
             case AttachmentType.Text:
-                (this.attachment as TextAttachment).color = value;
+                this.textAttachment.color = value;
                 break;
             default:
-                (this.attachment as PrimitiveAttachment).color = value;
+                this.primitiveAttachment.color = value;
         }
     }
 
     public get fillColor(): string {
         switch (this.attachment.attachmentType) {
             case AttachmentType.Text:
-                return (this.attachment as TextAttachment).fillColor;
+                return this.textAttachment.fillColor;
             default:
-                return (this.attachment as PrimitiveAttachment).fillColor;
+                return this.primitiveAttachment.fillColor;
         }
     }
 
     public set fillColor(value: string) {
         switch (this.attachment.attachmentType) {
             case AttachmentType.Text:
-                (this.attachment as TextAttachment).fillColor = value;
+                this.textAttachment.fillColor = value;
                 break;
             default:
-                (this.attachment as PrimitiveAttachment).fillColor = value;
+                this.primitiveAttachment.fillColor = value;
         }
     }
 
@@ -119,6 +121,10 @@ export class SettingsComponent extends SettingsComponentController implements On
             type == AttachmentType.Rectangle;
     }
 
+    public onDataChange(): void {
+        this.onChange.emit(this.attachment);
+    }
+
     public onFileLoad(): void {
         if (!this.isImage) {
             return;
@@ -135,7 +141,11 @@ export class SettingsComponent extends SettingsComponentController implements On
             }
 
             let reader = new FileReader();
-            reader.onloadend = () => (this.attachment as ImageAttachment).image = reader.result as string;
+            reader.onloadend = () => {
+                this.imageAttachment.image = reader.result as string;
+                this.onChange.emit(this.attachment);
+            }
+            
             reader.readAsDataURL(file);
         };
 

@@ -8,7 +8,7 @@ export function createPresentation(): Presentation {
 export function copyPresentation(presentation: Presentation): Presentation {
     return {
         ...presentation,
-        slides: [...presentation.slides]
+        slides: [...presentation.slides ]
     };
 }
 
