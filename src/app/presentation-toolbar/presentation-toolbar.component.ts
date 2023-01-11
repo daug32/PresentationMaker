@@ -17,6 +17,7 @@ export class PresentationToolbarComponent {
     @Output() onUndoEvent = new EventEmitter<void>(); 
     @Output() onRedoEvent = new EventEmitter<void>(); 
     @Output() onChangeEvent = new EventEmitter<Presentation>(); 
+    @Output() onCreatePresentation = new EventEmitter<void>();
     @Output() onCreateAttachmentEvent = new EventEmitter<AttachmentType>();
 
     constructor() { }
@@ -47,8 +48,7 @@ export class PresentationToolbarComponent {
 
     public newPresentationEvent(): void {
         this.onSave();
-        this.presentation = createPresentation();
-        this.onChangeEvent.emit(this.presentation);
+        this.onCreatePresentation.emit();
     }
 
     public onSave(): void {

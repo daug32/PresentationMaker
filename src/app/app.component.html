@@ -4,7 +4,8 @@
         (onUndoEvent)="onUndo()"
         (onRedoEvent)="onRedo()"
         (onCreateAttachmentEvent)="onCreateAttachment($event)"
-        (onChangeEvent)="onPresentationChange($event)">
+        (onChangeEvent)="onPresentationChange($event)"
+        (onCreatePresentation)="onPresentationCreate()">
     </presentation-toolbar>
 
     <div class="presentation-maker__content-container">
@@ -15,7 +16,7 @@
                     class="presentation-maker__slide"
                     [slide]="slide"
                     [isSelected]="isSlideSelected(slide.id)"
-                    (click)="onSlideClick(slide.id, $event)">
+                    (click)="onSlideClick(slide, $event)">
                 </slide-preview>
 
                 <div class="presentation-maker__slide-actions">
@@ -51,7 +52,7 @@
         </div>
 
         <div class="presentation-maker__workspace"
-             (click)="cleanSelectedAttachments($event)"
+             (click)="cleanSelections($event)"
              (contextmenu)="onWorkspaceRightClick($event)">
             <div class="presentation-maker__workspace-container"
                 [style.backgroundColor]="currentSlide.backgroundColor">
@@ -63,7 +64,7 @@
                     [attachment]="attachment"
                     [isSelected]="isAttachmentSelected(attachment.id)"
                     (click)="selectAttachment(attachment.id, $event)"
-                    (onChange)="onAttachmentChangeEvent($event)">
+                    (onChange)="commitState()">
                 </attachment>
             </div>
         </div>
@@ -71,7 +72,7 @@
         <slide-settings class="presentation-maker__settings"
             #slideSettings
             [slide]="currentSlide"
-            (onChange)="onSlideChangeEvent($event)">
+            (onChange)="commitState()">
         </slide-settings>
     </div>
 </div>

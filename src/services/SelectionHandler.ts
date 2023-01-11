@@ -2,6 +2,10 @@ export class SelectionHandler {
     public slides: number[] = [];
     public attachments: number[] = [];
 
+    public hasSelections(): boolean {
+        return this.slides.length > 0 || this.attachments.length > 0;
+    }
+
     // Slides
     public isSlideSelected(slideId: number): boolean {
         return this.slides.some(selectedSlideId => selectedSlideId == slideId);
