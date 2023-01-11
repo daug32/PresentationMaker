@@ -48,6 +48,7 @@ export class PresentationToolbarComponent {
     public newPresentationEvent(): void {
         this.onSave();
         this.presentation = createPresentation();
+        this.onChangeEvent.emit(this.presentation);
     }
 
     public onSave(): void {

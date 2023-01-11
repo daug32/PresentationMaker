@@ -63,14 +63,6 @@ export class AppComponent {
 
     // System operations
     public onUndo(): void {
-        this.stateManager.further();
-        let presentation = this.stateManager.get();
-        if (presentation) {
-            this.presentation = presentation;
-        }
-    }
-
-    public onRedo(): void {
         this.stateManager.back();
         let presentation = this.stateManager.get();
         if (presentation) {
@@ -78,16 +70,25 @@ export class AppComponent {
         }
     }
 
-    public onSlideChange(slide: Slide) {
+    public onRedo(): void {
+        this.stateManager.further();
+        let presentation = this.stateManager.get();
+        if (presentation) {
+            this.presentation = presentation;
+        }
+    }
+
+    public onSlideChangeEvent(slide: Slide) {
         this.stateManager.save(this.presentation);
     }
 
-    public onAttachmentChange(attachment: Attachment): void {
+    public onAttachmentChangeEvent(attachment: Attachment): void {
         this.stateManager.save(this.presentation);
     }
     
     // Presentation
     public onPresentationChange(presentation: Presentation): void {
+        this.presentation = presentation;
         this.stateManager.save(this.presentation);
     }
 

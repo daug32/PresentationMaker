@@ -21,7 +21,7 @@ export class StateManagerService {
         this.states.push(copy);
     }
 
-    public back(): void {
+    public further(): void {
         if (this.position - 1 < 0) {
             return;
         }
@@ -29,7 +29,7 @@ export class StateManagerService {
         this.position--;
     }
 
-    public further(): void {
+    public back(): void {
         if (this.position + 1 >= this.states.length) {
             return;
         }

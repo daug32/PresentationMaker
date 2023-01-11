@@ -63,7 +63,7 @@
                     [attachment]="attachment"
                     [isSelected]="isAttachmentSelected(attachment.id)"
                     (click)="selectAttachment(attachment.id, $event)"
-                    (onChange)="onAttachmentChange($event)">
+                    (onChange)="onAttachmentChangeEvent($event)">
                 </attachment>
             </div>
         </div>
@@ -71,7 +71,7 @@
         <slide-settings class="presentation-maker__settings"
             #slideSettings
             [slide]="currentSlide"
-            (onChange)="onSlideChange($event)">
+            (onChange)="onSlideChangeEvent($event)">
         </slide-settings>
     </div>
 </div>
