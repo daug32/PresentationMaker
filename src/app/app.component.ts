@@ -58,6 +58,9 @@ export class AppComponent {
         this.presentation = this.testPresentation();
         this._currentSlideId = this.presentation.slides[0]?.id ?? 0;
         document.addEventListener("keydown", (event: KeyboardEvent) => this.deleteSelected(event));
+        document.addEventListener("keydown", (event: KeyboardEvent) => this.onRedoKeys(event));
+        document.addEventListener("keydown", (event: KeyboardEvent) => this.onUndoKeys(event));
+
         this.stateManager.save(this.presentation);
     }
 
@@ -190,6 +193,8 @@ export class AppComponent {
             return;
         }
 
+        console.log('delete');
+
         this.currentSlide = deleteAttachments(this.currentSlide, this._selectionService.attachments);
 
         for (let i = 0; i < this.presentation.slides.length; i++) {
@@ -203,6 +208,8 @@ export class AppComponent {
         }
 
         this.stateManager.save(this.presentation);
+        console.log(this.currentSlide.attachments);
+        //Прикол таков: он не удаляет аттачменты.
     }
 
     public onUndoKeys(event: KeyboardEvent): void {
