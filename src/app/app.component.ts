@@ -63,7 +63,7 @@ export class AppComponent {
 
     // System operations
     public onUndo(): void {
-        console.log('Trying to do undo');
+        this.stateManager.further();
         let presentation = this.stateManager.get();
         if (presentation) {
             this.presentation = presentation;
