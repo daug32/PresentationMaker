@@ -1,24 +1,43 @@
 <div class="presentation-maker-toolbar">
-    <input class="presentation-maker-toolbar" [(ngModel)]="presentation.name" (change)="onDataChange()" />
+    <input class="presentation-maker-toolbar__title" 
+        [(ngModel)]="presentation.name"
+        (change)="onDataChange()" />
 
     <div class="presentation-maker-toolbar__toolbar">
         <div class="presentation-maker-toolbar__toolbar-section">
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="Open File" (click)="onOpen()">
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="Open File"
+                (click)="onOpen()">
                 <mat-icon>file_open</mat-icon>
             </button>
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="Save project" (click)="onSave()">
+
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="Save project"
+                (click)="onSave()">
                 <mat-icon>save</mat-icon>
             </button>
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="New Presentation" (click)="newPresentationEvent()">
+
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="New Presentation"
+                (click)="newPresentationEvent()">
                 <mat-icon>library_add</mat-icon>
             </button>
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="Undo" (click)="onUndoEvent.emit()">
+
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="Undo"
+                (click)="onUndoEvent.emit()">
                 <mat-icon>undo</mat-icon>
             </button>
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="Redo" (click)="onRedoEvent.emit()">
+
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="Redo"
+                (click)="onRedoEvent.emit()">
                 <mat-icon>redo</mat-icon>
             </button>
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="Export to PDF" (click)="onExport()">
+
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="Export to PDF"
+                (click)="onExport()">
                 <mat-icon>upgrade</mat-icon>
             </button>
         </div>
@@ -30,29 +49,37 @@
 
     <div class="presentation-maker-toolbar__toolbar">
         <div class="presentation-maker-toolbar__toolbar-section">
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="Text" (click)="textEvent()">
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="Text"
+                (click)="textEvent()">
                 <p>T</p>
             </button>
 
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="Triangle" (click)="triangleEvent()">
-                <!--Triangle-->
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="Triangle"
+                (click)="triangleEvent()">
                 <mat-icon>change_history</mat-icon>
             </button>
 
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="Square" (click)="squareEvent()">
-                <!--Square-->
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="Square"
+                (click)="squareEvent()">
                 <mat-icon>crop_square</mat-icon>
             </button>
 
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="Circle" (click)="circleEvent()">
-                <!--Circle-->
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="Circle"
+                (click)="circleEvent()">
                 <mat-icon>circle</mat-icon>
             </button>
 
-            <button class="presentation-maker-toolbar__toolbar-section-tools" title="Download image" (click)="imageEvent()">
+            <button class="presentation-maker-toolbar__toolbar-section-tools"
+                title="Download image"
+                (click)="imageEvent()">
                 <mat-icon>image</mat-icon>
             </button>
         </div>
+
         <div class="presentation-maker-toolbar__toolbar-title">
             <p>TOOLS</p>
         </div>

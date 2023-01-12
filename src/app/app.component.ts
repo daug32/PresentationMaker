@@ -20,7 +20,7 @@ export class AppComponent {
     public presentation!: Presentation;
 
     // Selections
-    private stateManager = new StateManagerService();
+    private _stateManager = new StateManagerService();
     private _selectionService = new SelectionHandler();
 
     // Current slide
@@ -67,23 +67,23 @@ export class AppComponent {
 
     // System operations
     public onUndo(): void {
-        this.stateManager.back();
-        let presentation = this.stateManager.get();
+        this._stateManager.back();
+        let presentation = this._stateManager.get();
         if (presentation) {
             this.presentation = presentation;
         }
     }
 
     public onRedo(): void {
-        this.stateManager.further();
-        let presentation = this.stateManager.get();
+        this._stateManager.further();
+        let presentation = this._stateManager.get();
         if (presentation) {
             this.presentation = presentation;
         }
     }
 
     public commitState(): void {
-        this.stateManager.save(this.presentation);
+        this._stateManager.save(this.presentation);
     }
 
     // Presentation

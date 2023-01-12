@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Attachment, ImageAttachment, PrimitiveAttachment, TextAttachment } from 'src/models/presentation/Attachment';
-import { FormGroup } from '@angular/forms';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 
 abstract class SettingsComponentController {

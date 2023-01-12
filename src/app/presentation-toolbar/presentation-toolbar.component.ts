@@ -1,7 +1,4 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { createPresentation, setPresentationName } from 'src/functions/PresentationFunctions';
-import { DataService } from 'src/models/other/DataService';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { PdfBuilderService } from 'src/services/PdfBuilderService';
