@@ -1,14 +1,15 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Vector2 } from 'src/models/other/Vector2';
-import { Attachment, ImageAttachment, TextAttachment } from 'src/models/presentation/Attachment';
 import { AttachmentType } from 'src/models/presentation/AttachmentType';
 import { Presentation } from 'src/models/presentation/Presentation';
 import { Slide } from 'src/models/presentation/Slide';
-import { createAttachment, setAttachmentImage, setAttachmentPosition, setAttachmentSize, setAttachmentText } from 'src/functions/AttachmentFunctions';
-import { deleteAttachments } from 'src/functions/SlideFunctions';
+import { createAttachment } from 'src/functions/AttachmentFunctions';
 import { createSlide } from 'src/functions/SlideFunctions';
-import { removeSlide } from 'src/functions/PresentationFunctions';
-import { SlideSettingsComponent } from './slide-settings/slide-settings.component';
+import { movePresentationSlideDown, movePresentationSlideUp, movePresentationSlidesDown, movePresentationSlidesUp } from 'src/functions/PresentationFunctions';
+import { SlideSettingsComponent } from './settings/slide-settings/slide-settings.component';
+import { SelectionHandler } from 'src/services/SelectionHandler';
+import { StateManagerService } from 'src/services/StateManagerService';
+import { Utils } from 'src/services/Utils';
 
 @Component({
     selector: 'app-root',
@@ -16,286 +17,228 @@ import { SlideSettingsComponent } from './slide-settings/slide-settings.componen
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    public presentation: Presentation;
+    public presentation!: Presentation;
 
     // Selections
-    public selectedSlides: number[] = [];
-    public selectedAttachments: number[] = [];
+    private stateManager = new StateManagerService();
+    private _selectionService = new SelectionHandler();
 
     // Current slide
-    private _currentSlideId: number = 0;
+    public _currentSlideId: number = 0;
 
     public get currentSlide(): Slide {
-        return this.presentation.slides.find(slide => slide.id == this._currentSlideId) ?? new Slide(0, [], 0);
+        let slide = this.presentation.slides.find(slide => slide.id == this._currentSlideId);
+        if (slide) {
+            return slide;
+        }
+
+        if (this.presentation.slides.length > 0) {
+            this._currentSlideId = this.presentation.slides[0].id;
+            return this.presentation.slides[0];
+        }
+
+        return createSlide(0, 0);
     }
 
-    public set currentSlide(slide: Slide) {
-        let index = this.presentation.slides.findIndex(slide => slide.id == this._currentSlideId);
-        if (index == -1) {
+    public set currentSlide(value: Slide) {
+        let index = this.presentation.slides.findIndex(slide => slide.id == value.id);
+        if (index < 0) {
             return;
         }
 
-        this.presentation.slides[index] = slide;
-        this._currentSlideId = slide.id;
+        this._currentSlideId = value.id;
+        this.presentation.slides[index] = value;
     }
 
     // Settings 
-	private _hasOpenedSettings: boolean = false;
-	@ViewChild('slideSettings', { read: ElementRef }) slideSettings!: ElementRef;
+    private _hasOpenedSettings: boolean = false;
+    @ViewChild('slideSettings', { read: ElementRef }) slideSettings!: ElementRef;
 
     // Items repository info
     // TODO: Вынести в репозитории сущностей
-    private _attachmentLastId: number = 0;
     private _slideLastId: number = 0;
+    private _attachmentLastId: number = 0;
 
     constructor() {
-        this.presentation = this.testPresentation();
-        this._currentSlideId = this.presentation.slides[0]?.id ?? 0;
-        document.addEventListener("keydown", (event: KeyboardEvent) => this.deleteSelected(event));
-    }
-    
-    public deleteSelected(event: KeyboardEvent): void {
-        if (event.keyCode !== 46) {
-            return;
-        }
-
-        this.currentSlide = deleteAttachments(this.currentSlide, this.selectedAttachments);
-        
-        let selectedId = this.selectedSlides;
-        for (let i = 0; i < this.presentation.slides.length; i++) {
-            let slide = this.presentation.slides[i];
-            let isSlideSelected: boolean = selectedId.some( selectedSlideId => selectedSlideId == slide.id);
-
-            if(!isSlideSelected) {
-                continue;
-            }
-
-            this.onDeleteSlide(slide.id);
-            i--;
-        }
+        this.onPresentationCreate();
+        document.addEventListener("keyup", event => this.processKeyupEvent(event));
+        setInterval(() => console.log(this._slideLastId, this._currentSlideId), 100);
     }
 
     // System operations
-    public onUndo(): void { }
+    public onUndo(): void {
+        this.stateManager.back();
+        let presentation = this.stateManager.get();
+        if (presentation) {
+            this.presentation = presentation;
+        }
+    }
 
-    public onRedo(): void { }
+    public onRedo(): void {
+        this.stateManager.further();
+        let presentation = this.stateManager.get();
+        if (presentation) {
+            this.presentation = presentation;
+        }
+    }
+
+    public commitState(): void {
+        this.stateManager.save(this.presentation);
+    }
 
     // Presentation
-    public onPresentationLoad(presentation: Presentation): void {
+    public onPresentationChange(presentation: Presentation): void {
         this.presentation = presentation;
+        this._slideLastId = this.presentation.slides.reduce((result, slide) => result > slide.id ? result : slide.id, -1) + 1;
+        this.commitState();
+    }
+
+    public onPresentationCreate(): void {
+        this.presentation = new Presentation('Presentation title', [
+            new Slide(this._slideLastId++, [], 0)
+        ]);
+        this._slideLastId = this.presentation.slides.reduce((result, slide) => result > slide.id ? result : slide.id, -1) + 1;
+        this.commitState();
     }
 
     // Atttachments
     public onCreateAttachment(attachmentType: AttachmentType): void {
-        this.currentSlide.attachments.push(createAttachment(this._attachmentLastId++, attachmentType));
+        let attachment = createAttachment(this._attachmentLastId++, attachmentType);
+        this.currentSlide.attachments.push(attachment);
+        this.commitState();
     }
 
     public selectAttachment(attachmentId: number, event: MouseEvent): void {
-        event.preventDefault();
-        
         if (!event.shiftKey) {
             return;
         }
 
-        for (let i = 0; i < this.selectedAttachments.length; i++) {
-            if (this.selectedAttachments[i] == attachmentId) {
-                this.selectedAttachments.splice(i, 1);
-                return;
-            }
-        }
+        event.preventDefault();
 
-        this.selectedAttachments.push(attachmentId);
-    }
-
-    public onWorkspaceRightClick(event: MouseEvent): void {
-        if (!this.isClickOnWorkspace(event)) {
-            return;
-        }
-
-		event.preventDefault();
-
-		if (SlideSettingsComponent.isShown) {
-			SlideSettingsComponent.close();
-		}
-
-		if (!this._hasOpenedSettings) {
-			SlideSettingsComponent.open(this.slideSettings, new Vector2(event.clientX, event.clientY));
-		}
-
-		this._hasOpenedSettings = !this._hasOpenedSettings;
-    }
- 
-    public cleanSelectedAttachments(event: MouseEvent): void {
-        if (!this.isClickOnWorkspace(event)) {
-            return;
-        }
-
-        this.selectedAttachments = [];
-    }
-
-    private isClickOnWorkspace(event: Event): boolean {
-        let path: EventTarget[] = event.composedPath();
-        return !path.some(step => {
-            let element: HTMLElement = step as HTMLElement;
-            return element.classList?.contains('attachment');
-        });
-    }
-
-    public isAttachmentSelected(attachmentId: number): boolean {
-        return this.selectedAttachments.some(selectedAttachmentId => selectedAttachmentId == attachmentId);
+        this._selectionService.selectAttachment(attachmentId);
     }
 
     // Slides
     public onAddSlide(): void {
-        this.presentation.slides.push(createSlide(this._slideLastId++, this.presentation.slides.length));
+        let slide = createSlide(this._slideLastId++, this.presentation.slides.length);
+        console.log(slide.id);
+        this.presentation.slides.push(slide);
+        this.commitState();
     }
 
-    public onSlideClick(slideId: number, event: MouseEvent): void {
+    public onSlideClick(slide: Slide, event: MouseEvent): void {
         if (event.shiftKey) {
-            this.selectSlide(slideId, event);
+            event.preventDefault();
+            this._selectionService.selectSlide(slide.id);
+            return;
         }
-        else {
-            this.changeSlide(slideId);
-            this.selectedSlides = [];
+
+        this.changeCurrentSlide(slide);
+        this._selectionService.clear();
+    }
+
+    public onRaiseSlideButton(slideId: number): void {
+        if (this._selectionService.slides.length > 1) {
+            this.presentation = movePresentationSlidesUp(this.presentation, this._selectionService.slides);
+            this.commitState();
+            return;
+        }
+
+        let presentation = movePresentationSlideUp(this.presentation, slideId);
+        if (presentation) {
+            this.presentation = presentation;
+            this.commitState();
         }
     }
 
-    private selectSlide(id: number, event: MouseEvent): void {
+    public onDropSlideButton(slideId: number): void {
+        if (this._selectionService.slides.length > 1) {
+            this.presentation = movePresentationSlidesDown(this.presentation, this._selectionService.slides);
+            this.commitState();
+            return;
+        }
+
+        let presentation = movePresentationSlideDown(this.presentation, slideId);
+        if (presentation) {
+            this.presentation = presentation;
+            this.commitState();
+        }
+    }
+
+    public deleteSlide(id: number): void {
+        let index = this.presentation.slides.findIndex(slide => slide.id == id);
+        this.presentation.slides.splice(index, 1);
+        this.commitState();
+    }
+
+    // Selections 
+    public isSlideSelected = (slideId: number): boolean => this._selectionService.isSlideSelected(slideId);
+    public isAttachmentSelected = (attachmentId: number): boolean => this._selectionService.isAttachmentSelected(attachmentId);
+
+    public cleanSelections(event: MouseEvent): void {
+        if (!Utils.isClassClicked(event, 'attachment')) {
+            this._selectionService.clear();
+        }
+    }
+
+    public deleteSelected(): void {
+        if (!this._selectionService.hasSelections()) {
+            return;
+        }
+
+        this.removeSelectedAttachments();
+        this.removeSelectedSlides();
+        this.commitState();
+    }
+
+    private removeSelectedAttachments(): void {
+        this.currentSlide.attachments = this.currentSlide.attachments
+            .filter(attachment => !this._selectionService.isAttachmentSelected(attachment.id));
+    }
+
+    private removeSelectedSlides(): void {
+        this.presentation.slides = this.presentation.slides
+            .filter(slide => !this._selectionService.isSlideSelected(slide.id));
+    }
+
+    // General
+    public onWorkspaceRightClick(event: MouseEvent): void {
+        if (Utils.isClassClicked(event, 'attachment')) {
+            return;
+        }
+
         event.preventDefault();
 
-        for (let i = 0; i < this.selectedSlides.length; i++) {
-            if (this.selectedSlides[i] == id) {
-                this.selectedSlides.splice(i, 1);
-                return;
-            }
+        if (SlideSettingsComponent.isShown) {
+            SlideSettingsComponent.close();
         }
 
-        this.selectedSlides.push(id);
-    }
-
-    private changeSlide(slideId: number): void {
-        this._currentSlideId = slideId;
-        SlideSettingsComponent.close();
-        this._hasOpenedSettings = false;
-    }
-
-    public isSlideSelected(id: number): boolean {
-        return this.selectedSlides.some(selectedSlide => selectedSlide == id);
-    }
-
-    public onRaiseSlide(id: number): void {
-        if (this.selectedSlides.length == 0) {
-            this.moveSlideUp(id);
-            return;
+        if (!this._hasOpenedSettings) {
+            SlideSettingsComponent.open(this.slideSettings, new Vector2(event.clientX, event.clientY));
         }
 
-        this.moveSlidesUp();
-    }
-
-    public moveSlideUp(id: number): void {
-        let index = this.presentation.slides.findIndex(slide => slide.id == id);
-        if (index == -1) {
-            return;
-        }
-
-        if (index - 1 < 0) {
-            return;
-        }
-
-        let changed = this.presentation.slides[index - 1];
-        this.presentation.slides[index - 1] = this.presentation.slides[index];
-        this.presentation.slides[index] = changed;
-    }
-
-    private moveSlidesUp(): void {
-        let selectedId = this.selectedSlides;
-        
-        for (let i = 0; i < this.presentation.slides.length; i++) {
-            let slide = this.presentation.slides[i];
-            let isSlideSelected: boolean = selectedId.some( selectedSlideId => selectedSlideId == slide.id);
-
-            if(!isSlideSelected) {
-                continue;
-            }
-
-            this.moveSlideUp(slide.id);
-        }
-    }
-
-    public onDropSlide(id: number): void {
-        if (this.selectedSlides.length == 0) {
-            this.moveSlideDown(id);
-            return;
-        }
-
-        this.moveSlidesDown()
-    }
-
-    private moveSlideDown(id: number): void {
-        let index = this.presentation.slides.findIndex(slide => slide.id == id);
-        if (index == -1) {
-            return;
-        }
-
-        if (index + 1 >= this.presentation.slides.length) {
-            return;
-        }
-
-        let changed = this.presentation.slides[index + 1];
-        this.presentation.slides[index + 1] = this.presentation.slides[index];
-        this.presentation.slides[index] = changed;
-    }
-    
-    private moveSlidesDown(): void {
-        let selectedId = this.selectedSlides;
-        
-        for (let i = this.presentation.slides.length - 1; i > -1; i--) {
-            let slide = this.presentation.slides[i];
-
-            let isSlideSelected: boolean = selectedId.some(selectedSlideId => selectedSlideId == slide.id);
-            if(!isSlideSelected) {
-                continue;
-            }
-
-            this.moveSlideDown(slide.id);
-        }
-    }
-
-    public onDeleteSlide(id: number): void {
-        this.presentation = removeSlide(this.presentation, id);
+        this._hasOpenedSettings = !this._hasOpenedSettings;
     }
 
     // Other
-    private testPresentation(): Presentation {
-        let slides: Slide[] = [];
-        for (let i = 0; i < 2; i++) {
-            let slide = createSlide(this._slideLastId++, this._slideLastId);
-            slide.attachments = this.testAttachments();
-            slides.push(slide);
+    private processKeyupEvent(event: KeyboardEvent): void {
+        if (Utils.isDeleteButton(event)) {
+            this.deleteSelected();
         }
 
-        return new Presentation("Presentation", slides);
+        if (Utils.hasRedoCombination(event)) {
+            this.onRedo();
+        }
+
+        if (Utils.hasUndoCombination(event)) {
+            this.onUndo();
+        }
     }
 
-    private testAttachments(): Attachment[] {
-        let image = createAttachment(this._attachmentLastId++, AttachmentType.Image);
-        image = setAttachmentImage(image as ImageAttachment, 'assets/images/test.jpg');
-
-        let text = createAttachment(this._attachmentLastId++, AttachmentType.Text);
-        text = setAttachmentText(text as TextAttachment, "Test attachmentText");
-
-        let shapes = [
-            createAttachment(this._attachmentLastId++, AttachmentType.Rectangle),
-            createAttachment(this._attachmentLastId++, AttachmentType.Circle),
-            createAttachment(this._attachmentLastId++, AttachmentType.Triangle),
-        ];
-
-        let height: number = 100;
-
-        return [image, text, ...shapes].map((el, index) => {
-            el = setAttachmentSize(el, new Vector2(100, height));
-            el = setAttachmentPosition(el, new Vector2(0, height * index));
-            return el;
-        });
+    private changeCurrentSlide(slide: Slide): void {
+        this._currentSlideId = slide.id;
+        console.log(this._currentSlideId);
+        SlideSettingsComponent.close();
+        this._hasOpenedSettings = false;
     }
 }

@@ -9,18 +9,20 @@
 
         <button
             class="slide-settings__input slide-settings__file-loader" 
-            title="Open File" 
-            (click)="slide.deleteImage()">
+            title="Delet image frome background" 
+            (click)="deleteImage()">
             <mat-icon>delete</mat-icon>
         </button>
     </div>
 
-    <mat-form-field class="slide-settings__item">
-        <mat-label class="slide-settings__label">Fill color</mat-label>
-        <input matInput 
-            type="text"
-            class="slide-settings__input" 
-            [(colorPicker)]="slide.backgroundColor"
-            [value]="slide.backgroundColor" />
-    </mat-form-field>
+    
+    <div class="slide-settings__color-group" >
+        <label class="slide-settings__color">Fill color</label>
+
+        <input matInput
+            class="slide-settings__color"
+            type="color"
+            (change)="colorChanged()"
+            [(ngModel)]="slide.backgroundColor" />
+    </div>
 </div>

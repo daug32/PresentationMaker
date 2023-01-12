@@ -5,9 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { PresentationToolbarComponent } from './presentation-toolbar/presentation-toolbar.component';
-import { SlidePreviewComponent } from './slide-preview/slide-preview.component';
+import { SlidePreviewComponent } from './previews/slide-preview/slide-preview.component';
 import { AttachmentComponent } from './attachment/attachment.component';
-import { SettingsComponent } from './attachment/settings/settings.component';
+import { SettingsComponent } from './settings/attachment-settings/attachment-settings.component';
+import { SlideSettingsComponent } from './settings/slide-settings/slide-settings.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,7 +19,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatIconModule } from '@angular/material/icon';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MatButtonModule } from '@angular/material/button';
-import { SlideSettingsComponent } from './slide-settings/slide-settings.component';
+import { AttachmentPreviewComponent } from './previews/attachment-preview/attachment-preview.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { SlideSettingsComponent } from './slide-settings/slide-settings.componen
     AttachmentComponent,
     SettingsComponent,
     SlideSettingsComponent,
+    AttachmentPreviewComponent,
   ],
   imports: [
     BrowserModule,
